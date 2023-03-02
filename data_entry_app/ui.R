@@ -54,7 +54,7 @@ tabItems(
   #start first column 
   fluidRow(
     column(6,
-            box(width = 12,
+            box(width = 8,
                 
                 textInput("name", " Evaluator Name(s)"), #end text input
                 
@@ -68,16 +68,17 @@ tabItems(
                             c("",  "Celestun Fishery Refuge", "Parque Nacional Machalilla", "Scorpion Reef National Park (Arrecife Alacranes Biosphere Reserve)") #eventually replace this with an actual list pulling from a file
                 ), #end site select input
                 
-            ) #end box
+                actionButton("Next", "Next", class = "btn-primary")), #end box
      ), #end column
   column(6, "Some Data Entry Instructions Will Go Here"), 
           ), #end fluid row 
   #start next fluid row -----
   fluidRow(
     column(10,),
-    column(2, actionButton("Next", "Next", class = "btn-primary")) 
     ), #end fluid row 
 ), #end tab item
+
+
 
 # Surveillance tabItem ----
 
