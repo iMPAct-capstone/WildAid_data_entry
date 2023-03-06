@@ -16,7 +16,7 @@ sidebar <- dashboardSidebar(
              tabName = "Data",
              icon = icon("table")),
     
-    menuItem(text = "Surveilance and Enforcement",
+    menuItem(text = "Surveillance and Enforcement",
              tabName = "enforcement",
              icon = icon("table")),
     
@@ -51,53 +51,62 @@ tabItems(
   # Main Page data tabItem ----
   tabItem(tabName = "Data",
   #fluidRow ----      
-  #start first column 
-  fluidRow(
-    column(6,
-            box(width = 8,
+    fluidRow(
+    #start first column 
+      column(6,
+          #start data entry box
+          box(width = 8,
+              textInput("name", " Evaluator Name(s)"), #end text input
                 
-                textInput("name", " Evaluator Name(s)"), #end text input
+              textInput("year", "Year"), #end text input
                 
-                textInput("year", "Year"), #end text input
+              selectInput("os_type", "Country",
+                          c("", "Ecuador", "Gabon", "Mexico") #eventually replace this with an actual list
+                          ), #end select input
                 
-                selectInput("os_type", "Country",
-                            c("",  "Ecuador", "Gabon", "Mexico") #eventually replace this with an actual list
-                ), #end select input
+              selectInput("os_type", "Site",
+                            c("",  "Celestun Fishery Refuge", "Parque Nacional Machalilla", "Scorpion Reef National Park (Arrecife Alacranes Biosphere Reserve)"
+                              ) #eventually replace this with an actual list pulling from a file
+                          ), #end site select input
                 
-                selectInput("os_type", "Site",
-                            c("",  "Celestun Fishery Refuge", "Parque Nacional Machalilla", "Scorpion Reef National Park (Arrecife Alacranes Biosphere Reserve)") #eventually replace this with an actual list pulling from a file
-                ), #end site select input
-                
-                actionButton("Next", "Next", class = "btn-primary")), #end box
-     ), #end column
-  column(6, "Some Data Entry Instructions Will Go Here"), 
-          ), #end fluid row 
+                actionButton("next_1", "Save and Continue", class = "btn-primary"
+                             ) #end next button
+                ), #end data entry box
+              ), #end column
+      column(6, "General Data Entry Instructions Will Go Here"), 
+            ), #end fluid row 
+  
   #start next fluid row -----
-  fluidRow(
-    column(10,),
-    ), #end fluid row 
-), #end tab item
-
+    fluidRow(
+    #start column ---- 
+      column(10,
+           ), #end column ----
+            ), #end fluid row 
+  ), #end data main page tab item
 
 
 # Surveillance tabItem ----
 
 tabItem(tabName = "enforcement", 
-        #first fluid Row ---- 
+    #first fluid row ---- 
+    fluidRow(h1("Surveillance and Enforcement", align="center"),
+                br()),#end title row
+    #second fluid Row ---- 
         fluidRow(
         #first column in the row ---- 
         column(6, 
+
 #surveillance prioritization box ----        
-box(width = 12, "Surveilance Prioritization",
-    br("How to Score"),
-    br("1 = No priority areas are defined or priority areas are not under surveillance."),
-br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously."),
-br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment."	),
-    selectInput("os_type", "Score",
+      box(width = 12, "Surveillance Prioritization",
+        br("How to Score"),
+        br("1 = No priority areas are defined or priority areas are not under surveillance."),
+        br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously."),
+        br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment."	),
+        selectInput("os_type", "Score",
                 c("",  "1", "2", "3", "4", "5", "NA")),
-    textInput("comments", " Comments")
+        textInput("comments", " Comments")
   
-) # end surveilance prioritization box
+) # end surveillance prioritization box
 ), # END FIRST COLUMN IN THE ROW
 #start second column ---- 
 
@@ -115,9 +124,9 @@ column(6,
        ) # end patrol planning box
 ) #end second column in the row
 
-), #end first fluid row 
+), #end second fluid row 
 
-#second fluid Row ---- 
+#third fluid Row ---- 
 fluidRow(
   #first column in the row ---- 
   column(6, 
@@ -148,15 +157,45 @@ column(6,
 ) #end patrol execution box
  ),#end second column
 
-), #end second fluid row 
-#start third fluid row
+), #end third fluid row 
+#start fourth fluid row
 fluidRow(
   column(10,),
-  column(2, actionButton("Next", "Next", class = "btn-primary")),
-) #end 3rd fluid row
-) #end surveillance and enforcement tab item  
+  column(2, actionButton("next_2", "Save and Continue", class = "btn-primary")),
+) #end fourth fluid row
+), #end surveillance and enforcement tab item  
+
+# Policies and Consequences tabItem ----
+ 
+tabItem(tabName = "policies",
+        #title row
+        fluidRow(h1("Policies and Consequences", align="center"),
+                 br()),#end title row
+), # end policies tab item
+
+#Training and mentorship tabItem ----
+tabItem(tabName = "training",
+        #title row
+        fluidRow(h1("Training and Mentorship", align="center"),
+                 br()),
+), #end training and mentorship tabItem
+
+#Community Engagement tabItem ----
+tabItem(tabName = "community",
+                #title row
+                fluidRow(h1("Community Engagement", align="center"),
+                         br()),
+), #end community engagement tabItem
+
+#Consistent Funding----
+tabItem(tabName = "funding",
+        fluidRow(h1("Consistent Funding", align="center"),
+                 br()),
+) #end consisten funding tab item
+
 ) #end tab items 
 ) #end dashboard body 
+
 
 
 dashboardPage(header, sidebar, body)
