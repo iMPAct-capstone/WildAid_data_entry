@@ -11,9 +11,9 @@ sidebar <- dashboardSidebar(
   
   #sidebar menu
   sidebarMenu(
-    
+    id = "tabs",
     menuItem(text = "Data Entry Main Page",
-             tabName = "Data",
+             tabName = "data",
              icon = icon("table")),
     
     menuItem(text = "Surveillance and Enforcement",
@@ -49,7 +49,7 @@ body <- dashboardBody(
 # tabItems ----    
 tabItems(
   # Main Page data tabItem ----
-  tabItem(tabName = "Data",
+  tabItem(tabName = "data",
   #fluidRow ----      
     fluidRow(
     #start first column 
