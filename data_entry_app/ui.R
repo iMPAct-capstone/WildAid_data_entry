@@ -1,10 +1,17 @@
+
+#read in site list 
+url <- "https://docs.google.com/spreadsheets/d/1jhKXPigQKs0r9vg1hAX3n0hAkwfFuNu0uPpA9MD8gTk/edit#gid=818092877"
+
+test <- read_sheet(url)
+
+
 # dashboard header ----------------------
 header <- dashboardHeader(
   
   title = "WildAid Marine MPS Tracker Data Entry",
   titleWidth = 400
   
-) #END Dashboard header
+) #End Dashboard header
 
 # dashboard sidebar ----------------------
 sidebar <- dashboardSidebar(
@@ -61,11 +68,11 @@ tabItems(
               textInput("year", "Year"), #end text input
                 
               selectInput("os_type", "Country",
-                          c("", "Ecuador", "Gabon", "Mexico") #eventually replace this with an actual list
+                          c("Nothing Selected", unique(test$country_final)) #read list of countries from site sheet
                           ), #end select input
                 
               selectInput("os_type", "Site",
-                            c("",  "Celestun Fishery Refuge", "Parque Nacional Machalilla", "Scorpion Reef National Park (Arrecife Alacranes Biosphere Reserve)"
+                            c("Nothing Selected",  "Celestun Fishery Refuge", "Parque Nacional Machalilla", "Scorpion Reef National Park (Arrecife Alacranes Biosphere Reserve)"
                               ) #eventually replace this with an actual list pulling from a file
                           ), #end site select input
                 
