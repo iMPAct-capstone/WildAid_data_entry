@@ -1,7 +1,7 @@
 #input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session)
 { 
-  
+#next buttons ----  
   #data tab next button
   observeEvent(input$next_1, {
     newtab <- switch(input$tabs, "data" = "enforcement","enforcement" = "data")
@@ -13,4 +13,11 @@ server <- function(input, output, session)
     newtab <- switch(input$tabs, "enforcement" = "policies", "policies" = "enforcement")
     updateTabItems(session, "tabs", newtab)
   }) #end enforcement tab next button 
+# end next buttons
+
+#update site choices   
+  observeEvent(input$country,{
+    updateSelectInput(session,'Select2',
+                      choices=unique(candyData$Candy[candyData$Brand==input$Select1]))
+  }) 
 }
