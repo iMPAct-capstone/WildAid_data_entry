@@ -67,13 +67,12 @@ tabItems(
                 
               textInput("year", "Year"), #end text input
                 
-              selectInput("os_type", "Country",
+              selectInput("Country_input", "Country",
                           c("Nothing Selected", unique(test$country_final)) #read list of countries from site sheet
                           ), #end select input
                 
-              selectInput("os_type", "Site",
-                            c("Nothing Selected",  "Celestun Fishery Refuge", "Parque Nacional Machalilla", "Scorpion Reef National Park (Arrecife Alacranes Biosphere Reserve)"
-                              ) #eventually replace this with an actual list pulling from a file
+              selectInput("Site_input", "Site",
+                            choices = NULL #eventually replace this with an actual list pulling from a file
                           ), #end site select input
                 
                 actionButton("next_1", "Save and Continue", class = "btn-primary"
