@@ -65,14 +65,14 @@ tabItems(
           box(width = 8,
               textInput("name", " Evaluator Name(s)"), #end text input
                 
-              textInput("year", "Year"), #end text input
+              textInput("year", "Data Year"), #end text input
                 
               selectInput("Country_input", "Country",
-                          c("Nothing Selected", unique(test$country_final)) #read list of countries from site sheet
+                          c("Select Option", unique(test$country_final)) #read list of countries from site sheet
                           ), #end select input
                 
               selectInput("Site_input", "Site",
-                            choices = NULL #eventually replace this with an actual list pulling from a file
+                            choices = "Select Option" #eventually replace this with an actual list pulling from a file
                           ), #end site select input
                 
                 actionButton("next_1", "Save and Continue", class = "btn-primary"
@@ -384,7 +384,7 @@ fluidRow(
 #start fifth fluid row
         fluidRow(
           column(10,),
-          column(2, actionButton("next_2", "Save and Continue", class = "btn-primary")),
+          column(2, actionButton("next_3", "Save and Continue", class = "btn-primary")),
         ) #end fifth fluid row
 ), #end policies and consequences tabItem  
 
@@ -463,7 +463,7 @@ tabItem(tabName = "training",
         #start fourth fluid row
         fluidRow(
           column(10,),
-          column(2, actionButton("next_2", "Save and Continue", class = "btn-primary")),
+          column(2, actionButton("next_4", "Save and Continue", class = "btn-primary")),
         ) #end fourth fluid row
 ), #end training and mentorship tab item
 
@@ -542,7 +542,7 @@ tabItem(tabName = "community",
         #start fourth fluid row
         fluidRow(
           column(10,),
-          column(2, actionButton("next_2", "Save and Continue", class = "btn-primary")),
+          column(2, actionButton("next_5", "Save and Continue", class = "btn-primary")),
         ) #end fourth fluid row
 ), #end community engagement tabItem
 
@@ -605,7 +605,7 @@ tabItem(tabName = "funding",
         #start fourth fluid row
         fluidRow(
           column(10,),
-          column(2, actionButton("next_2", "Save and Continue", class = "btn-primary")),
+          column(2, actionButton("next_6", "Submit", class = "btn-primary")),
         ) #end fourth fluid row
 ) #end consistent funding tab item
 
