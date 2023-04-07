@@ -1,9 +1,4 @@
 
-#read in site list 
-url <- "https://docs.google.com/spreadsheets/d/1jhKXPigQKs0r9vg1hAX3n0hAkwfFuNu0uPpA9MD8gTk/edit#gid=818092877"
-
-test <- read_sheet(url)
-
 
 # dashboard header ----------------------
 header <- dashboardHeader(
@@ -68,7 +63,7 @@ tabItems(
               textInput("year", "Data Year"), #end text input
                 
               selectInput("Country_input", "Country",
-                          c("Select Option", unique(test$country_final)) #read list of countries from site sheet
+                          c("Select Option", unique(site_list$country)) #read list of countries from site sheet
                           ), #end select input
                 
               selectInput("Site_input", "Site",
