@@ -11,35 +11,7 @@ header <- dashboardHeader(
 # dashboard sidebar ----------------------
 sidebar <- dashboardSidebar(
   
-  #sidebar menu
-  sidebarMenu(
-    id = "tabs",
-    menuItem(text = "Data Entry Main Page",
-             tabName = "data",
-             icon = icon("table")),
-    
-    menuItem(text = "Surveillance and Enforcement",
-             tabName = "enforcement",
-             icon = icon("table")),
-    
-    menuItem(text = "Policies and Consequences",
-             tabName = "policies",
-             icon = icon("table")),
-    
-    menuItem(text = "Training and Mentorship",
-             tabName = "training",
-             icon = icon("table")),
-    
-    menuItem(text = "Community Engagement",
-             tabName = "community",
-             icon = icon("table")),
-    
-    menuItem(text = "Consistent Funding",
-             tabName = "funding",
-             icon = icon("table"))
-    
-  ) #END sidebar Menu
-  
+  collapsed = TRUE, sidebarMenuOutput("sidebar")
   
 ) #END Dashboard sidebar
 
@@ -47,6 +19,12 @@ sidebar <- dashboardSidebar(
 
 
 body <- dashboardBody(
+  # add logout button UI
+  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
+  # add login panel UI function
+  shinyauthr::loginUI(id = "login"),
+  # setup table output to show user info after login
+  tableOutput("user_table"),
 
 # tabItems ----    
 tabItems(

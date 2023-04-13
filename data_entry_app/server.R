@@ -3,6 +3,67 @@
 #input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session)
 { 
+  
+  # call login module supplying data frame, 
+  # user and password cols and reactive trigger
+  credentials <- shinyauthr::loginServer(
+    id = "login",
+    data = user_base,
+    user_col = user,
+    pwd_col = password,
+    log_out = reactive(logout_init())
+  )
+  
+  # call the logout module with reactive trigger to hide/show
+  logout_init <- shinyauthr::logoutServer(
+    id = "logout",
+    active = reactive(credentials()$user_auth)
+  )
+  
+  # this opens or closes the sidebar on login/logout
+  observe({
+    if(credentials()$user_auth) {
+      shinyjs::removeClass(selector = "body", class = "sidebar-collapse")
+    } else {
+      shinyjs::addClass(selector = "body", class = "sidebar-collapse")
+    }
+  })
+  
+  # only when credentials()$user_auth is TRUE, render your desired sidebar menu
+  output$sidebar <- renderMenu({
+    req(credentials()$user_auth)
+    #sidebar menu
+    sidebarMenu(
+      id = "tabs",
+      collapsed = TRUE, sidebarMenuOutput("sidebar"),
+      menuItem(text = "Data Entry Main Page",
+               tabName = "data",
+               icon = icon("table")),
+      
+      menuItem(text = "Surveillance and Enforcement",
+               tabName = "enforcement",
+               icon = icon("table")),
+      
+      menuItem(text = "Policies and Consequences",
+               tabName = "policies",
+               icon = icon("table")),
+      
+      menuItem(text = "Training and Mentorship",
+               tabName = "training",
+               icon = icon("table")),
+      
+      menuItem(text = "Community Engagement",
+               tabName = "community",
+               icon = icon("table")),
+      
+      menuItem(text = "Consistent Funding",
+               tabName = "funding",
+               icon = icon("table"))
+      
+    ) #END sidebar Menu
+    
+  })  
+  
 #next buttons ----  
   #data tab next button
   observeEvent(input$next_1, {
