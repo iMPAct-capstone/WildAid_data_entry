@@ -11,7 +11,8 @@ server <- function(input, output, session)
     data = user_base,
     user_col = user,
     pwd_col = password,
-    log_out = reactive(logout_init())
+    log_out = reactive(logout_init()),
+    reload_on_logout = TRUE
   )
   
   # call the logout module with reactive trigger to hide/show
