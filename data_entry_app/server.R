@@ -35,7 +35,6 @@ server <- function(input, output, session)
     #sidebar menu
     sidebarMenu(
       id = "tabs",
-      collapsed = TRUE, sidebarMenuOutput("sidebar"),
       menuItem(text = "Data Entry Main Page",
                tabName = "data",
                icon = icon("table")),
@@ -63,7 +62,7 @@ server <- function(input, output, session)
     ) #END sidebar Menu
     
   })  
-  
+
 #next buttons ----  
   #data tab next button
   observeEvent(input$next_1, {
