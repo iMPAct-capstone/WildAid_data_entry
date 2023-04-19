@@ -76,14 +76,14 @@ tabItem(tabName = "enforcement",
         column(6, 
 
 #surveillance prioritization box ----        
-      box(width = 12, "Surveillance Prioritization",
+      box(width = 12, title = "Surveillance Prioritization", id = "surv_pri",
         br("How to Score"),
         br("1 = No priority areas are defined or priority areas are not under surveillance."),
         br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously."),
         br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment."	),
-        selectInput("os_type", "Score",
-                c("",  "1", "2", "3", "4", "5", "NA")),
-        textInput("comments", " Comments")
+        selectInput(inputId = "surv_pri_score", label = "Score",
+              choices = c("",  "1", "2", "3", "4", "5", "NA")),
+        textInput(inputId = "surv_pri_comments", " Comments")
   
 ) # end surveillance prioritization box
 ), # END FIRST COLUMN IN THE ROW

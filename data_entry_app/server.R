@@ -109,4 +109,17 @@ server <- function(input, output, session)
                         choices= "Select Option")}
     
   }) #end observe input country box  
+
+#Data entry ----
+#Surveilance and Enforcement Tab
+  
+textB <- reactive({
+   data.frame(score = input$surv_pri_score, comments = input$surv_pri_comments)
+ })
+  
+  observeEvent(input$next_2, {
+    Selfie <-   gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+    sheet_append(Selfie, data = textB())
+  })
+
 }
