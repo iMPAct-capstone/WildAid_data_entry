@@ -21,6 +21,9 @@ url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSSaWKxf
 
 site_list <- read_sheet(url)
 
+
+master_tracker <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+
 #find the current year plus 1
 
 current_year_plus_one <- year(Sys.Date()) + 1

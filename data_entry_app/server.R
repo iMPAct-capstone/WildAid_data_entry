@@ -79,6 +79,16 @@ server <- function(input, output, session)
       } else if (input$name_input == "") {
         showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
       } else {
+        url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+        master_sheet <- read_sheet(url)
+        #check whether this data already exists 
+        existing_data <- master_sheet |> filter(year == input$year_input,
+                                                site == input$site_input,
+                                                sub_category == "Surveillance Prioritization")
+        if (nrow(existing_data)==1){
+          updateSelectInput(session, "surv_pri_score", selected = existing_data$score)
+          updateTextInput(session, inputId = "surv_pri_comments", value = existing_data$comments)
+          }
         updateTabItems(session, "tabs", newtab)
       }
     }) 
@@ -133,6 +143,7 @@ server <- function(input, output, session)
   }) #end observe input country box  
 
 #Data entry ----
+
 #Surveilance and Enforcement Tab
   
   textB <- reactive({
@@ -152,14 +163,35 @@ server <- function(input, output, session)
   })
   
   observeEvent(input$next_2, {
-    sheet <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+    master_tracker <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+    
+    url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+    
+    master_sheet <- read_sheet(url)
+    
+    #check whether this data already exists 
+    existing_data <- master_sheet |> filter(year == input$year_input,
+                                          site == input$site_input,
+                                          sub_category == "Surveillance Prioritization")
+    #first check that there is data to be written
+    #if no data to be written, do nothing
     validate(
       need(input$year_input != '', message = "Please enter a year.")
     )
     if (input$year_input != "" && input$country_input != "Select Option" && input$site_input != "Select Option" && input$name_input != "" && input$surv_pri_score !="") {
-      # Append data to Google Sheet
-      sheet_append(sheet, data = textB())
+      
+    #next check whether the data already exists and needs to be updated
+      if (nrow(existing_data) == 1){
+        #overwrite where it already exists
+        # Get the row index
+        specific_row <- which(master_sheet$year == input$year_input & master_sheet$site == input$site_input & master_sheet$sub_category == "Surveillance Prioritization") +1
+        range_write(url,data = textB(), range = cell_rows(specific_row), col_names = FALSE)
+        #if it doesn't already exist then just append it to the bottom 
+      } else { #Append data to Google Sheet
+        sheet_append(master_tracker, data = textB())}
     } 
+      
+      
   })
   
   
