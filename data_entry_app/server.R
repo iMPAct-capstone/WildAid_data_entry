@@ -136,16 +136,19 @@ server <- function(input, output, session)
 #Surveilance and Enforcement Tab
   
   textB <- reactive({
+  
     data.frame(year = input$year_input,
                category = "Surveillance and Enforcement",
                sub_category = 'Surveillance Prioritization',
                indicator_type = "Process Indicator",
                score= input$surv_pri_score,
-               #country= input$country_input,
+               country= input$country_input,
                site= input$site_input,
-               comments = input$surv_pri_comments,
+               if (input$surv_pri_comments!=""){
+               comments = input$surv_pri_comments
+               } else {comments = "NA"},
                entered_by = input$name_input,
-               visualization_include = "yes")
+               visualization_include = "yes") 
   })
   
   observeEvent(input$next_2, {
@@ -153,10 +156,10 @@ server <- function(input, output, session)
     validate(
       need(input$year_input != '', message = "Please enter a year.")
     )
-    if (input$year_input != "" && input$country_input != "Select Option" && input$site_input != "Select Option" && input$name_input != "") {
+    if (input$year_input != "" && input$country_input != "Select Option" && input$site_input != "Select Option" && input$name_input != "" && input$surv_pri_score !="") {
       # Append data to Google Sheet
       sheet_append(sheet, data = textB())
-    }
+    } 
   })
   
   
