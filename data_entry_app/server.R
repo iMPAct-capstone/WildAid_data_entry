@@ -3,7 +3,7 @@
 #input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session)
 { 
-  
+#password authentication ----
   # call login module supplying data frame, 
   # user and password cols and reactive trigger
   credentials <- shinyauthr::loginServer(
@@ -99,13 +99,13 @@ server <- function(input, output, session)
 # end next buttons
 
 #update site choices ---- 
-  observeEvent(input$Country_input,{
-    if (input$Country_input %in% site_list$country){
-      new_data <- site_list |> filter(country == input$Country_input)
-    updateSelectInput(session, 'Site_input',
+  observeEvent(input$country_input,{
+    if (input$country_input %in% site_list$country){
+      new_data <- site_list |> filter(country == input$country_input)
+    updateSelectInput(session, 'site_input',
                       choices= new_data$site)}
-    if (input$Country_input == "Select Option"){
-      updateSelectInput(session, 'Site_input',
+    if (input$country_input == "Select Option"){
+      updateSelectInput(session, 'site_input',
                         choices= "Select Option")}
     
   }) #end observe input country box  
@@ -113,9 +113,18 @@ server <- function(input, output, session)
 #Data entry ----
 #Surveilance and Enforcement Tab
   
-textB <- reactive({
-   data.frame(score = input$surv_pri_score, comments = input$surv_pri_comments)
- })
+  textB <- reactive({
+    data.frame(year = input$year_input,
+               category = "Surveillance and Enforcement",
+               sub_category = 'Surveillance Prioritization',
+               indicator_type = "Process Indicator",
+               score= input$surv_pri_score,
+               #country= input$country_input,
+               site= input$site_input,
+               comments = input$surv_pri_comments,
+               entered_by = input$name_input,
+               visualization_include = "yes")
+  })
   
   observeEvent(input$next_2, {
     Selfie <-   gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')

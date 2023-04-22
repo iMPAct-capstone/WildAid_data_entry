@@ -36,15 +36,15 @@ tabItems(
       column(6,
           #start data entry box
           box(width = 8,
-              textInput("name", " Evaluator Name(s)"), #end text input
+              textInput(inputId = "name_input",  label = "Evaluator Name(s)"), #end text input
                 
-              textInput("year", "Data Year"), #end text input
+              textInput(inputId = "year_input", label = "Data Year"), #end text input
                 
-              selectInput("Country_input", "Country",
+              selectInput(inputId ="country_input", label = "Country",
                           c("Select Option", unique(site_list$country)) #read list of countries from site sheet
                           ), #end select input
                 
-              selectInput("Site_input", "Site",
+              selectInput(inputId = "site_input", label = "Site",
                             choices = "Select Option" #eventually replace this with an actual list pulling from a file
                           ), #end site select input
                 
