@@ -66,29 +66,36 @@ server <- function(input, output, session)
 
 #next buttons ----  
   #data tab next button
-  observeEvent(input$next_1, {
-    newtab <- switch(input$tabs, "data" = "enforcement","enforcement" = "data")
-    if (input$year_input == "" && input$country_input == "Select Option") {
-      showNotification("Year, Site and Country are required fields", type = "error", duration = NULL)
-    }else if(input$year_input == ""){
-      showNotification("Please enter a year", type = "error",duration = NULL)
-    }else if (input$country_input == "Select Option") {
-      showNotification("Please enter a country and site", type = "error", duration = NULL) 
-    } else if (input$site_input == "Select Option") {
-      showNotification("Please enter a site", type = "error", duration = NULL) 
-    } else if (!is.numeric(input$year_input)){
-      showNotification("Please enter a valid value for year", type = "error", duration = NULL)
-    }
-    else if (nchar(input$year_input)!=4){
-      showNotification("Please enter a valid value for year", type = "error", duration = NULL)
-    }
-    else updateTabItems(session, "tabs", newtab)
-  }) #end data tab next button 
+    observeEvent(input$next_1, {
+      newtab <- switch(input$tabs, "data" = "enforcement","enforcement" = "data")
+      validate(
+        need(input$year_input != '', message = "Please enter a year.")
+      )
+      if (input$country_input == "Select Option") {
+        showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      } else if (input$site_input == "Select Option") {
+        showModal(modalDialog("Please enter a site", easyClose = TRUE))
+      } else if (input$name_input == "") {
+        showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      } else {
+        updateTabItems(session, "tabs", newtab)
+      }
+    }) 
   
-  #enforcement tab next button 
   observeEvent(input$next_2, {
     newtab <- switch(input$tabs, "enforcement" = "policies", "policies" = "enforcement")
-    updateTabItems(session, "tabs", newtab)
+    validate(
+      need(input$year_input != '', message = "Please enter a year.")
+    )
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE))
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+    } else {
+      updateTabItems(session, "tabs", newtab)
+    }
   }) #end enforcement tab next button 
   
   #policies and consequences next button 
@@ -142,11 +149,11 @@ server <- function(input, output, session)
   
   observeEvent(input$next_2, {
     sheet <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
-    if (input$year_input == ""){
-      showNotification("Please enter a year", type = "warning")
-    } else {
+    if (input$year_input != "" && input$country_input != "Select Option" && input$site_input != "Select Option" && input$name_input != "") {
+      # Append data to Google Sheet
       sheet_append(sheet, data = textB())
     }
   })
+  
   
 }
