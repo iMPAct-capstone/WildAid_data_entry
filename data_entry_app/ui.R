@@ -38,7 +38,7 @@ tabItems(
           box(width = 8,
               textInput(inputId = "name_input",  label = "Evaluator Name(s)"), #end text input
                 
-              textInput(inputId = "year_input", label = "Data Year"), #end text input
+              numericInput(inputId = "year_input", label = "Data Year", value = current_year_plus_one, min = 2019, max =2080), #end text input
                 
               selectInput(inputId ="country_input", label = "Country",
                           c("Select Option", unique(site_list$country)) #read list of countries from site sheet

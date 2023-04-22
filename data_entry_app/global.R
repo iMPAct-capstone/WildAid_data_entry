@@ -5,7 +5,7 @@ library(shinydashboard)
 library(tidyverse)
 library(shinycssloaders)
 library(googlesheets4)
-
+library(lubridate)
 
 # dataframe that holds usernames, passwords and other user data
 user_base <- tibble::tibble(
@@ -20,4 +20,8 @@ user_base <- tibble::tibble(
 url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSSaWKxfoxZeozrn1_M/edit#gid=1669338265"
 
 site_list <- read_sheet(url)
+
+#find the current year plus 1
+
+current_year_plus_one <- year(Sys.Date()) + 1
 

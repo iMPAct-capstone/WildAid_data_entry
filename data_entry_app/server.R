@@ -68,7 +68,21 @@ server <- function(input, output, session)
   #data tab next button
   observeEvent(input$next_1, {
     newtab <- switch(input$tabs, "data" = "enforcement","enforcement" = "data")
-    updateTabItems(session, "tabs", newtab)
+    if (input$year_input == "" && input$country_input == "Select Option") {
+      showNotification("Year, Site and Country are required fields", type = "error", duration = NULL)
+    }else if(input$year_input == ""){
+      showNotification("Please enter a year", type = "error",duration = NULL)
+    }else if (input$country_input == "Select Option") {
+      showNotification("Please enter a country and site", type = "error", duration = NULL) 
+    } else if (input$site_input == "Select Option") {
+      showNotification("Please enter a site", type = "error", duration = NULL) 
+    } else if (!is.numeric(input$year_input)){
+      showNotification("Please enter a valid value for year", type = "error", duration = NULL)
+    }
+    else if (nchar(input$year_input)!=4){
+      showNotification("Please enter a valid value for year", type = "error", duration = NULL)
+    }
+    else updateTabItems(session, "tabs", newtab)
   }) #end data tab next button 
   
   #enforcement tab next button 
@@ -127,8 +141,12 @@ server <- function(input, output, session)
   })
   
   observeEvent(input$next_2, {
-    Selfie <-   gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
-    sheet_append(Selfie, data = textB())
+    sheet <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+    if (input$year_input == ""){
+      showNotification("Please enter a year", type = "warning")
+    } else {
+      sheet_append(sheet, data = textB())
+    }
   })
-
+  
 }
