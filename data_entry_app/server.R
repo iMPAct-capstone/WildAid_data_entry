@@ -71,7 +71,8 @@ server <- function(input, output, session)
       validate(
         need(input$year_input != '', message = "Please enter a year.")
       )
-      if (input$country_input == "Select Option") {
+      if (input$country_input == "Select Option" && input$name_input == "") {showModal(modalDialog("Country, Site and Evaluator are required fiels", easyClose = TRUE))
+     } else if (input$country_input == "Select Option") {
         showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
       } else if (input$site_input == "Select Option") {
         showModal(modalDialog("Please enter a site", easyClose = TRUE))
@@ -149,6 +150,9 @@ server <- function(input, output, session)
   
   observeEvent(input$next_2, {
     sheet <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+    validate(
+      need(input$year_input != '', message = "Please enter a year.")
+    )
     if (input$year_input != "" && input$country_input != "Select Option" && input$site_input != "Select Option" && input$name_input != "") {
       # Append data to Google Sheet
       sheet_append(sheet, data = textB())
