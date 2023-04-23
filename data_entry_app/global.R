@@ -1,7 +1,6 @@
-
 # Load packages ----
 library(shiny)
-library(shinydashboard) 
+library(shinydashboard)
 library(tidyverse)
 library(shinycssloaders)
 library(googlesheets4)
@@ -15,16 +14,16 @@ user_base <- tibble::tibble(
   name = c("User One", "User Two")
 )
 
-# Read in Data ---- 
-#url for site list 
+# Read in Data ----
+# url for site list
 url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSSaWKxfoxZeozrn1_M/edit#gid=1669338265"
 
 site_list <- read_sheet(url)
 
 
-master_tracker <- gs4_get('https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0')
+master_tracker <- gs4_get("https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0")
 
-#find the current year plus 1
+# find the current year plus 1----
+#used for updating the default year in the app
 
 current_year_plus_one <- year(Sys.Date()) + 1
-
