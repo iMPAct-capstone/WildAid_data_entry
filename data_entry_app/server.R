@@ -31,7 +31,7 @@ server <- function(input, output, session) {
   output$sidebar <- renderMenu({
     req(credentials()$user_auth)
 
-    # password authentication ----
+    # render menu if authorized
     sidebarMenu(
       id = "tabs",
       menuItem(
@@ -67,7 +67,7 @@ server <- function(input, output, session) {
     ) # END sidebar Menu
   })
 
-  # next buttons ----
+  # next buttons and data entry ----
   # data tab next button
   observeEvent(input$next_1, {
     newtab <- switch(input$tabs,
@@ -85,40 +85,100 @@ server <- function(input, output, session) {
       showModal(modalDialog("Please enter a site", easyClose = TRUE))
     } else if (input$name_input == "") {
       showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # proceed if all required fields are present
     } else {
       url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+      # read in the sheet
       master_sheet <- read_sheet(url)
       # check whether this data already exists
-      existing_data <- master_sheet |> filter(
-        year == input$year_input,
-        site == input$site_input,
-        sub_category == "Surveillance Prioritization"
-      ) 
-      #if data already exists on the g-sheet, update boxes
+      existing_data <- master_sheet |>
+        filter(
+          year == input$year_input,
+          site == input$site_input,
+          sub_category == "Surveillance Prioritization"
+        )
+      # if data already exists on the g-sheet, update boxes
       if (nrow(existing_data) == 1) {
         updateSelectInput(session, "surv_pri_score", selected = existing_data$score)
         updateTextInput(session, inputId = "surv_pri_comments", value = existing_data$comments)
       }
-      #finally update the tab
+      # finally update the tab
       updateTabItems(session, "tabs", newtab)
     }
-  }) #end data tab next button
-
+  }) # end data tab next button
+  # enforcement tab next button
   observeEvent(input$next_2, {
+    # create an object for switching tabs
     newtab <- switch(input$tabs,
       "enforcement" = "policies",
       "policies" = "enforcement"
     )
+    # check year is not blank
     validate(
       need(input$year_input != "", message = "Please enter a year.")
     )
+    # check if country has been updated
     if (input$country_input == "Select Option") {
       showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
     } else if (input$site_input == "Select Option") {
-      showModal(modalDialog("Please enter a site", easyClose = TRUE))
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
     } else if (input$name_input == "") {
       showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
     } else {
+      # read in the google sheet
+      # need to do this each time we write in case multiple people are on the app
+      # identify the url
+      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+      # get for writing to
+      master_tracker <- gs4_get(url)
+      # also read in for checking for existing data
+      master_sheet <- read_sheet(url)
+  ## start of "surveillance prioritization data entry----
+      # check whether this data already exists
+      existing_data <- master_sheet |>
+        filter(
+          year == input$year_input,
+          site == input$site_input,
+          sub_category == "Surveillance Prioritization"
+        )
+      # check that there is data to be written
+      # if no data then don't do anything here
+      if (input$surv_pri_score != "") {
+        # if data has been entered then make a data frame
+        textB <- reactive({
+          data.frame(
+            year = input$year_input,
+            category = "Surveillance and Enforcement",
+            sub_category = "Surveillance Prioritization",
+            indicator_type = "Process Indicator",
+            score = input$surv_pri_score,
+            country = input$country_input,
+            site = input$site_input,
+            if (input$surv_pri_comments != "") {
+              comments <- input$surv_pri_comments
+            } else {
+              comments <- "NA"
+            },
+            entered_by = input$name_input,
+            visualization_include = "yes"
+          )
+        })
+
+        # next check whether the data already exists in master
+        if (nrow(existing_data) == 1) {
+          # overwrite where it already exists
+          # Get the row index
+          specific_row <- which(master_sheet$year == input$year_input & master_sheet$site == input$site_input & master_sheet$sub_category == "Surveillance Prioritization") + 1
+          range_write(url, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
+          # if it doesn't already exist then just append it to the bottom
+        } else { # Append data to Google Sheet
+          sheet_append(master_tracker, data = textB())
+        } #end of surveillance prioritization data entry
+      } # end of all data entry for this category
+
+      # change to the next tab
       updateTabItems(session, "tabs", newtab)
     }
   }) # end enforcement tab next button
@@ -150,7 +210,7 @@ server <- function(input, output, session) {
     updateTabItems(session, "tabs", newtab)
   }) # end community engagement next button
 
-# end next buttons
+  # end next buttons
 
   # update site choices ----
   observeEvent(input$country_input, {
@@ -166,59 +226,4 @@ server <- function(input, output, session) {
       )
     }
   }) # end observe input country box
-
-  # Data entry ----
-
-# Surveilance and Enforcement Tab
-
-  textB <- reactive({
-    data.frame(
-      year = input$year_input,
-      category = "Surveillance and Enforcement",
-      sub_category = "Surveillance Prioritization",
-      indicator_type = "Process Indicator",
-      score = input$surv_pri_score,
-      country = input$country_input,
-      site = input$site_input,
-      if (input$surv_pri_comments != "") {
-        comments <- input$surv_pri_comments
-      } else {
-        comments <- "NA"
-      },
-      entered_by = input$name_input,
-      visualization_include = "yes"
-    )
-  })
-
-  observeEvent(input$next_2, {
-    master_tracker <- gs4_get("https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0")
-
-    url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
-
-    master_sheet <- read_sheet(url)
-
-    # check whether this data already exists
-    existing_data <- master_sheet |> filter(
-      year == input$year_input,
-      site == input$site_input,
-      sub_category == "Surveillance Prioritization"
-    )
-    # first check that there is data to be written
-    # if no data to be written, do nothing
-    validate(
-      need(input$year_input != "", message = "Please enter a year.")
-    )
-    if (input$year_input != "" && input$country_input != "Select Option" && input$site_input != "Select Option" && input$name_input != "" && input$surv_pri_score != "") {
-      # next check whether the data already exists and needs to be updated
-      if (nrow(existing_data) == 1) {
-        # overwrite where it already exists
-        # Get the row index
-        specific_row <- which(master_sheet$year == input$year_input & master_sheet$site == input$site_input & master_sheet$sub_category == "Surveillance Prioritization") + 1
-        range_write(url, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
-        # if it doesn't already exist then just append it to the bottom
-      } else { # Append data to Google Sheet
-        sheet_append(master_tracker, data = textB())
-      }
-    }
-  })
 }
