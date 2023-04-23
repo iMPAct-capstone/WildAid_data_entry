@@ -1,0 +1,23 @@
+---
+title: "User Manual/Technical Documentation"
+output: word_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data Entry Application
+
+## Access
+
+## Entering Data
+
+## Updating Data Entry
+
+### Adding or removing sites
+
+### Adding a category
+
+# Troubleshooting 
