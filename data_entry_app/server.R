@@ -1,3 +1,5 @@
+source("global.R")
+
 # input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session) {
   # password authentication ----
@@ -90,6 +92,7 @@ server <- function(input, output, session) {
       url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
       # read in the sheet
       master_sheet <- read_sheet(url)
+
       # check whether this data already exists
       existing_data <- master_sheet |>
         filter(
@@ -135,49 +138,9 @@ server <- function(input, output, session) {
       master_tracker <- gs4_get(url)
       # also read in for checking for existing data
       master_sheet <- read_sheet(url)
-  ## start of "surveillance prioritization data entry----
-      # check whether this data already exists
-      existing_data <- master_sheet |>
-        filter(
-          year == input$year_input,
-          site == input$site_input,
-          sub_category == "Surveillance Prioritization"
-        )
-      # check that there is data to be written
-      # if no data then don't do anything here
-      if (input$surv_pri_score != "") {
-        # if data has been entered then make a data frame
-        textB <- reactive({
-          data.frame(
-            year = input$year_input,
-            category = "Surveillance and Enforcement",
-            sub_category = "Surveillance Prioritization",
-            indicator_type = "Process Indicator",
-            score = input$surv_pri_score,
-            country = input$country_input,
-            site = input$site_input,
-            if (input$surv_pri_comments != "") {
-              comments <- input$surv_pri_comments
-            } else {
-              comments <- "NA"
-            },
-            entered_by = input$name_input,
-            visualization_include = "yes"
-          )
-        })
-
-        # next check whether the data already exists in master
-        if (nrow(existing_data) == 1) {
-          # overwrite where it already exists
-          # Get the row index
-          specific_row <- which(master_sheet$year == input$year_input & master_sheet$site == input$site_input & master_sheet$sub_category == "Surveillance Prioritization") + 1
-          range_write(url, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
-          # if it doesn't already exist then just append it to the bottom
-        } else { # Append data to Google Sheet
-          sheet_append(master_tracker, data = textB())
-        } #end of surveillance prioritization data entry
-      } # end of all data entry for this category
-
+      
+      data_entry_function(google_sheet = master_sheet, tracker_url = master_tracker, year = input$year_input, category = "Surveillance and Enforcement", sub_category = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input$surv_pri_score, country = input$country_input, site = input$site_input, comments = input$surv_pri_comments, evaluator = input$name_input)
+  
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
     }

@@ -1,3 +1,5 @@
+source("global.R")
+
 # dashboard header ----------------------
 header <- dashboardHeader(
   title = "WildAid Marine MPS Tracker Data Entry",
