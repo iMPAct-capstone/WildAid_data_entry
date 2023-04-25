@@ -1,4 +1,3 @@
-source("global.R")
 
 # dashboard header ----------------------
 header <- dashboardHeader(

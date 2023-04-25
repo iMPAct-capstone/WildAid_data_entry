@@ -1,4 +1,4 @@
-source("global.R")
+source("./global.R")
 
 # input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session) {
@@ -94,16 +94,16 @@ server <- function(input, output, session) {
       master_sheet <- read_sheet(url)
 
       # check whether this data already exists
-      existing_data <- master_sheet |>
+      existing_data_check <- master_sheet |>
         filter(
           year == input$year_input,
           site == input$site_input,
           sub_category == "Surveillance Prioritization"
         )
       # if data already exists on the g-sheet, update boxes
-      if (nrow(existing_data) == 1) {
-        updateSelectInput(session, "surv_pri_score", selected = existing_data$score)
-        updateTextInput(session, inputId = "surv_pri_comments", value = existing_data$comments)
+      if (nrow(existing_data_check) == 1) {
+        updateSelectInput(session, "surv_pri_score", selected = existing_data_check$score)
+        updateTextInput(session, inputId = "surv_pri_comments", value = existing_data_check$comments)
       }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
@@ -137,9 +137,9 @@ server <- function(input, output, session) {
       # get for writing to
       master_tracker <- gs4_get(url)
       # also read in for checking for existing data
-      master_sheet <- read_sheet(url)
+      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
-      data_entry_function(google_sheet = master_sheet, tracker_url = master_tracker, year = input$year_input, category = "Surveillance and Enforcement", sub_category = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input$surv_pri_score, country = input$country_input, site = input$site_input, comments = input$surv_pri_comments, evaluator = input$name_input)
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input$surv_pri_score, country = input$country_input, site_entered = input$site_input, comments = input$surv_pri_comments, evaluator = input$name_input)
   
       # change to the next tab
       updateTabItems(session, "tabs", newtab)

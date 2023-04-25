@@ -30,30 +30,29 @@ current_year_plus_one <- year(Sys.Date()) + 1
 
 #create a data entry function
 
-data_entry_function <- function(google_sheet,
-                        tracker_url,
-                        year, category, sub_category, indicator_type, score, country, site, comments, evaluator){
+data_entry_function <- function(google_instance,
+                        google_data,
+                        year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments, evaluator){
   ## start of "surveillance prioritization data entry----
   # check whether this data already exists
-  existing_data <- master_sheet |>
-    filter(
-      year == year,
-      site == site,
-      sub_category == sub_category
-    )
+  # check whether this data already exists
+  old_data <- as.data.frame(google_data)
+  
+  old_data_2 <- old_data |> filter(year == as.numeric(year_entered) & site == site_entered & sub_category == sub_category_entered)
+  
   # check that there is data to be written
   # if no data then don't do anything here
   if (score != "") {
     # if data has been entered then make a data frame
     textB <- reactive({
       data.frame(
-        year = year,
+        year = year_entered,
         category = category,
-        sub_category = sub_category,
+        sub_category = sub_category_entered,
         indicator_type = indicator_type,
         score = score,
         country = country,
-        site = site,
+        site = site_entered,
         if (comments != "") {
           comments <- comments
         } else {
@@ -64,14 +63,14 @@ data_entry_function <- function(google_sheet,
       )
     })
     
-          if (nrow(existing_data) == 1) {
+          if (nrow(old_data_2) == 1) {
           # overwrite where it already exists
           # Get the row index
-          specific_row <- which(master_sheet$year == input$year_input & master_sheet$site == input$site_input & master_sheet$sub_category == "Surveillance Prioritization") + 1
-          range_write(url, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
+          specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
+          range_write(google_instance, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
           # if it doesn't already exist then just append it to the bottom
         } else { # Append data to Google Sheet
-          sheet_append(tracker_url, data = textB())
+          sheet_append(google_instance, data = textB())
         } #end of surveillance prioritization data entry
       } # end of all data entry for this category
   
