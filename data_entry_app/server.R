@@ -80,7 +80,7 @@ server <- function(input, output, session) {
       need(input$year_input != "", message = "Please enter a year.")
     )
     if (input$country_input == "Select Option" && input$name_input == "") {
-      showModal(modalDialog("Country, Site and Evaluator are required fiels", easyClose = TRUE))
+      showModal(modalDialog("Country, Site and Evaluator are required fields", easyClose = TRUE))
     } else if (input$country_input == "Select Option") {
       showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
     } else if (input$site_input == "Select Option") {
@@ -96,14 +96,17 @@ server <- function(input, output, session) {
       # check whether this data already exists
       existing_data_check <- master_sheet |>
         filter(
-          year == input$year_input,
-          site == input$site_input,
+          year == input$year_input &
+          site == input$site_input &
           sub_category == "Surveillance Prioritization"
         )
       # if data already exists on the g-sheet, update boxes
       if (nrow(existing_data_check) == 1) {
         updateSelectInput(session, "surv_pri_score", selected = existing_data_check$score)
         updateTextInput(session, inputId = "surv_pri_comments", value = existing_data_check$comments)
+      } else{
+        updateSelectInput(inputId = "surv_pri_score", selected = "")
+        updateTextInput(inputId = "surv_pri_comments", value = "")
       }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
