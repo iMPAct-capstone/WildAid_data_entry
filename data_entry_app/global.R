@@ -44,9 +44,9 @@ data_entry_function <- function(google_instance,
                         year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments, evaluator){
   ## start of "surveillance prioritization data entry----
   # check whether this data already exists
-  # check whether this data already exists
   old_data <- as.data.frame(google_data)
   
+  #filter google data to the specific year, site and subcategory entered
   old_data_2 <- old_data |> filter(year == as.numeric(year_entered) & site == site_entered & sub_category == sub_category_entered)
   
   # check that there is data to be written

@@ -97,14 +97,14 @@ server <- function(input, output, session) {
       existing_data_check <- master_sheet |>
         filter(
           year == input$year_input &
-          site == input$site_input &
-          sub_category == "Surveillance Prioritization"
+            site == input$site_input &
+            sub_category == "Surveillance Prioritization"
         )
       # if data already exists on the g-sheet, update boxes
       if (nrow(existing_data_check) == 1) {
         updateSelectInput(session, "surv_pri_score", selected = existing_data_check$score)
         updateTextInput(session, inputId = "surv_pri_comments", value = existing_data_check$comments)
-      } else{
+      } else {
         updateSelectInput(inputId = "surv_pri_score", selected = "")
         updateTextInput(inputId = "surv_pri_comments", value = "")
       }
@@ -112,6 +112,7 @@ server <- function(input, output, session) {
       updateTabItems(session, "tabs", newtab)
     }
   }) # end data tab next button
+
   # enforcement tab next button
   observeEvent(input$next_2, {
     # create an object for switching tabs
@@ -142,8 +143,14 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
-      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input$surv_pri_score, country = input$country_input, site_entered = input$site_input, comments = input$surv_pri_comments, evaluator = input$name_input)
-  
+      #enter data for the surveillance prioritization category
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input$sur_pri_score, country = input$country_input, site_entered = input$site_input, comments = input$sur_pri_comments, evaluator = input$name_input)
+    
+    
+      #enter data for the patrol planning 
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Patrol Planning", indicator_type = "Process Indicator", score = input$pat_pla_score, country = input$country_input, site_entered = input$site_input, comments = input$pat_pla_comments, evaluator = input$name_input)
+   
+
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
     }

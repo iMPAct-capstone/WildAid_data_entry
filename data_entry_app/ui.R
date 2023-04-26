@@ -78,16 +78,16 @@ body <- dashboardBody(
 
           # surveillance prioritization box
           box(
-            width = 12, title = "Surveillance Prioritization", id = "surv_pri",
+            width = 12, title = "Surveillance Prioritization", id = "sur_pri",
             br("How to Score"),
             br("1 = No priority areas are defined or priority areas are not under surveillance."),
             br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously."),
             br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment."),
             selectInput(
-              inputId = "surv_pri_score", label = "Score",
+              inputId = "sur_pri_score", label = "Score",
               choices = c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput(inputId = "surv_pri_comments", " Comments")
+            textInput(inputId = "sur_pri_comments", " Comments")
           ) # end surveillance prioritization box
         ), # END FIRST COLUMN IN THE ROW
         # start second column
@@ -96,16 +96,15 @@ body <- dashboardBody(
           6,
           # Patrol Planning Box
           box(
-            width = 12, "Patrol Planning",
+            width = 12, title = "Patrol Planning", id = "pat_pla",
             br("How to Score"),
             br("1 = The enforcement agency does not engage in a formal patrol planning process."),
             br("3 = The enforcement agency has a patrol plan but it is not implemented consistently."),
             br("5 = The enforcement agency follows a strategic, data-driven patrol plan."),
-            selectInput(
-              "os_type", "Score",
+            selectInput(inputId = "pat_pla_score", label = "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "pat_pla_comments", " Comments")
           ) # end patrol planning box
         ) # end second column in the row
       ), # end second fluid row
@@ -117,16 +116,16 @@ body <- dashboardBody(
           6,
           # start vessel availability box
           box(
-            width = 12, "Vessel Availability",
+            width = 12, title = "Vessel Availability",
             br("How to Score"),
             br("1 = Vessels are in poor shape. Vessel availability is low."),
             br("3 = Vessels are in good condition. Vessel availability is average (approximately 50% or more)."),
             br("5 = Vessels are in good condition. Vessel availability is higher than 75%."),
             selectInput(
-              "os_type", "Score",
+              inputId = "ves_ava_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId ="ves_ava_comments", " Comments")
           ) # end vessel availability box
         ), # end first column in the row
         # second column
@@ -134,16 +133,16 @@ body <- dashboardBody(
           6,
           # start patrol execution box
           box(
-            width = 12, "Patrol Execution",
+            width = 12, title = "Patrol Execution",
             br("How to Score"),
             br("1 = The enforcement agency does not conduct patrols."),
             br("3 = The enforcement agency conduct some patrols but they are infrequent, inconsistent, and not targeted for high-risk areas."),
             br("5 = The enforcement agency conducts frequent, consistent, strategic, data-driven patrols."),
             selectInput(
-              "os_type", "Score",
+              inputId = "pat_exe_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "pat_exe_comments", " Comments")
           ) # end patrol execution box
         ), # end second column
       ), # end third fluid row
@@ -155,16 +154,16 @@ body <- dashboardBody(
           6,
           # start fleet adequacy box
           box(
-            width = 12, "Fleet Adequacy",
+            width = 12, title = "Fleet Adequacy",
             br("How to Score"),
             br("1 = There are not enough vessels to patrol the marine area and/ or they are not the right kinds of vessels."),
             br("3 = There are enough vessels to patrol the marine area, but they are not the right kind of vessels (e.g. coastal vessels only when the marine area needs oceanic)."),
             br("5 = There are enough vessels to patrol the marine area. The marine area has the right types of vessels for their needs."),
             selectInput(
-              "os_type", "Score",
+              inputId = "fle_ade_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "fle_ade_comments", " Comments")
           ) # end fleet adequacy box
         ), # end first column in the row
         # second column
@@ -172,16 +171,16 @@ body <- dashboardBody(
           6,
           # start patrol equipment box
           box(
-            width = 12, "Patrol Equipment",
+            width = 12, title = "Patrol Equipment",
             br("How to Score"),
             br("1 = Patrol vessels lack essential safety equipment and boarding kits."),
             br("3 = Patrol vessels are equipped with essential safety equipment, but lack adequate boarding kits, or vice versa."),
             br("5 = Patorl vessels are equipped with both essential safety equipment and boarding kits."),
             selectInput(
-              "os_type", "Score",
+              inputId = "pat_equ_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput("pate_equ_comments", " Comments")
           ) # end patrol equipment box
         ), # end second column
       ), # end fourth fluid row
@@ -193,16 +192,16 @@ body <- dashboardBody(
           6,
           # start Intelligence Sources box
           box(
-            width = 12, "Intelligence Sources",
+            width = 12, title = "Intelligence Sources",
             br("How to Score"),
             br("1 = Intelligence information is limited to what is gathered from patrols."),
             br("3 = The enforcement agency has some access to external intelligence (e.g. informants or surveillance technology)."),
             br("5 = he enforcement agency uses multiple channels to gather intelligence information, including but not limited to: surveillance technology to track infractions as they occur, an informant hotline, and other outside sources."),
             selectInput(
-              "os_type", "Score",
+              inputId = "int_sou_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "int_sou_comments", " Comments")
           ) # end Intelligence Sources box
         ), # end first column in the row
         # second column
@@ -210,16 +209,16 @@ body <- dashboardBody(
           6,
           # start investigation procedures box
           box(
-            width = 12, "Investigation Procedures",
+            width = 12, title = "Investigation Procedures",
             br("How to Score"),
             br("1 = There are no boarding or chain of custody procedures in place."),
             br("3 = There are some investigation procedures in place, but they have not have been reviewed or approved by legal teams."),
             br("5 = There are boarding and chain of custody procedures in place. These have been reviewed and approved by legal teams. "),
             selectInput(
-              "os_type", "Score",
+              inputId = "inv_pro_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "inv_pro_comments", " Comments")
           ) # end investigation procedures box
         ), # end second column
       ), # end fifth fluid row
@@ -231,16 +230,16 @@ body <- dashboardBody(
           6,
           # start Institutional Collaboration (National) box
           box(
-            width = 12, "Institutional Collaboration (National)",
+            width = 12, title = "Institutional Collaboration (National)",
             br("How to Score"),
             br("1 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement."),
             br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement."),
             br("5 = Institutions have clearly defined responsibilities and collaborate effectively on enforcement efforts."),
             selectInput(
-              "os_type", "Score",
+              inputId = "nat_inst_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "nat_inst_comments", " Comments")
           ) # end Institutional Collaboration (National) box
         ), # end first column in the row
         # second column
@@ -248,16 +247,16 @@ body <- dashboardBody(
           6,
           # start Institutional Collaboration (International/Regional - if applicable) box
           box(
-            width = 12, "Institutional Collaboration (International/Regional - if applicable)",
+            width = 12, title = "Institutional Collaboration (International/Regional - if applicable)",
             br("How to Score"),
             br("1 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement of foreign-flagged fishing infractions."),
             br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."),
             br("5 = Individual countries have clearly defined responsibilities and collaborate effectively on enforcement efforts."),
             selectInput(
-              "os_type", "Score",
+             inputId = "int_inst_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId ="int_inst_comments", " Comments")
           ) # end Institutional Collaboration (International/Regional - if applicable) box
         ), # end second column
       ), # end sixth fluid row
@@ -269,16 +268,16 @@ body <- dashboardBody(
           6,
           # start Staff numbers box
           box(
-            width = 12, "Staff Numbers",
+            width = 12, title = "Staff Numbers",
             br("How to Score"),
             br("1 = There are no staff for enforcement operations (e.g. surveillance such as patrols and community engagement). "),
             br("3 = Staff numbers are insufficient for enforcement operations and/ or staff retention is low."),
             br("5 = Staff numbers are sufficient for enforcement operations. Staff retention and/ or morale are high."),
             selectInput(
-              "os_type", "Score",
+              inputId = "sta_num_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "sta_num_comments", " Comments")
           ) # end staff numbers box
         ), # end first column in the row
       ), # end seventh fluid row
