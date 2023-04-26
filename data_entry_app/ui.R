@@ -306,16 +306,16 @@ body <- dashboardBody(
 
           # start Laws and Regulations box
           box(
-            width = 12, "Laws and Regulations",
+            width = 12, title = "Laws and Regulations", id = "law_reg",
             br("How to Score"),
             br("1 = Laws/ regulations are unclear (have many loopholes) or not enforceable re: prohibited species, activities, tools / gear that can be used in the area."),
             br("3 = Laws/ regulations are clear (few loopholes) or not enforceable Or vice versa re:  re: prohibited species, activities, tools / gear that can be used in the area."),
             br("5 = Laws/ regulations are clear (no loopholes) and enforceable re: prohibited species, activities, tools / gear that can be used in the area."),
             selectInput(
-              "os_type", "Score",
+              inputId = "law_reg_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "law_reg_comments", " Comments")
           ) # end Laws and Regulations box
         ), # END FIRST COLUMN IN THE ROW
         # start second column
@@ -324,16 +324,16 @@ body <- dashboardBody(
           6,
           # start Zoning (n/a for EEZ-wide projects) Box
           box(
-            width = 12, "Zoning (n/a for EEZ-wide projects)",
+            width = 12, title = "Zoning (n/a for EEZ-wide projects)", id = "zon",
             br("How to Score"),
             br("1 = Marine area size and zoning does not match conservation goals / address threats or is difficult to enforce."),
             br("3 = Marine area size and zoning aligns with some conservation goals and addresses some threats but not all and/ or is easier to enforce."),
             br("5 = Marine area size and zoning aligns with key conservation goals and addresses key threats, and is enforceable."),
             selectInput(
-              "os_type", "Score",
+              inputId = "zon_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "zon_comments", " Comments")
           ) # end Zoning (n/a for EEZ-wide projects) box
         ) # end second column in the row
       ), # end second fluid row
@@ -345,16 +345,16 @@ body <- dashboardBody(
           6,
           # start Sanctions / Prosecutions box
           box(
-            width = 12, "Sanctions / Prosecutions",
+            width = 12, title = "Sanctions / Prosecutions", id = "san_pro",
             br("How to Score"),
             br("1 = Few cases are sanctioned and / or sanctions levied are not strong enough to deter future illegal activity."),
             br("3 = A majority of cases are sanctioned; however sanctions are not strong enough to act as a deterrent."),
             br("5 = A majority of cases are strongly sanctioned to the extent of the law."),
             selectInput(
-              "os_type", "Score",
+              inputId = "san_pro_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "san_pro_comments", " Comments")
           ) # end Sanctions / Prosecutions box
         ), # end first column in the row
         # second column
@@ -362,16 +362,16 @@ body <- dashboardBody(
           6,
           # start case database box
           box(
-            width = 12, "Case Database",
+            width = 12, title = "Case Database", id = "cas_dat", 
             br("How to Score"),
             br("1 = There is no central database to keep track of cases."),
             br("3 = There is a database, but it is not used regularly or it does not track all information needed."),
             br("5 = There is a central database that is consistently used for case monitoring, follow up, and to track repeat offenders. "),
             selectInput(
-              "os_type", "Score",
+              inputId = "cas_dat_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "cas_dat_comments", " Comments")
           ) # end case database box
         ), # end second column
       ), # end third fluid row
@@ -383,16 +383,16 @@ body <- dashboardBody(
           6,
           # start Scientific Monitoring box
           box(
-            width = 12, "Scientific Monitoring",
+            width = 12, title = "Scientific Monitoring", id = "sci_mon",
             br("How to Score"),
             br("1 = No scientific monitoring or baseline assessments of target species are carried out. "),
             br("3 = Scientific monitoring is currently being carried out and/ or a baseline has been established."),
             br("5 = Baseline sudies and assessments are regularly carried out for target marine species or priority habitat, and assessments are integrated into the management plan. "),
             selectInput(
-              "os_type", "Score",
+              inputId = "sci_mon_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "sci_mon_comments", " Comments")
           ) # end Scientific Monitoring box
         ), # end first column in the row
       ), # end fourth fluid row
@@ -420,16 +420,16 @@ body <- dashboardBody(
 
           # start Enforcement Training box
           box(
-            width = 12, "Enforcement Training",
+            width = 12, title =  "Enforcement Training", id = "enf_tra",
             br("How to Score"),
             br("1 = No standardized enforcement training exists for staff and other relevant agencies."),
             br("3 = Enforcement training for staff and other relevant agencies may exist, but training is irregular and not comprehensive."),
             br("5 = Staff and other relevant agencies receive regular enforement trainings (sometimes multi-agency)."),
             selectInput(
-              "os_type", "Score",
+              inputId = "enf_tra_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "enf_tra_comments", " Comments")
           ) # end Enforcement Training box
         ), # END FIRST COLUMN IN THE ROW
         # start second column
@@ -438,16 +438,16 @@ body <- dashboardBody(
           6,
           # start Standard Operating Procedures (SOPs) Box
           box(
-            width = 12, "Standard Operating Procedures (SOPs)",
+            width = 12, title =  "Standard Operating Procedures (SOPs)", id = "sta_ope",
             br("How to Score"),
             br("1 = No operational SOPs exist for enforcement staff and other relevant agencies."),
             br("3 = Some operational SOPs for enforcement staff and other relevant agencies may exist, but SOPs are outdated or incomplete."),
             br("5 = Enforcement staff and other relevant agencies have comprehensive operational SOPs covering boarding, crime scene investigation, and chain of custody procedures. All relevant staff receive regular trainings (sometimes multi-agency) on SOPs and SOPs are updated annually."),
             selectInput(
-              "os_type", "Score",
+              inputId = "sta_ope_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "sta_ope_comments", " Comments")
           ) # end Standard Operating Procedures (SOPs) box
         ) # end second column in the row
       ), # end second fluid row
@@ -459,16 +459,16 @@ body <- dashboardBody(
           6,
           # start Staff Qualifications box
           box(
-            width = 12, "Staff Qualifications",
+            width = 12, title = "Staff Qualifications", id = "sta_qua",
             br("How to Score"),
             br("1 = Agency staff are not qualified for enforcement work."),
             br("3 = Agency staff receive minimal enforcement training."),
             br("5 = Agency staff receive regular comprehensive enforcement training and are qualified for their jobs. Staff is selected based on experience. Training occurs regularly and includes all relevant topics. Site has received 'train-the-trainer' instruction."),
             selectInput(
-              "os_type", "Score",
+              inputId = "sta_qua_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "sta_qua_comments", " Comments")
           ) # end Staff Qualifications box
         ), # end first column in the row
         # start second column
@@ -476,16 +476,16 @@ body <- dashboardBody(
           6,
           # start Legal Training Box
           box(
-            width = 12, "Legal Training",
+            width = 12, title =  "Legal Training", id = "leg_tra",
             br("How to Score"),
             br("1 = Legal team does not exist or has not been trained."),
             br("3 = Legal team has had some training, but it is not regular or comprehensive."),
             br("5 = Legal team receives regular training, together with enforcement staff, on environmental laws and respective sanctions."),
             selectInput(
-              "os_type", "Score",
+              inputId = "leg_tra_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "leg_tra_comments", " Comments")
           ) # end Legal Training box
         ) # end second column in the row
       ), # end third fluid row
@@ -512,16 +512,16 @@ body <- dashboardBody(
 
           # start Community Education & Outreach box
           box(
-            width = 12, "Community Education & Outreach",
+            width = 12, title = "Community Education & Outreach", id = "comm_edu",
             br("How to Score"),
             br("1 = Community Education & Outreach is not included in the area's management plan and little or no outreach efforts take place."),
             br("3 = Community Education/ Outreach is included in the area's management plan and some attempts at outreach take place."),
             br("5 = Community Education/ Outreach is included in the area's management plan and outreach efforts occur on a frequent and ongoing basis; outreach strategies are adjusted based on community needs and as public knowledge and awareness increases."),
             selectInput(
-              "os_type", "Score",
+              inputId = "com_edu", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "com_edu_score", " Comments")
           ) # end Community Education & Outreach box
         ), # END FIRST COLUMN IN THE ROW
         # start second column
@@ -530,16 +530,16 @@ body <- dashboardBody(
           6,
           # start Community Involvement Box
           box(
-            width = 12, "Community Involvement",
+            width = 12, title = "Community Involvement", id = "com_inv",
             br("How to Score"),
             br("1 = The community has little to no involvement in marine area management."),
             br("3 = The community has some involvement in marine area management."),
             br("5 = The community is highly involved in all aspects of marine area management (e.g. community members participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
             selectInput(
-              "os_type", "Score",
+              inputId = "com_inv_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput("com_inv_comments", " Comments")
           ) # end Community Involvement box
         ) # end second column in the row
       ), # end second fluid row
@@ -551,16 +551,16 @@ body <- dashboardBody(
           6,
           # start Fishing Sector Collaboration box
           box(
-            width = 12, "Fishing Sector Collaboration",
+            width = 12, title = "Fishing Sector Collaboration", id = "fis_sec",
             br("How to Score"),
             br("1 = The fishing sector has little to no involvement in marine area management."),
             br("3 = The fishing sector has some involvement in marine area management."),
             br("5 = The fishing sector is highly involved in all aspects of marine area management (e.g. fishers participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
             selectInput(
-              "os_type", "Score",
+              inputId = "fis_sec", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "fis_sec_comments", " Comments")
           ) # end Fishing Sector Collaboration box
         ), # end first column in the row
         # start second column
@@ -568,16 +568,16 @@ body <- dashboardBody(
           6,
           # start Tourism & Private Sector Collaboration Box
           box(
-            width = 12, "Tourism & Private Sector Collaboration",
+            width = 12, title = "Tourism & Private Sector Collaboration", id = 'tou_pri',
             br("How to Score"),
             br("1 = The tourism industry and private sector have little to no involvement in marine area management."),
             br("3 = The tourism industry and private sector have some involvement in marine area management."),
             br("5 = The tourism industry and private sector are highly involved in all aspects of marine area management (e.g. participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
             selectInput(
-              "os_type", "Score",
+              inputId ="tou_pri_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "tou_pri_comments", " Comments")
           ) # end Tourism & Private Sector Collaboration box
         ) # end second column in the row
       ), # end third fluid row
@@ -603,16 +603,16 @@ body <- dashboardBody(
 
           # start Funding box
           box(
-            width = 12, "Funding",
+            width = 12, title = "Funding", id = "fun",
             br("How to Score"),
             br("1 = Little or no funding is available for enforcement efforts."),
             br("3 = Enforcement needs are budgeted and some of the enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses."),
             br("5 = Enforcement needs are budgeted. The full enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses."),
             selectInput(
-              "os_type", "Score",
+              inputId = "fun_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "fun_comments", " Comments")
           ) # end Funding box
         ), # END FIRST COLUMN IN THE ROW
         # start second column
@@ -621,16 +621,17 @@ body <- dashboardBody(
           6,
           # start Cost Efficiency Box
           box(
-            width = 12, "Cost Efficiency",
+            width = 12, title = "Cost Efficiency",
+            id = "cos_eff",
             br("How to Score"),
             br("1 = There are no cost-efficiency measures* in place."),
             br("3 = Some cost-efficiency measures are in place. However, there is little or no funding for unforeseen expenses (i.e. prosecution costs, unexpected repairs, new surveillance assets, etc.)"),
             br("5 = The agency has identified and implemented all potential cost-efficiency measures. Additional funding, managed through some sort of savings account, is available for unforeseen expenses (i.e. prosecution costs, unexpected repairs, new surveillance assets, etc.)."),
             selectInput(
-              "os_type", "Score",
+              inputId = "cos_eff_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "cos_eff_comments", " Comments")
           ) # end Cost Efficiency box
         ) # end second column in the row
       ), # end second fluid row
@@ -642,16 +643,16 @@ body <- dashboardBody(
           6,
           # start Diversified Funding Sources box
           box(
-            width = 12, "Diversified Funding Sources",
+            width = 12, title = "Diversified Funding Sources", id = "div_fun", 
             br("How to Score"),
             br("1 = Funding comes from a single source."),
             br("3 = Funding comes from a one or two sources with most funds coming from one source."),
             br("5 = Funding comes from 2 or more sources, with a more diverse and balanced composition."),
             selectInput(
-              "os_type", "Score",
+              inputId = "div_fun_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("comments", " Comments")
+            textInput(inputId = "div_fun_comments", " Comments")
           ) # end Diversified Funding Sources box
         ), # end first column in the row
       ), # end third fluid row

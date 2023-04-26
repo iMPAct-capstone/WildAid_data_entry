@@ -143,24 +143,24 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
      
-      #read in the Lookup id table
-      lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
-      lookuptable <- read_sheet(lookup_url)
+      #read in the surveillance Lookup id table
+      sur_lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
+      sur_lookuptable <- read_sheet(sur_lookup_url)
       
 
-     for (i in seq_along(lookuptable$subcategory)) {
+     for (i in seq_along(sur_lookuptable$subcategory)) {
        
     #name of the subcategory
-      sur_sub_category_name <- lookuptable$subcategory[i]
+      sur_sub_category_name <- sur_lookuptable$subcategory[i]
        
       # get the name of the score id
-      sur_score_input <- lookuptable$score_id[i]
+      sur_score_input <- sur_lookuptable$score_id[i]
        
        #get the value of the score
        sur_score_value <- input[[sur_score_input]]
        
        #name of comment id 
-       sur_comment_input <- lookuptable$comment_id[i]
+       sur_comment_input <- sur_lookuptable$comment_id[i]
        
        #get the value of the comment
        sur_comment_value <- input[[sur_comment_input]]
@@ -169,13 +169,6 @@ server <- function(input, output, session) {
        data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = sur_sub_category_name, indicator_type = "Process Indicator", score = sur_score_value, country = input$country_input, site_entered = input$site_input, comments = sur_comment_value, evaluator = input$name_input)
        
      } 
-      
-      # get the name of the button from the lookup table
-      score_input <- lookuptable$score_id[11]
-      
-      # use paste0 to create a string that can be used to reference the button value
-      button_value <- input[[score_input]]
-      
 
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
@@ -188,8 +181,42 @@ server <- function(input, output, session) {
       "policies" = "training",
       "training" = "policies"
     )
+    # read in the google sheet
+    # need to do this each time we write in case multiple people are on the app
+    # identify the url
+    url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+    # get for writing to
+    master_tracker <- gs4_get(url)
+    # also read in for checking for existing data
+    master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+    
+    pol_lookup_url <- "https://docs.google.com/spreadsheets/d/1bvV7mTJO4rDTmazcgL_ssfJq6NEqtDb6EWNNOlMr_Wg/edit#gid=0"
+    pol_lookuptable <- read_sheet(pol_lookup_url)
+    
+    
+    for (i in seq_along(pol_lookuptable$subcategory)) {
+      
+      #name of the subcategory
+      pol_sub_category_name <- pol_lookuptable$subcategory[i]
+      
+      # get the name of the score id
+      pol_score_input <- pol_lookuptable$score_id[i]
+      
+      #get the value of the score
+      pol_score_value <- input[[pol_score_input]]
+      
+      #name of comment id 
+      pol_comment_input <- pol_lookuptable$comment_id[i]
+      
+      #get the value of the comment
+      pol_comment_value <- input[[pol_comment_input]]
+      
+      
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+    
     updateTabItems(session, "tabs", newtab)
-  }) # end policies tab next button
+    }
+    }) # end policies tab next button
 
   # training and mentorship next button
   observeEvent(input$next_4, {
@@ -197,7 +224,41 @@ server <- function(input, output, session) {
       "training" = "community",
       "community" = "training"
     )
+    # read in the google sheet
+    # need to do this each time we write in case multiple people are on the app
+    # identify the url
+    url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+    # get for writing to
+    master_tracker <- gs4_get(url)
+    # also read in for checking for existing data
+    master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+    
+    tra_lookup_url <- "https://docs.google.com/spreadsheets/d/1FeezrizNeRAPYXBG1uBqu_3lLLl0PZyKCyVU8wOKUYI/edit#gid=0"
+    tra_lookuptable <- read_sheet(tra_lookup_url)
+    
+    
+    for (i in seq_along(tra_lookuptable$subcategory)) {
+      
+      #name of the subcategory
+      tra_sub_category_name <- tra_lookuptable$subcategory[i]
+      
+      # get the name of the score id
+      tra_score_input <- tra_lookuptable$score_id[i]
+      
+      #get the value of the score
+      tra_score_value <- input[[tra_score_input]]
+      
+      #name of comment id 
+      tra_comment_input <- tra_lookuptable$comment_id[i]
+      
+      #get the value of the comment
+      tra_comment_value <- input[[tra_comment_input]]
+      
+      
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
+      
     updateTabItems(session, "tabs", newtab)
+  }
   }) # end training tab next button
 
   # community engagement next button
@@ -206,11 +267,89 @@ server <- function(input, output, session) {
       "community" = "funding",
       "funding" = "community"
     )
+    # read in the google sheet
+    # need to do this each time we write in case multiple people are on the app
+    # identify the url
+    url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+    # get for writing to
+    master_tracker <- gs4_get(url)
+    # also read in for checking for existing data
+    master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+    
+    comm_lookup_url <- "https://docs.google.com/spreadsheets/d/1rdp63eixo1Plb40ip1sZkG1A-MsAYk8tu2owltpizwc/edit#gid=0"
+    comm_lookuptable <- read_sheet(comm_lookup_url)
+    
+    
+    for (i in seq_along(comm_lookuptable$subcategory)) {
+      
+      #name of the subcategory
+      comm_sub_category_name <- comm_lookuptable$subcategory[i]
+      
+      # get the name of the score id
+      comm_score_input <- comm_lookuptable$score_id[i]
+      
+      #get the value of the score
+      comm_score_value <- input[[comm_score_input]]
+      
+      #name of comment id 
+      comm_comment_input <- comm_lookuptable$comment_id[i]
+      
+      #get the value of the comment
+      comm_comment_value <- input[[comm_comment_input]]
+      
+      
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input)
+    
     updateTabItems(session, "tabs", newtab)
+  }
   }) # end community engagement next button
 
+  # consistent funding next button
+  observeEvent(input$next_6, {
+    # newtab <- switch(input$tabs,
+    #                  "community" = "funding",
+    #                  "funding" = "community"
+    #)   WE NEED TO FIGURE THIS OUT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # read in the google sheet
+    # need to do this each time we write in case multiple people are on the app
+    # identify the url
+    url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+    # get for writing to
+    master_tracker <- gs4_get(url)
+    # also read in for checking for existing data
+    master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+    
+    con_lookup_url <- "https://docs.google.com/spreadsheets/d/1DSc-2LVlrFbdYTyFo7o-2V55OPkrFA6pVLOM6ZJuhYE/edit#gid=0"
+    con_lookuptable <- read_sheet(con_lookup_url)
+    
+    
+    for (i in seq_along(con_lookuptable$subcategory)) {
+      
+      #name of the subcategory
+      con_sub_category_name <- con_lookuptable$subcategory[i]
+      
+      # get the name of the score id
+      con_score_input <- con_lookuptable$score_id[i]
+      
+      #get the value of the score
+      con_score_value <- input[[con_score_input]]
+      
+      #name of comment id 
+      con_comment_input <- con_lookuptable$comment_id[i]
+      
+      #get the value of the comment
+      con_comment_value <- input[[con_comment_input]]
+      
+      
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
+      
+      updateTabItems(session, "tabs", newtab)
+    }
+  }) # end consistent funding next button
+  
   # end next buttons
 
+  
   # update site choices ----
   observeEvent(input$country_input, {
     if (input$country_input %in% site_list$country) {
