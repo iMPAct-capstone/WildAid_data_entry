@@ -180,7 +180,7 @@ body <- dashboardBody(
               inputId = "pat_equ_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput("pate_equ_comments", " Comments")
+            textInput(inputId ="pat_equ_comments", " Comments")
           ) # end patrol equipment box
         ), # end second column
       ), # end fourth fluid row

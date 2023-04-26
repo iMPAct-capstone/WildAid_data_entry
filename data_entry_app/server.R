@@ -147,15 +147,35 @@ server <- function(input, output, session) {
       lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
       lookuptable <- read_sheet(lookup_url)
       
+
+     for (i in seq_along(lookuptable$subcategory)) {
+       
+    #name of the subcategory
+      sur_sub_category_name <- lookuptable$subcategory[i]
+       
+      # get the name of the score id
+      sur_score_input <- lookuptable$score_id[i]
+       
+       #get the value of the score
+       sur_score_value <- input[[sur_score_input]]
+       
+       #name of comment id 
+       sur_comment_input <- lookuptable$comment_id[i]
+       
+       #get the value of the comment
+       sur_comment_value <- input[[sur_comment_input]]
+       
+       
+       data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = sur_sub_category_name, indicator_type = "Process Indicator", score = sur_score_value, country = input$country_input, site_entered = input$site_input, comments = sur_comment_value, evaluator = input$name_input)
+       
+     } 
+      
       # get the name of the button from the lookup table
       score_input <- lookuptable$score_id[11]
       
       # use paste0 to create a string that can be used to reference the button value
-      button_name <- paste("input$", score_input, sep = "")
+      button_value <- input[[score_input]]
       
-       
-      #enter data for the surveillance prioritization category
-      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input[[button_name]], country = input$country_input, site_entered = input$site_input, comments = input$sur_pri_comments, evaluator = input$name_input)
 
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
