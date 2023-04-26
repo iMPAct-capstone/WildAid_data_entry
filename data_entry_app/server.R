@@ -142,14 +142,20 @@ server <- function(input, output, session) {
       master_tracker <- gs4_get(url)
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+     
+      #read in the Lookup id table
+      lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
+      lookuptable <- read_sheet(lookup_url)
       
+      # get the name of the button from the lookup table
+      score_input <- lookuptable$score_id[11]
+      
+      # use paste0 to create a string that can be used to reference the button value
+      button_name <- paste("input$", score_input, sep = "")
+      
+       
       #enter data for the surveillance prioritization category
-      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input$sur_pri_score, country = input$country_input, site_entered = input$site_input, comments = input$sur_pri_comments, evaluator = input$name_input)
-    
-    
-      #enter data for the patrol planning 
-      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Patrol Planning", indicator_type = "Process Indicator", score = input$pat_pla_score, country = input$country_input, site_entered = input$site_input, comments = input$pat_pla_comments, evaluator = input$name_input)
-   
+      data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = "Surveillance Prioritization", indicator_type = "Process Indicator", score = input[[button_name]], country = input$country_input, site_entered = input$site_input, comments = input$sur_pri_comments, evaluator = input$name_input)
 
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
