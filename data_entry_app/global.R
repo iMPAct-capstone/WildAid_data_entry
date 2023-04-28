@@ -107,3 +107,8 @@ data_entry_function <- function(google_instance,
     } # end of surveillance prioritization data entry
   } # end of all data entry for this category
 }
+
+#read in main lookup table----
+
+main_lookup_url <- "https://docs.google.com/spreadsheets/d/1_8a62b1SePxNMCIRKVMvZ-WmbI6SVyYCvdYVWmLcbgA/edit#gid=0"
+main_lookuptable <- read_sheet(main_lookup_url)
