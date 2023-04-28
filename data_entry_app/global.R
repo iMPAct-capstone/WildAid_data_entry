@@ -7,12 +7,12 @@ library(googlesheets4)
 library(lubridate)
 
 # auto-authenticate google sheets ... this will have you interactively authenticate using broswer
-#options(gargle_oauth_cache = ".secrets/")
-##auto authenticate without browser
-#gs4_auth(
- # cache = ".secrets",
- # email = "adelaide_robinson@ucsb.edu" # eventually want to change this to silvia's email
-#)
+# options(gargle_oauth_cache = ".secrets/")
+## auto authenticate without browser
+# gs4_auth(
+# cache = ".secrets",
+# email = "adelaide_robinson@ucsb.edu" # eventually want to change this to silvia's email
+# )
 
 
 # dataframe that holds usernames, passwords and other user data
@@ -30,28 +30,49 @@ site_url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSS
 site_list <- read_sheet(site_url)
 
 
-#master_tracker <- gs4_get("https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0")
+# master_tracker <- gs4_get("https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0")
 
 
 
 
 # find the current year plus 1----
-#used for updating the default year in the app
+# used for updating the default year in the app
 
 current_year_plus_one <- year(Sys.Date()) + 1
 
-#create a data entry function
+#create validation and old data pulling function----
+data_update_function <- function(google_data,
+                                 sub_category_needed,
+                                 score_box_id, comment_box_id,
+                                 year_input, site_input,session) {
+  
+  existing_data_check <- google_data |>
+    filter(
+      year == year_input &
+        site == site_input &
+        sub_category == sub_category_needed
+    ) 
+  
+  if (nrow(existing_data_check) == 1) {
+    updateSelectInput(session, score_box_id, selected = existing_data_check$score)
+    updateTextInput(session, inputId = comment_box_id, value = existing_data_check$comments)
+  } else {
+    updateSelectInput(inputId = score_box_id, selected = "")
+    updateTextInput(inputId = comment_box_id, value = "")
+  }
+}
+
+#create a data entry function----
 
 data_entry_function <- function(google_instance,
-                        google_data,
-                        year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments, evaluator){
-  ## start of "surveillance prioritization data entry----
+                                google_data,
+                                year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments, evaluator) {
   # check whether this data already exists
   old_data <- as.data.frame(google_data)
-  
-  #filter google data to the specific year, site and subcategory entered
+
+  # filter google data to the specific year, site and subcategory entered
   old_data_2 <- old_data |> filter(year == as.numeric(year_entered) & site == site_entered & sub_category == sub_category_entered)
-  
+
   # check that there is data to be written
   # if no data then don't do anything here
   if (score != "") {
@@ -74,17 +95,15 @@ data_entry_function <- function(google_instance,
         visualization_include = "yes"
       )
     })
-    
-          if (nrow(old_data_2) == 1) {
-          # overwrite where it already exists
-          # Get the row index
-          specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
-          range_write(google_instance, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
-          # if it doesn't already exist then just append it to the bottom
-        } else { # Append data to Google Sheet
-          sheet_append(google_instance, data = textB())
-        } #end of surveillance prioritization data entry
-      } # end of all data entry for this category
-  
-  
+
+    if (nrow(old_data_2) == 1) {
+      # overwrite where it already exists
+      # Get the row index
+      specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
+      range_write(google_instance, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
+      # if it doesn't already exist then just append it to the bottom
+    } else { # Append data to Google Sheet
+      sheet_append(google_instance, data = textB())
+    } # end of surveillance prioritization data entry
+  } # end of all data entry for this category
 }
