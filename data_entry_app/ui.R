@@ -512,16 +512,16 @@ body <- dashboardBody(
 
           # start Community Education & Outreach box
           box(
-            width = 12, title = "Community Education & Outreach", id = "comm_edu",
+            width = 12, title = "Community Education & Outreach", id = "com_edu",
             br("How to Score"),
             br("1 = Community Education & Outreach is not included in the area's management plan and little or no outreach efforts take place."),
             br("3 = Community Education/ Outreach is included in the area's management plan and some attempts at outreach take place."),
             br("5 = Community Education/ Outreach is included in the area's management plan and outreach efforts occur on a frequent and ongoing basis; outreach strategies are adjusted based on community needs and as public knowledge and awareness increases."),
             selectInput(
-              inputId = "com_edu", "Score",
+              inputId = "com_edu_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput(inputId = "com_edu_score", " Comments")
+            textInput(inputId = "com_edu_comments", " Comments")
           ) # end Community Education & Outreach box
         ), # END FIRST COLUMN IN THE ROW
         # start second column
@@ -557,7 +557,7 @@ body <- dashboardBody(
             br("3 = The fishing sector has some involvement in marine area management."),
             br("5 = The fishing sector is highly involved in all aspects of marine area management (e.g. fishers participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
             selectInput(
-              inputId = "fis_sec", "Score",
+              inputId = "fis_sec_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
             textInput(inputId = "fis_sec_comments", " Comments")

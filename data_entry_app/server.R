@@ -265,8 +265,7 @@ server <- function(input, output, session) {
   observeEvent(input$next_5, {
     newtab <- switch(input$tabs,
       "community" = "funding",
-      "funding" = "community"
-    )
+      "funding" = "community")
     # read in the google sheet
     # need to do this each time we write in case multiple people are on the app
     # identify the url
@@ -306,10 +305,10 @@ server <- function(input, output, session) {
 
   # consistent funding next button
   observeEvent(input$next_6, {
-    # newtab <- switch(input$tabs,
-    #                  "community" = "funding",
-    #                  "funding" = "community"
-    #)   WE NEED TO FIGURE THIS OUT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     newtab <- switch(input$tabs,
+                     "funding" = "data",
+                      "data" = "funding"
+    )   #WE NEED TO FIGURE THIS OUT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     # read in the google sheet
     # need to do this each time we write in case multiple people are on the app
     # identify the url
