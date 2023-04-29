@@ -47,10 +47,10 @@ body <- dashboardBody(
               choices = "Select Option" # eventually replace this with an actual list pulling from a file
             ), # end site select input
 
-            actionButton("next_1", "Save and Continue", class = "btn-primary") # end next button
+            actionButton("next_1", "Save and Continue", class = "btn-primary"), # end next button
           ), # end data entry box
         ), # end column
-        column(6, "This application is for entering site data for the Marine Protection System Tracker. Begin by entering your name and current year and choose a country and site from the dropdown menus. Click the buttons at the bottom of the page to save your progress and continue to the next page. Each page on the application is for one category within the tracker. Each box is a subcategory with instructions on how to rate it. Choose a score from the drop down menu and enter any commments for each subcategory. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected."),
+        column(6, "This application is for entering site data for the Marine Protection System Tracker. Begin by entering your name and current year and choose a country and site from the dropdown menus. Click the buttons at the bottom of the page to save your progress and continue to the next page. Each page on the application is for one category within the tracker. Each box is a subcategory with instructions on how to score it. Choose a score from the drop down menu and enter any commments for each subcategory. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected."),
       ), # end fluid row
 
       # start next fluid row

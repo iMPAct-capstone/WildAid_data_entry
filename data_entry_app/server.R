@@ -353,4 +353,5 @@ server <- function(input, output, session) {
       )
     }
   }) # end observe input country box
+
 }
