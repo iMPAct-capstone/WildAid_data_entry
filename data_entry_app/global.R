@@ -14,7 +14,6 @@ library(lubridate)
 # email = "adelaide_robinson@ucsb.edu" # eventually want to change this to silvia's email
 # )
 
-
 # dataframe that holds usernames, passwords and other user data
 user_base <- tibble::tibble(
   user = c("user1", "user2"),
