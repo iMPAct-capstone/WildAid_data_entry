@@ -111,3 +111,10 @@ data_entry_function <- function(google_instance,
 
 main_lookup_url <- "https://docs.google.com/spreadsheets/d/1_8a62b1SePxNMCIRKVMvZ-WmbI6SVyYCvdYVWmLcbgA/edit#gid=0"
 main_lookuptable <- read_sheet(main_lookup_url)
+
+
+
+#read in sur lookup table
+# read in the surveillance Lookup id table
+sur_lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
+sur_lookuptable <- read_sheet(sur_lookup_url)

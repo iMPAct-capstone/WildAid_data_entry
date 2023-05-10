@@ -139,32 +139,34 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
-      # read in the surveillance Lookup id table
-      sur_lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
-      sur_lookuptable <- read_sheet(sur_lookup_url)
       
-      for (i in seq_along(sur_lookuptable$subcategory)) {
-        # name of the subcategory
+      process_iteration <- function(i) {
         sur_sub_category_name <- sur_lookuptable$subcategory[i]
-        
-        # get the name of the score id
         sur_score_input <- sur_lookuptable$score_id[i]
-        
-        # get the value of the score
         sur_score_value <- input[[sur_score_input]]
-        
-        # name of comment id
         sur_comment_input <- sur_lookuptable$comment_id[i]
-        
-        # get the value of the comment
         sur_comment_value <- input[[sur_comment_input]]
         
-        
-        data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Surveillance and Enforcement", sub_category_entered = sur_sub_category_name, indicator_type = "Process Indicator", score = sur_score_value, country = input$country_input, site_entered = input$site_input, comments = sur_comment_value, evaluator = input$name_input)
+        data_entry_function(
+          google_instance = master_tracker,
+          google_data = master_sheet,
+          year_entered = input$year_input,
+          category = "Surveillance and Enforcement",
+          sub_category_entered = sur_sub_category_name,
+          indicator_type = "Process Indicator",
+          score = sur_score_value,
+          country = input$country_input,
+          site_entered = input$site_input,
+          comments = sur_comment_value,
+          evaluator = input$name_input
+        )
       }
-      
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
+      # Use lapply or mapply to process each iteration
+      lapply(seq_along(sur_lookuptable$subcategory), process_iteration)
+      
+     
     }
   }) # end enforcement tab next button
   
