@@ -21,3 +21,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Adding a category
 
 # Troubleshooting 
+
+```{r, eval = FALSE}
+# auto-authenticate google sheets ... this will have you interactively authenticate using broswer
+ options(gargle_oauth_cache = ".secrets/")
+## auto authenticate without browser
+  gs4_auth(
+  cache = ".secrets",
+  email = "email@gmail.com" # eventually want to change this to silvia's email 
+  )
+```
+
