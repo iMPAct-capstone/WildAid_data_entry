@@ -130,16 +130,32 @@ server <- function(input, output, session) {
       showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
       # if necessary boxes are filled out then proceed
     } else {
-      # read in the google sheet
-      # need to do this each time we write in case multiple people are on the app
-      # identify the url
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
-      # get for writing to
-      master_tracker <- gs4_get(url)
-      # also read in for checking for existing data
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
-      
-      
+      # change to the next tab
+      updateTabItems(session, "tabs", newtab)
+    } 
+  })
+      observeEvent(input$tabs,{
+      if(input$tabs !="data"){
+      # check year is not blank
+        validate(
+          need(input$year_input != "", message = "Please enter a year.")
+        )
+        # check if country has been updated
+        if (input$country_input == "Select Option") {
+          showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+          # check that site has been updated
+        } else if (input$site_input == "Select Option") {
+          showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+        } else if (input$name_input == "") {
+          showModal(modalDialog("Please enter an evaluator", easyClose = TRUE)) }
+          # if necessary boxes are filled out then proceed
+      else if (input$tabs == "policies") {
+        # identify the url
+        url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+        # get for writing to
+        master_tracker <- gs4_get(url)
+        # also read in for checking for existing data
+        master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       process_iteration <- function(i) {
         sur_sub_category_name <- sur_lookuptable$subcategory[i]
         sur_score_input <- sur_lookuptable$score_id[i]
@@ -161,14 +177,11 @@ server <- function(input, output, session) {
           evaluator = input$name_input
         )
       }
-      # change to the next tab
-      updateTabItems(session, "tabs", newtab)
-      # Use lapply or mapply to process each iteration
       lapply(seq_along(sur_lookuptable$subcategory), process_iteration)
       
+    }  }}) 
      
-    }
-  }) # end enforcement tab next button
+# end enforcement tab next button
   
   # policies and consequences next button
   observeEvent(input$next_3, {
