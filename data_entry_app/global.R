@@ -29,9 +29,6 @@ site_url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSS
 site_list <- read_sheet(site_url)
 
 
-# master_tracker <- gs4_get("https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0")
-
-
 
 
 # find the current year plus 1----
@@ -107,10 +104,6 @@ data_entry_function <- function(google_instance,
   } # end of all data entry for this category
 }
 
-#read in main lookup table----
-
-main_lookup_url <- "https://docs.google.com/spreadsheets/d/1_8a62b1SePxNMCIRKVMvZ-WmbI6SVyYCvdYVWmLcbgA/edit#gid=0"
-main_lookuptable <- read_sheet(main_lookup_url)
 
 #read in the combined lookup table 
 lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
