@@ -106,6 +106,7 @@ server <- function(input, output, session) {
         data_update_function(master_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
+      shinyjs::runjs("window.scrollTo(0, 0)")
       } })
   # end data tab next button
   
@@ -132,6 +133,9 @@ server <- function(input, output, session) {
     } else {
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
+      
+      shinyjs::runjs("window.scrollTo(0, 0)")
+      
     } 
   })
       observeEvent(input$tabs,{
@@ -222,6 +226,8 @@ server <- function(input, output, session) {
       data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
       
       updateTabItems(session, "tabs", newtab)
+      
+      shinyjs::runjs("window.scrollTo(0, 0)")
     }
   }) # end policies tab next button
   
@@ -264,6 +270,7 @@ server <- function(input, output, session) {
       data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
       
       updateTabItems(session, "tabs", newtab)
+      shinyjs::runjs("window.scrollTo(0, 0)")
     }
   }) # end training tab next button
   
@@ -306,6 +313,7 @@ server <- function(input, output, session) {
       data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input)
       
       updateTabItems(session, "tabs", newtab)
+      shinyjs::runjs("window.scrollTo(0, 0)")
     }
   }) # end community engagement next button
   
@@ -348,6 +356,7 @@ server <- function(input, output, session) {
       data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
       
       updateTabItems(session, "tabs", newtab)
+      shinyjs::runjs("window.scrollTo(0, 0)")
     }
   }) # end consistent funding next button
   
