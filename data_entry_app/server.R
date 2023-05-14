@@ -202,9 +202,6 @@ server <- function(input, output, session) {
     # also read in for checking for existing data
     master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
     
-    pol_lookup_url <- "https://docs.google.com/spreadsheets/d/1bvV7mTJO4rDTmazcgL_ssfJq6NEqtDb6EWNNOlMr_Wg/edit#gid=0"
-    pol_lookuptable <- read_sheet(pol_lookup_url)
-    
     
     for (i in seq_along(pol_lookuptable$subcategory)) {
       # name of the subcategory
@@ -288,9 +285,6 @@ server <- function(input, output, session) {
     master_tracker <- gs4_get(url)
     # also read in for checking for existing data
     master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
-    
-    comm_lookup_url <- "https://docs.google.com/spreadsheets/d/1rdp63eixo1Plb40ip1sZkG1A-MsAYk8tu2owltpizwc/edit#gid=0"
-    comm_lookuptable <- read_sheet(comm_lookup_url)
     
     
     for (i in seq_along(comm_lookuptable$subcategory)) {

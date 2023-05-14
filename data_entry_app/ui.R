@@ -61,7 +61,7 @@ body <- dashboardBody(
     ), # end data main page tab item
 
 
-    # Surveillance tabItem ----
+    # Surveillance and enforcement tabItem ----
 
     tabItem(
       tabName = "enforcement",

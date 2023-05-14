@@ -112,9 +112,16 @@ data_entry_function <- function(google_instance,
 main_lookup_url <- "https://docs.google.com/spreadsheets/d/1_8a62b1SePxNMCIRKVMvZ-WmbI6SVyYCvdYVWmLcbgA/edit#gid=0"
 main_lookuptable <- read_sheet(main_lookup_url)
 
+#read in the combined lookup table 
+lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
+lookup_sheets <- gs4_get(lookup_id_url)
 
+# Define a function to read and assign each sheet
+read_and_assign_sheet <- function(sheet_name) {
+  sheet_data <- read_sheet(lookup_id_url, sheet = sheet_name)  # Read the sheet data
+  assign(sheet_name, sheet_data, envir = .GlobalEnv)  # Assign the sheet data to a variable with the sheet name
+  invisible(NULL) #prevent it from printing out the whole sheet
+}
 
-#read in sur lookup table
-# read in the surveillance Lookup id table
-sur_lookup_url <- "https://docs.google.com/spreadsheets/d/1ef_6X9UiT9ADYbK25vk6tm81m3rLRH5zqYfrnkECbiw/edit#gid=0"
-sur_lookuptable <- read_sheet(sur_lookup_url)
+# Apply the function to each sheet name using lapply
+lapply(lookup_sheets$sheets$name, read_and_assign_sheet)
