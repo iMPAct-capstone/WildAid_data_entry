@@ -11,7 +11,7 @@ library(lubridate)
 # auto authenticate without browser
   gs4_auth(
   cache = ".secrets",
-  email = "adelaide_robinson@ucsb.edu" # eventually want to change this to silvia's email
+  email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
   )
 
 # dataframe that holds usernames, passwords and other user data

@@ -30,7 +30,7 @@ server <- function(input, output, session) {
   })
   
   # only when credentials()$user_auth is TRUE, render your desired sidebar menu
-  output$sidebar <- renderMenu({
+  output$sidebar <- withProgress(renderMenu({
     req(credentials()$user_auth)
     
     # render menu if authorized
@@ -67,7 +67,7 @@ server <- function(input, output, session) {
         icon = icon("table")
       )
     ) # END sidebar Menu
-  })
+  }))
   
   # next buttons and data entry ----
   # data tab next button
@@ -132,7 +132,7 @@ server <- function(input, output, session) {
       # if necessary boxes are filled out then proceed
     } else {
       # change to the next tab
-      updateTabItems(session, "tabs", newtab)
+      withProgress(updateTabItems(session, "tabs", newtab))
       
       shinyjs::runjs("window.scrollTo(0, 0)")
       
