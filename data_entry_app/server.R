@@ -139,8 +139,63 @@ server <- function(input, output, session) {
     } 
   })
   
-  
+  # enforcement tab next button
+  observeEvent(input$next_2, {
+    # create an object for switching tabs
+    newtab <- switch(input$tabs,
+                     "enforcement" = "policies",
+                     "policies" = "enforcement"
+    )
+    # check year is not blank
+    validate(
+      need(input$year_input != "", message = "Please enter a year.")
+    )
+    # check if country has been updated
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
+    } else {
+      # change to the next tab
+      updateTabItems(session, "tabs", newtab)
+      
+      shinyjs::runjs("window.scrollTo(0, 0)")
+      
+    } 
+  })
  
+  # policies and consequences previous button
+  observeEvent(input$prev_1, {
+    newtab <- switch(input$tabs,
+                     "enforcement" = "policies",
+                     "policies" = "enforcement"
+    )
+    
+    # check year is not blank
+    validate(
+      need(input$year_input != "", message = "Please enter a year.")
+    )
+    # check if country has been updated
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
+    } else {
+      # change to the last tab
+      updateTabItems(session, "tabs", enforcement)
+      
+      shinyjs::runjs("window.scrollTo(0, 0)")
+      
+    } 
+  }) # end policies tab previous button
   
   # policies and consequences next button
   observeEvent(input$next_3, {

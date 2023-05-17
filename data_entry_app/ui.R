@@ -403,8 +403,8 @@ body <- dashboardBody(
       ), # end fourth fluid row
 
       # start fifth fluid row
-      fluidRow(
-        column(10, ),
+      fluidRow( 
+        column(10, actionButton("prev_1", "Previous", class = "btn-primary") ),
         column(2, actionButton("next_3", "Save and Continue", class = "btn-primary")),
       ) # end fifth fluid row
     ), # end policies and consequences tabItem
