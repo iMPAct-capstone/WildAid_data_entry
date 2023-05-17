@@ -671,4 +671,4 @@ body <- dashboardBody(
 
 
 
-dashboardPage(header, sidebar, body)
+dashboardPage(header, sidebar, body, title = "WildAid Marine MPS Tracker Data Entry")
