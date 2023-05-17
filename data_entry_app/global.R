@@ -6,6 +6,7 @@ library(shinycssloaders)
 library(googlesheets4)
 library(lubridate)
 library(shinyBS)
+library(here)
 
 # auto-authenticate google sheets ... this will have you interactively authenticate using broswer
 # options(gargle_oauth_cache = ".secrets/")

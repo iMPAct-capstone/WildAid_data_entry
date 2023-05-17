@@ -7,7 +7,11 @@ header <- dashboardHeader(
   tags$li(class = "dropdown",
           tags$a(href = "https://github.com/iMPAct-capstone/WildAid_data_entry",
                  icon("github-alt"),
-                 "Help"))
+                 "Help")),
+  tags$li(class = "dropdown",
+          tags$a(href = "https://marine.wildaid.org/",
+                 icon(here("WildAid_logo")),
+                 "WildAid Marine"))
 ) # End Dashboard header
 
 # dashboard sidebar ----------------------
