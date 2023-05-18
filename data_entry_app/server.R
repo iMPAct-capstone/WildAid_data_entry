@@ -2,6 +2,8 @@ source("./global.R")
 
 # input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session) {
+  clicked <- reactiveVal(FALSE)
+  progress <- reactiveVal(FALSE)
   # password authentication ----
   # call login module supplying data frame,
   # user and password cols and reactive trigger
@@ -72,6 +74,7 @@ server <- function(input, output, session) {
   # next buttons and data entry ----
   # data tab next button
   observeEvent(input$next_1, {
+    show_modal_spinner()
     newtab <- switch(input$tabs,
                      "data" = "enforcement",
                      "enforcement" = "data"
@@ -106,73 +109,19 @@ server <- function(input, output, session) {
         data_update_function(master_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
+      progress(TRUE)
       } })
   # end data tab next button
   
-  # enforcement tab next button
-  # enforcement tab next button
-  observeEvent(input$next_2, {
-    # create an object for switching tabs
-    newtab <- switch(input$tabs,
-                     "enforcement" = "policies",
-                     "policies" = "enforcement"
-    )
-    # check year is not blank
-    validate(
-      need(input$year_input != "", message = "Please enter a year.")
-    )
-    # check if country has been updated
-    if (input$country_input == "Select Option") {
-      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
-      # check that site has been updated
-    } else if (input$site_input == "Select Option") {
-      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
-    } else if (input$name_input == "") {
-      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
-      # if necessary boxes are filled out then proceed
-    } else {
-      # read in the google sheet
-      # need to do this each time we write in case multiple people are on the app
-      # identify the url
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
-      # get for writing to
-      master_tracker <- gs4_get(url)
-      # also read in for checking for existing data
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
-      
-      
-      process_iteration <- function(i) {
-        sur_sub_category_name <- sur_lookuptable$subcategory[i]
-        sur_score_input <- sur_lookuptable$score_id[i]
-        sur_score_value <- input[[sur_score_input]]
-        sur_comment_input <- sur_lookuptable$comment_id[i]
-        sur_comment_value <- input[[sur_comment_input]]
-        
-        data_entry_function(
-          google_instance = master_tracker,
-          google_data = master_sheet,
-          year_entered = input$year_input,
-          category = "Surveillance and Enforcement",
-          sub_category_entered = sur_sub_category_name,
-          indicator_type = "Process Indicator",
-          score = sur_score_value,
-          country = input$country_input,
-          site_entered = input$site_input,
-          comments = sur_comment_value,
-          evaluator = input$name_input
-        )
-      }
-      # change to the next tab
-      updateTabItems(session, "tabs", newtab)
-      # Use lapply or mapply to process each iteration
-      lapply(seq_along(sur_lookuptable$subcategory), process_iteration)
-      
-      
-    }
-  }) # end enforcement tab next button
+  observe(
+    if (progress() && input$tabs == "enforcement"){
+      remove_modal_spinner()
+      })
   
+
   # enforcement tab next button
   observeEvent(input$next_2, {
+    
     # create an object for switching tabs
     newtab <- switch(input$tabs,
                      "enforcement" = "policies",
@@ -191,14 +140,57 @@ server <- function(input, output, session) {
     } else if (input$name_input == "") {
       showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
       # if necessary boxes are filled out then proceed
-    } else {
+    } else { 
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
-      
-    
-      
+      clicked(TRUE)
     } 
   })
+  
+ 
+
+  # data entry for enforcement tab
+  observe(
+    if (clicked() && input$tabs == "policies") {
+  
+        # read in the google sheet
+        # need to do this each time we write in case multiple people are on the app
+        # identify the url
+        url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+        # get for writing to
+        master_tracker <- gs4_get(url)
+        # also read in for checking for existing data
+        master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+        
+        
+        process_iteration <- function(i) {
+          sur_sub_category_name <- sur_lookuptable$subcategory[i]
+          sur_score_input <- sur_lookuptable$score_id[i]
+          sur_score_value <- input[[sur_score_input]]
+          sur_comment_input <- sur_lookuptable$comment_id[i]
+          sur_comment_value <- input[[sur_comment_input]]
+          
+          data_entry_function(
+            google_instance = master_tracker,
+            google_data = master_sheet,
+            year_entered = input$year_input,
+            category = "Surveillance and Enforcement",
+            sub_category_entered = sur_sub_category_name,
+            indicator_type = "Process Indicator",
+            score = sur_score_value,
+            country = input$country_input,
+            site_entered = input$site_input,
+            comments = sur_comment_value,
+            evaluator = input$name_input
+          )
+        }
+        
+        lapply(seq_along(sur_lookuptable$subcategory), process_iteration)
+        clicked(FALSE)
+        
+    }) # end enforcement tab data entry
+  
+  
  
   # policies and consequences previous button
   observeEvent(input$prev_1, {
@@ -222,7 +214,7 @@ server <- function(input, output, session) {
       # if necessary boxes are filled out then proceed
     } else {
       # change to the last tab
-      updateTabItems(session, "tabs", enforcement)
+      updateTabItems(session, "tabs", newtab)
       
       
     } 
@@ -394,7 +386,7 @@ server <- function(input, output, session) {
   
   # end next buttons
   
-#all the data entry functionality is here except for last tab ----
+#scroll when you switch tabs
   observeEvent(input$tabs,{ shinyjs::runjs("window.scrollTo(0, 0)")
    }) 
   
