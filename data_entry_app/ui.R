@@ -1,6 +1,7 @@
 
 # dashboard header ----------------------
 header <- dashboardHeader(
+  tags$style(".skin-blue .main-header .navbar {background-color: green;}"),
   title = span("WildAid Marine MPS Tracker Data Entry",
                style = "color: white; font-size: 28px; font-family: 'Impact'"),
   titleWidth = 400,
