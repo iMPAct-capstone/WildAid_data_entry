@@ -1,7 +1,6 @@
 
 # dashboard header ----------------------
 header <- dashboardHeader(
-  tags$style(".skin-blue .main-header .navbar {background-color: green;}"),
   title = span("WildAid Marine MPS Tracker Data Entry",
                style = "color: white; font-size: 28px; font-family: 'Impact'"),
   titleWidth = 400,
@@ -500,7 +499,7 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, ),
+        column(10, actionButton("prev_2", "Previous", class = "btn-primary") ),
         column(2, actionButton("next_4", "Save and Continue", class = "btn-primary")),
       ) # end fourth fluid row
     ), # end training and mentorship tab item
@@ -592,7 +591,7 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, ),
+        column(10, actionButton("prev_3", "Previous", class = "btn-primary") ),
         column(2, actionButton("next_5", "Save and Continue", class = "btn-primary")),
       ) # end fourth fluid row
     ), # end community engagement tabItem
@@ -667,7 +666,7 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, ),
+        column(10, actionButton("prev_4", "Previous", class = "btn-primary") ),
         column(2, actionButton("next_6", "Submit", class = "btn-primary")),
       ) # end fourth fluid row
     ) # end consistent funding tab item

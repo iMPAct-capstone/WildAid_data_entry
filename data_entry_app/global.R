@@ -121,3 +121,4 @@ read_and_assign_sheet <- function(sheet_name) {
 
 # Apply the function to each sheet name using lapply
 lapply(lookup_sheets$sheets$name, read_and_assign_sheet)
+

@@ -303,6 +303,34 @@ server <- function(input, output, session) {
     }
   }) # end training tab next button
   
+  # training & mentorship tab previous button
+  observeEvent(input$prev_2, {
+    newtab <- switch(input$tabs,
+                     "community" = "training",
+                     "training" = "community"
+    )
+    
+    # check year is not blank
+    validate(
+      need(input$year_input != "", message = "Please enter a year.")
+    )
+    # check if country has been updated
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
+    } else {
+      # change to the last tab
+      updateTabItems(session, "tabs", newtab)
+      
+      
+    } 
+  }) # end training and mentorship tab previous button
+  
   # community engagement next button
   observeEvent(input$next_5, {
     newtab <- switch(input$tabs,
@@ -342,12 +370,70 @@ server <- function(input, output, session) {
     }
   }) # end community engagement next button
   
+  # community engagement tab previous button
+  observeEvent(input$prev_3, {
+    newtab <- switch(input$tabs,
+                     "funding" = "community",
+                     "community" = "funding"
+    )
+    
+    # check year is not blank
+    validate(
+      need(input$year_input != "", message = "Please enter a year.")
+    )
+    # check if country has been updated
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
+    } else {
+      # change to the last tab
+      updateTabItems(session, "tabs", newtab)
+      
+      
+    } 
+  }) # end community engagement tab previous button
+  
   # consistent funding next button
   observeEvent(input$next_6, {
     newtab <- switch(input$tabs,
                      "funding" = "data",
                      "data" = "funding"
-    ) # WE NEED TO FIGURE THIS OUT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ) 
+    
+    # consistent funding tab previous button
+    observeEvent(input$prev_4, {
+      newtab <- switch(input$tabs,
+                       "data" = "funding",
+                       "funding" = "data"
+      )
+      
+      # check year is not blank
+      validate(
+        need(input$year_input != "", message = "Please enter a year.")
+      )
+      # check if country has been updated
+      if (input$country_input == "Select Option") {
+        showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+        # check that site has been updated
+      } else if (input$site_input == "Select Option") {
+        showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+      } else if (input$name_input == "") {
+        showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+        # if necessary boxes are filled out then proceed
+      } else {
+        # change to the last tab
+        updateTabItems(session, "tabs", newtab)
+        
+        
+      } 
+    }) # end consistent funding tab previous button
+    
+    
     # read in the google sheet
     # need to do this each time we write in case multiple people are on the app
     # identify the url
@@ -376,7 +462,7 @@ server <- function(input, output, session) {
       
       # get the value of the comment
       con_comment_value <- input[[con_comment_input]]
-      
+     
       
       data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
       

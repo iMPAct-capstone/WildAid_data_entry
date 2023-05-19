@@ -1,0 +1,44 @@
+//example from sams workshop
+
+// fonts
+$font-family-serif: 'Karma', serif;
+$font-family-sans-serif: 'Prompt', sans-serif;
+
+// colors
+$blue: #094074;
+$white: #f1f7eb;
+
+// element selectors
+
+body {
+  background-color: $green; 
+  color: $white; 
+}
+
+h2 {
+  letter-spacing: 5px;
+  font-family: $font-family-serif;
+}
+
+h4 {
+  color: $blue;
+  font-family: $font-family-serif;
+}
+
+p {
+  font-family: $font-family-sans-serif;
+}
+
+a {
+  color: $orange;
+}
+
+// class selectors
+
+.navbar-default {
+  background-color: $yellow;
+}
+
+.btn.default.active {
+  background-color: $green;
+}
