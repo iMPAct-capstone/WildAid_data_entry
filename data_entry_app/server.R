@@ -570,5 +570,19 @@ server <- function(input, output, session) {
       )
     }
   }) # end observe input country box
+  
+  master_sheet_surveillance_pri <- reactive({
+    main_sheet %>%
+      filter(year == as.numeric(input$year_input) & site == input$site_input & sub_category == "Surveillance Prioritization") |> select(year, score, entered_by,comments)
+  })
+  
+  
+  #dt tables for previous years data
+  output$table <- renderDT({
+    # Replace 'your_dataframe' with the name of your dataframe
+    datatable(master_sheet_surveillance_pri(), options = list(dom = 't', paging = 'false', ordering = 'false'), rownames = FALSE)
+  })
 
 }
+
+

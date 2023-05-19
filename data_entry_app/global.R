@@ -7,13 +7,15 @@ library(googlesheets4)
 library(lubridate)
 library(shinyBS)
 library(shinybusy)
+library(DT)
+
 
 
 # auto-authenticate google sheets ... this will have you interactively authenticate using broswer
-# options(gargle_oauth_cache = ".secrets/")
-# auto authenticate without browser
+ #options(gargle_oauth_cache = ".secrets/")
+ #auto authenticate without browser
   #gs4_auth(
-  #cache = ".secrets",
+ # cache = ".secrets",
   #email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
   #)
 
@@ -122,3 +124,6 @@ read_and_assign_sheet <- function(sheet_name) {
 # Apply the function to each sheet name using lapply
 lapply(lookup_sheets$sheets$name, read_and_assign_sheet)
 
+#read in all the data 
+url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+main_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))

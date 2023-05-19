@@ -22,6 +22,14 @@ sidebar <- dashboardSidebar(
 # dashboardBody----
 
 body <- dashboardBody(
+  tags$style(
+    HTML(
+      ".table-container {
+          width: 100%;
+          max-height: 300px;
+          overflow-y: auto;
+        }"
+    )),
   # add logout button UI
   div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
   # add login panel UI function
@@ -89,8 +97,18 @@ body <- dashboardBody(
           box(
             width = 12, title = "1. Surveillance Prioritization", id = "sur_pri",
             bsCollapse(id = "collapseExample", open = "Panel 1",
-                       bsCollapsePanel("Push Here for Scoring Guidelines", "1 = No priority areas are defined or priority areas are not under surveillance.", 
-                                       br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously.,"), br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment.", style = "info"))),
+                       bsCollapsePanel(title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                                       style = "info", "1 = No priority areas are defined or priority areas are not under surveillance.", 
+                                       br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously.,"), br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment.")),
+                       bsCollapsePanel(title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")),
+                                       div(
+                                         class = "table-container",
+                                         DTOutput("table")
+                                       ))
+                       
+                       ),
+            #end of collapsed scoring guidelines
+          
             selectInput(
               inputId = "sur_pri_score", label = "Score",
               choices = c("", "1", "2", "3", "4", "5", "NA")
