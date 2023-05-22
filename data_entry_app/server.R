@@ -204,26 +204,10 @@ server <- function(input, output, session) {
                      "policies" = "enforcement"
     )
     
-    # check year is not blank
-    validate(
-      need(input$year_input != "", message = "Please enter a year.")
-    )
-    # check if country has been updated
-    if (input$country_input == "Select Option") {
-      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
-      # check that site has been updated
-    } else if (input$site_input == "Select Option") {
-      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
-    } else if (input$name_input == "") {
-      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
-      # if necessary boxes are filled out then proceed
-    } else {
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
-      
-      
     } 
-  }) # end policies tab previous button
+  ) # end policies tab previous button
   
 
   # policies and consequences next button
@@ -361,28 +345,9 @@ server <- function(input, output, session) {
   observeEvent(input$prev_2, {
     newtab <- switch(input$tabs,
                      "community" = "training",
-                     "training" = "community"
-    )
-    
-    # check year is not blank
-    validate(
-      need(input$year_input != "", message = "Please enter a year.")
-    )
-    # check if country has been updated
-    if (input$country_input == "Select Option") {
-      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
-      # check that site has been updated
-    } else if (input$site_input == "Select Option") {
-      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
-    } else if (input$name_input == "") {
-      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
-      # if necessary boxes are filled out then proceed
-    } else {
+                     "training" = "community")
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
-      
-      
-    } 
   }) # end training and mentorship tab previous button
   
 # community engagement next button
@@ -439,59 +404,18 @@ server <- function(input, output, session) {
   observeEvent(input$prev_3, {
     newtab <- switch(input$tabs,
                      "funding" = "community",
-                     "community" = "funding"
-    )
-    
-    # check year is not blank
-    validate(
-      need(input$year_input != "", message = "Please enter a year.")
-    )
-    # check if country has been updated
-    if (input$country_input == "Select Option") {
-      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
-      # check that site has been updated
-    } else if (input$site_input == "Select Option") {
-      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
-    } else if (input$name_input == "") {
-      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
-      # if necessary boxes are filled out then proceed
-    } else {
+                     "community" = "funding")
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
-      
-      
-    } 
   }) # end community engagement tab previous button
   
 # consistent funding next button
   observeEvent(input$next_6, {
     newtab <- switch(input$tabs,
                      "funding" = "data",
-                     "data" = "funding"
-                     
-            
-    )  
-    # check year is not blank
-    validate(
-      need(input$year_input != "", message = "Please enter a year.")
-    )
-    # check if country has been updated
-    if (input$country_input == "Select Option") {
-      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
-      # check that site has been updated
-    } else if (input$site_input == "Select Option") {
-      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
-    } else if (input$name_input == "") {
-      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
-      # if necessary boxes are filled out then proceed
-    } else {
-      entry_con(TRUE)
+                     "data" = "funding")  
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
-      
-      
-    } 
-    
     })
     
 #consistent funding tab data entry
