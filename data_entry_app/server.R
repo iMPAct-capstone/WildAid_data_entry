@@ -100,7 +100,8 @@ server <- function(input, output, session) {
       # proceed if all required fields are present
     } else{
       url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year)) 
+      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+  
       #test----
       for (i in seq_along(main_lookuptable$subcategory)) {
         # name of the subcategory
@@ -167,6 +168,8 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
+      sur_lookuptable <- main_lookuptable |> 
+       filter(tab == "enforcement")
       
       process_iteration <- function(i) {
         sur_sub_category_name <- sur_lookuptable$subcategory[i]
@@ -250,7 +253,9 @@ server <- function(input, output, session) {
 #       # also read in for checking for existing data
        master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
-#       
+        pol_lookuptable <- main_lookuptable |> 
+       filter(tab == "policies")
+       
        for (i in seq_along(pol_lookuptable$subcategory)) {
         # name of the subcategory
          pol_sub_category_name <- pol_lookuptable$subcategory[i]
@@ -314,8 +319,8 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
-      tra_lookup_url <- "https://docs.google.com/spreadsheets/d/1FeezrizNeRAPYXBG1uBqu_3lLLl0PZyKCyVU8wOKUYI/edit#gid=0"
-      tra_lookuptable <- read_sheet(tra_lookup_url)
+      tra_lookuptable <- main_lookuptable |> 
+        filter(tab == "training")
       
       
       for (i in seq_along(tra_lookuptable$subcategory)) {
@@ -374,6 +379,8 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
+      comm_lookuptable <- main_lookuptable |> 
+        filter(tab == "community")
       
       for (i in seq_along(comm_lookuptable$subcategory)) {
         # name of the subcategory
@@ -433,9 +440,8 @@ server <- function(input, output, session) {
       # also read in for checking for existing data
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
       
-      con_lookup_url <- "https://docs.google.com/spreadsheets/d/1DSc-2LVlrFbdYTyFo7o-2V55OPkrFA6pVLOM6ZJuhYE/edit#gid=0"
-      con_lookuptable <- read_sheet(con_lookup_url)
-      
+      con_lookuptable <- main_lookuptable |> 
+        filter(tab == "funding")
       
       for (i in seq_along(con_lookuptable$subcategory)) {
         # name of the subcategory

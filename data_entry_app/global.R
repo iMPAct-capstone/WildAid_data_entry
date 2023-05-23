@@ -12,12 +12,12 @@ library(DT)
 
 
 # auto-authenticate google sheets ... this will have you interactively authenticate using broswer
- #options(gargle_oauth_cache = ".secrets/")
+ options(gargle_oauth_cache = ".secrets/")
  #auto authenticate without browser
-  #gs4_auth(
- # cache = ".secrets",
-  #email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
-  #)
+  gs4_auth(
+  cache = ".secrets",
+  email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
+  )
 
 # dataframe that holds usernames, passwords and other user data
 user_base <- tibble::tibble(
@@ -112,17 +112,8 @@ data_entry_function <- function(google_instance,
 
 #read in the combined lookup table 
 lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
-lookup_sheets <- gs4_get(lookup_id_url)
+main_lookuptable <- read_sheet(lookup_id_url)
 
-# Define a function to read and assign each sheet
-read_and_assign_sheet <- function(sheet_name) {
-  sheet_data <- read_sheet(lookup_id_url, sheet = sheet_name)  # Read the sheet data
-  assign(sheet_name, sheet_data, envir = .GlobalEnv)  # Assign the sheet data to a variable with the sheet name
-  invisible(NULL) #prevent it from printing out the whole sheet
-}
-
-# Apply the function to each sheet name using lapply
-lapply(lookup_sheets$sheets$name, read_and_assign_sheet)
 
 #read in all the data 
 url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
