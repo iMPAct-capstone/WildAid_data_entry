@@ -34,8 +34,6 @@ site_url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSS
 site_list <- read_sheet(site_url)
 
 
-
-
 # find the current year plus 1----
 # used for updating the default year in the app
 

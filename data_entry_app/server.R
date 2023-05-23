@@ -501,17 +501,32 @@ server <- function(input, output, session) {
     }
   }) # end observe input country box
   
-  master_sheet_surveillance_pri <- reactive({
-    main_sheet %>%
-      filter(year == as.numeric(input$year_input) & site == input$site_input & sub_category == "Surveillance Prioritization") |> select(year, score, entered_by,comments)
+  
+  previous_data_function <- function(subcategory){
+    filtered_data <- main_sheet %>%
+      filter(year < as.numeric(input$year_input) & sub_category == subcategory & site == input$site_input) |> 
+      select(year, score, comments)
+    
+    return(filtered_data)
+  }
+  
+#render the table i need
+  prev_sur_pri <- reactive({
+    previous_data_function("Surveillance Prioritization")
   })
   
-  
-  #dt tables for previous years data
-  output$table <- renderDT({
-    # Replace 'your_dataframe' with the name of your dataframe
-    datatable(master_sheet_surveillance_pri(), options = list(dom = 't', paging = 'false', ordering = 'false'), rownames = FALSE)
-  })
+output$table <- renderDT({
+  datatable(prev_sur_pri(),
+            options = list(dom = 't',
+                           paging = 'false',
+                           ordering = 'false',
+                           autowidth = TRUE,
+                           scrollCollapse = TRUE,
+                           columnDefs = list(list(targets = 0, width = '8px'), 
+                                             list(targets = 1, width = '8px'), 
+                                             list(targets = 2, width = '1px'))
+                           ), rownames = FALSE)
+})
 
 }
 
