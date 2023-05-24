@@ -73,6 +73,11 @@ server <- function(input, output, session) {
         text = "Consistent Funding",
         tabName = "funding",
         icon = icon("table")
+      ),
+      menuItem(
+        text = "Summary",
+        tabName = "summary",
+        icon = icon("table")
       )
     ) # END sidebar Menu
   })
@@ -410,8 +415,8 @@ server <- function(input, output, session) {
 # community engagement tab previous button
   observeEvent(input$prev_3, {
     newtab <- switch(input$tabs,
-                     "funding" = "community",
-                     "community" = "funding")
+                     "training" = "community",
+                     "community" = "training")
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
   }) # end community engagement tab previous button
@@ -472,8 +477,8 @@ server <- function(input, output, session) {
   # consistent funding tab previous button
     observeEvent(input$prev_4, {
       newtab <- switch(input$tabs,
-                       "data" = "funding",
-                       "funding" = "data")
+                       "community" = "funding",
+                       "funding" = "community")
         updateTabItems(session, "tabs", newtab)
         }) # end consistent funding tab previous button
     
@@ -529,5 +534,4 @@ output$table <- renderDT({
 })
 
 }
-
 

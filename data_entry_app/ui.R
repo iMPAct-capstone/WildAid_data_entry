@@ -687,7 +687,15 @@ body <- dashboardBody(
         column(10, actionButton("prev_4", "Previous", class = "btn-primary") ),
         column(2, actionButton("next_6", "Submit", class = "btn-primary")),
       ) # end fourth fluid row
-    ) # end consistent funding tab item
+    ), # end consistent funding tab item
+  #start summary table tab item
+    tabItem(
+      tabName = "summary",
+      fluidRow(
+        h1("Summary", align = "center"),
+        br()
+      )
+    ) #end summary table tab item
   ) # end tab items
 ) # end dashboard body
 
