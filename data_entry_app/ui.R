@@ -124,7 +124,7 @@ body <- dashboardBody(
           6,
           # Patrol Planning Box
           box(
-            width = 12, title = "(Question 2 of 27): Patrol Planning", id = "pat_pla",
+            width = 12, title = "Patrol Planning", br("Question 2 of 27"), id = "pat_pla",
             br("How to Score"),
             br("1 = The enforcement agency does not engage in a formal patrol planning process."),
             br("3 = The enforcement agency has a patrol plan but it is not implemented consistently."),
@@ -144,7 +144,8 @@ body <- dashboardBody(
           6,
           # start vessel availability box
           box(
-            width = 12, title = "(Question 3 of 27): Vessel Availability",
+            width = 12, title = "Vessel Availability",
+            br("Question 3 of 27"), id = "ves_ava",
             br("How to Score"),
             br("1 = Vessels are in poor shape. Vessel availability is low."),
             br("3 = Vessels are in good condition. Vessel availability is average (approximately 50% or more)."),
@@ -161,7 +162,8 @@ body <- dashboardBody(
           6,
           # start patrol execution box
           box(
-            width = 12, title = "(Question 4 of 27): Patrol Execution",
+            width = 12, title = "Patrol Execution",
+            br("Question 4 of 27"), id = "pat_exe",
             br("How to Score"),
             br("1 = The enforcement agency does not conduct patrols."),
             br("3 = The enforcement agency conduct some patrols but they are infrequent, inconsistent, and not targeted for high-risk areas."),
@@ -182,7 +184,7 @@ body <- dashboardBody(
           6,
           # start fleet adequacy box
           box(
-            width = 12, title = "(Question 5 of 27): Fleet Adequacy",
+            width = 12, title = "Fleet Adequacy", br("Question 5 of 27"), id = "fle_ade",
             br("How to Score"),
             br("1 = There are not enough vessels to patrol the marine area and/ or they are not the right kinds of vessels."),
             br("3 = There are enough vessels to patrol the marine area, but they are not the right kind of vessels (e.g. coastal vessels only when the marine area needs oceanic)."),
@@ -199,7 +201,7 @@ body <- dashboardBody(
           6,
           # start patrol equipment box
           box(
-            width = 12, title = "(Question 6 of 27): Patrol Equipment",
+            width = 12, title = "Patrol Equipment", br("Question 6 of 27"), id = "pat_equ",
             br("How to Score"),
             br("1 = Patrol vessels lack essential safety equipment and boarding kits."),
             br("3 = Patrol vessels are equipped with essential safety equipment, but lack adequate boarding kits, or vice versa."),
@@ -220,7 +222,7 @@ body <- dashboardBody(
           6,
           # start Intelligence Sources box
           box(
-            width = 12, title = "(Question 7 of 27): Intelligence Sources",
+            width = 12, title = "Intelligence Sources", br("Question 7 of 27"), id = "int_sou",
             br("How to Score"),
             br("1 = Intelligence information is limited to what is gathered from patrols."),
             br("3 = The enforcement agency has some access to external intelligence (e.g. informants or surveillance technology)."),
@@ -237,7 +239,7 @@ body <- dashboardBody(
           6,
           # start investigation procedures box
           box(
-            width = 12, title = "(Question 8 of 27): Investigation Procedures",
+            width = 12, title = "Investigation Procedures", br("Question 8 of 27"), id = "inv_pro",
             br("How to Score"),
             br("1 = There are no boarding or chain of custody procedures in place."),
             br("3 = There are some investigation procedures in place, but they have not have been reviewed or approved by legal teams."),
@@ -258,7 +260,7 @@ body <- dashboardBody(
           6,
           # start Institutional Collaboration (National) box
           box(
-            width = 12, title = "(Question 9 of 27): Institutional Collaboration (National)",
+            width = 12, title = "Institutional Collaboration (National)", br("Question 9 of 27"), id = "nat_inst",
             br("How to Score"),
             br("1 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement."),
             br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement."),
@@ -275,7 +277,7 @@ body <- dashboardBody(
           6,
           # start Institutional Collaboration (International/Regional - if applicable) box
           box(
-            width = 12, title = "(Question 10 of 27): Institutional Collaboration (International/Regional - if applicable)",
+            width = 12, title = "Institutional Collaboration (International/Regional - if applicable)", br("Question 10 of 27"), id = "int_inst",
             br("How to Score"),
             br("1 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement of foreign-flagged fishing infractions."),
             br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."),
@@ -296,7 +298,7 @@ body <- dashboardBody(
           6,
           # start Staff numbers box
           box(
-            width = 12, title = "(Question 11 of 27): Staff Numbers",
+            width = 12, title = "Staff Numbers", br("Question 11 of 27"), id = "sta_num",
             br("How to Score"),
             br("1 = There are no staff for enforcement operations (e.g. surveillance such as patrols and community engagement). "),
             br("3 = Staff numbers are insufficient for enforcement operations and/ or staff retention is low."),
@@ -334,7 +336,7 @@ body <- dashboardBody(
 
           # start Laws and Regulations box
           box(
-            width = 12, title = "(Question 12 of 27): Laws and Regulations", id = "law_reg",
+            width = 12, title = "Laws and Regulations",br("Question 12 of 27"), id = "law_reg",
             br("How to Score"),
             br("1 = Laws/ regulations are unclear (have many loopholes) or not enforceable re: prohibited species, activities, tools / gear that can be used in the area."),
             br("3 = Laws/ regulations are clear (few loopholes) or not enforceable Or vice versa re:  re: prohibited species, activities, tools / gear that can be used in the area."),
@@ -352,7 +354,7 @@ body <- dashboardBody(
           6,
           # start Zoning (n/a for EEZ-wide projects) Box
           box(
-            width = 12, title = "(Question 13 of 27): Zoning (n/a for EEZ-wide projects)", id = "zon",
+            width = 12, title = "Zoning (n/a for EEZ-wide projects)", br("Question 13 of 27"), id = "zon",
             br("How to Score"),
             br("1 = Marine area size and zoning does not match conservation goals / address threats or is difficult to enforce."),
             br("3 = Marine area size and zoning aligns with some conservation goals and addresses some threats but not all and/ or is easier to enforce."),
@@ -373,7 +375,7 @@ body <- dashboardBody(
           6,
           # start Sanctions / Prosecutions box
           box(
-            width = 12, title = "(Question 14 of 27): Sanctions / Prosecutions", id = "san_pro",
+            width = 12, title = "Sanctions / Prosecutions", br("Question 14 of 27"), id = "san_pro",
             br("How to Score"),
             br("1 = Few cases are sanctioned and / or sanctions levied are not strong enough to deter future illegal activity."),
             br("3 = A majority of cases are sanctioned; however sanctions are not strong enough to act as a deterrent."),
@@ -390,7 +392,7 @@ body <- dashboardBody(
           6,
           # start case database box
           box(
-            width = 12, title = "(Question 15 of 27): Case Database", id = "cas_dat", 
+            width = 12, title = "Case Database", br("Question 15 of 27"), id = "cas_dat", 
             br("How to Score"),
             br("1 = There is no central database to keep track of cases."),
             br("3 = There is a database, but it is not used regularly or it does not track all information needed."),
@@ -411,7 +413,7 @@ body <- dashboardBody(
           6,
           # start Scientific Monitoring box
           box(
-            width = 12, title = "(Question 16 of 27): Scientific Monitoring", id = "sci_mon",
+            width = 12, title = "Scientific Monitoring", br("Question 16 of 27"), id = "sci_mon",
             br("How to Score"),
             br("1 = No scientific monitoring or baseline assessments of target species are carried out. "),
             br("3 = Scientific monitoring is currently being carried out and/ or a baseline has been established."),
@@ -448,7 +450,7 @@ body <- dashboardBody(
 
           # start Enforcement Training box
           box(
-            width = 12, title =  "(Question 17 of 27): Enforcement Training", id = "enf_tra",
+            width = 12, title =  "Enforcement Training", br("Question 17 of 27"), id = "enf_tra",
             br("How to Score"),
             br("1 = No standardized enforcement training exists for staff and other relevant agencies."),
             br("3 = Enforcement training for staff and other relevant agencies may exist, but training is irregular and not comprehensive."),
@@ -466,7 +468,7 @@ body <- dashboardBody(
           6,
           # start Standard Operating Procedures (SOPs) Box
           box(
-            width = 12, title =  "(Question 18 of 27): Standard Operating Procedures (SOPs)", id = "sta_ope",
+            width = 12, title =  "Standard Operating Procedures (SOPs)", br("Question 18 of 27"), id = "sta_ope",
             br("How to Score"),
             br("1 = No operational SOPs exist for enforcement staff and other relevant agencies."),
             br("3 = Some operational SOPs for enforcement staff and other relevant agencies may exist, but SOPs are outdated or incomplete."),
@@ -487,7 +489,7 @@ body <- dashboardBody(
           6,
           # start Staff Qualifications box
           box(
-            width = 12, title = "(Question 19 of 27): Staff Qualifications", id = "sta_qua",
+            width = 12, title = "Staff Qualifications",br("Question 19 of 27"), id = "sta_qua",
             br("How to Score"),
             br("1 = Agency staff are not qualified for enforcement work."),
             br("3 = Agency staff receive minimal enforcement training."),
@@ -504,7 +506,7 @@ body <- dashboardBody(
           6,
           # start Legal Training Box
           box(
-            width = 12, title =  "(Question 20 of 27): Legal Training", id = "leg_tra",
+            width = 12, title =  "Legal Training", br("Question 20 of 27"), id = "leg_tra",
             br("How to Score"),
             br("1 = Legal team does not exist or has not been trained."),
             br("3 = Legal team has had some training, but it is not regular or comprehensive."),
@@ -540,7 +542,7 @@ body <- dashboardBody(
 
           # start Community Education & Outreach box
           box(
-            width = 12, title = "(Question 21 of 27): Community Education & Outreach", id = "com_edu",
+            width = 12, title = "Community Education & Outreach", br("Question 21 of 27"), id = "com_edu",
             br("How to Score"),
             br("1 = Community Education & Outreach is not included in the area's management plan and little or no outreach efforts take place."),
             br("3 = Community Education/ Outreach is included in the area's management plan and some attempts at outreach take place."),
@@ -558,7 +560,7 @@ body <- dashboardBody(
           6,
           # start Community Involvement Box
           box(
-            width = 12, title = "(Question 22 of 27): Community Involvement", id = "com_inv",
+            width = 12, title = "Community Involvement", br("Question 22 of 27"), id = "com_inv",
             br("How to Score"),
             br("1 = The community has little to no involvement in marine area management."),
             br("3 = The community has some involvement in marine area management."),
@@ -579,7 +581,7 @@ body <- dashboardBody(
           6,
           # start Fishing Sector Collaboration box
           box(
-            width = 12, title = "(Question 23 of 27): Fishing Sector Collaboration", id = "fis_sec",
+            width = 12, title = "Fishing Sector Collaboration", br("Question 23 of 27"), id = "fis_sec",
             br("How to Score"),
             br("1 = The fishing sector has little to no involvement in marine area management."),
             br("3 = The fishing sector has some involvement in marine area management."),
@@ -596,7 +598,7 @@ body <- dashboardBody(
           6,
           # start Tourism & Private Sector Collaboration Box
           box(
-            width = 12, title = "(Question 24 of 27): Tourism & Private Sector Collaboration", id = 'tou_pri',
+            width = 12, title = "Tourism & Private Sector Collaboration", br("Question 24 of 27"), id = 'tou_pri',
             br("How to Score"),
             br("1 = The tourism industry and private sector have little to no involvement in marine area management."),
             br("3 = The tourism industry and private sector have some involvement in marine area management."),
@@ -631,7 +633,7 @@ body <- dashboardBody(
 
           # start Funding box
           box(
-            width = 12, title = "(Question 25 of 27): Funding", id = "fun",
+            width = 12, title = "Funding", br("Question 25 of 27"), id = "fun",
             br("How to Score"),
             br("1 = Little or no funding is available for enforcement efforts."),
             br("3 = Enforcement needs are budgeted and some of the enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses."),
@@ -649,7 +651,7 @@ body <- dashboardBody(
           6,
           # start Cost Efficiency Box
           box(
-            width = 12, title = "(Question 26 of 27): Cost Efficiency",
+            width = 12, title = "Cost Efficiency", br("Question 26 of 27"),
             id = "cos_eff",
             br("How to Score"),
             br("1 = There are no cost-efficiency measures* in place."),
@@ -671,7 +673,7 @@ body <- dashboardBody(
           6,
           # start Diversified Funding Sources box
           box(
-            width = 12, title = "(Question 27 of 27): Diversified Funding Sources", id = "div_fun", 
+            width = 12, title = "Diversified Funding Sources", br("Question 27 of 27"), id = "div_fun", 
             br("How to Score"),
             br("1 = Funding comes from a single source."),
             br("3 = Funding comes from a one or two sources with most funds coming from one source."),
