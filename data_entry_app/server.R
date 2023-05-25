@@ -520,17 +520,15 @@ server <- function(input, output, session) {
     previous_data_function("Surveillance Prioritization")
   })
   
-output$table <- renderDT({
+output$table_sur_pri <- renderDT({
   datatable(prev_sur_pri(),
             options = list(dom = 't',
-                           paging = 'false',
-                           ordering = 'false',
+                           paging = 'false', #no pages
                            autowidth = TRUE,
                            scrollCollapse = TRUE,
-                           columnDefs = list(list(targets = 0, width = '8px'), 
-                                             list(targets = 1, width = '8px'), 
-                                             list(targets = 2, width = '1px'))
-                           ), rownames = FALSE)
+                           order = list(list(0, 'desc'))
+                           ),
+            rownames = FALSE) #no rownames
 })
 
 }

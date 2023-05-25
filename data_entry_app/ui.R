@@ -1,20 +1,28 @@
-
 # dashboard header ----------------------
 header <- dashboardHeader(
   title = span("WildAid Marine MPS Tracker Data Entry",
-               style = "color: white; font-size: 28px; font-family: 'Impact'"),
+    style = "color: white; font-size: 28px; font-family: 'Impact'"
+  ),
   titleWidth = 400,
   # add logout button UI
-  tags$li(class = "dropdown",
-          tags$a(href = "https://github.com/iMPAct-capstone/WildAid_data_entry",
-                 target="_blank",
-                 icon("question"),
-                 "Help")),
-  tags$li(class = "dropdown",
-          tags$a(href = "https://marine.wildaid.org/",
-                 target="_blank",
-                 icon("fish"),
-                 "WildAid Marine")),
+  tags$li(
+    class = "dropdown",
+    tags$a(
+      href = "https://github.com/iMPAct-capstone/WildAid_data_entry",
+      target = "_blank",
+      icon("question"),
+      "Help"
+    )
+  ),
+  tags$li(
+    class = "dropdown",
+    tags$a(
+      href = "https://marine.wildaid.org/",
+      target = "_blank",
+      icon("fish"),
+      "WildAid Marine"
+    )
+  ),
   tags$li(class = "dropdown", style = "margin-top: 10px; margin-right: 10px;", shinyauthr::logoutUI(id = "logout"))
 ) # End Dashboard header
 
@@ -33,7 +41,8 @@ body <- dashboardBody(
           max-height: 300px;
           overflow-y: auto;
         }"
-    )),
+    )
+  ),
 
   # add login panel UI function
   shinyauthr::loginUI(id = "login"),
@@ -70,11 +79,14 @@ body <- dashboardBody(
             actionButton("next_1", "Save and Continue", class = "btn-primary"), # end next button
           ), # end data entry box
         ), # end column
-        column(width = 6, 
-               box(title = "Data Entry Instructions ",
-                   width =14,
-                  "This application is for entering site data for the Marine Protection System Tracker. There are six sections with 27 subcategories to rank. Choose a score from the drop down menu and pick the best answer to match your scenario. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected. To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate."),
-      ) #end column
+        column(
+          width = 6,
+          box(
+            title = "Data Entry Instructions ",
+            width = 14,
+            "This application is for entering site data for the Marine Protection System Tracker. There are six sections with 27 subcategories to rank. Choose a score from the drop down menu and pick the best answer to match your scenario. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected. To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate."
+          ),
+        ) # end column
       ), # end fluid row
 
       # start next fluid row
@@ -102,20 +114,27 @@ body <- dashboardBody(
 
           # surveillance prioritization box
           box(
-            width = 12, title = "Surveillance Prioritization", br("Question 1 of 27"),  id = "sur_pri",
-            bsCollapse(id = "collapseExample", open = "Panel 1",
-                       bsCollapsePanel(title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
-                                       style = "info", "1 = No priority areas are defined or priority areas are not under surveillance.", 
-                                       br("3 = Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously.,"), br("5 = 100% of the priority areas are monitored continuously via regular patrols and surveillance equipment.")),
-                       bsCollapsePanel(title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")),
-                                       div(
-                                         class = "table-container",
-                                         DTOutput("table")
-                                       ))
-                       
-                       ),
-            #end of collapsed scoring guidelines
-          
+            width = 12, title = "Surveillance Prioritization",
+            br("Question 1 of 27"),
+            id = "sur_pri",
+            bsCollapse(
+              id = "collapseExample",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "No priority areas are defined or priority areas are not under surveillance."),
+                br(tags$strong("3 ="), "Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously."), br(tags$strong("5 ="), "100% of the priority areas are monitored continuously via regular patrols and surveillance equipment.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")),
+                div(
+                  class = "table-container",
+                  DTOutput("table_sur_pri")
+                )
+              )
+            ),
+            # end of collapsed scoring guidelines
+
             selectInput(
               inputId = "sur_pri_score", label = "Score",
               choices = c("", "1", "2", "3", "4", "5", "NA")
@@ -134,7 +153,8 @@ body <- dashboardBody(
             br("1 = The enforcement agency does not engage in a formal patrol planning process."),
             br("3 = The enforcement agency has a patrol plan but it is not implemented consistently."),
             br("5 = The enforcement agency follows a strategic, data-driven patrol plan."),
-            selectInput(inputId = "pat_pla_score", label = "Score",
+            selectInput(
+              inputId = "pat_pla_score", label = "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
             textInput(inputId = "pat_pla_comments", " Comments")
@@ -159,7 +179,7 @@ body <- dashboardBody(
               inputId = "ves_ava_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput(inputId ="ves_ava_comments", " Comments")
+            textInput(inputId = "ves_ava_comments", " Comments")
           ) # end vessel availability box
         ), # end first column in the row
         # second column
@@ -215,7 +235,7 @@ body <- dashboardBody(
               inputId = "pat_equ_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput(inputId ="pat_equ_comments", " Comments")
+            textInput(inputId = "pat_equ_comments", " Comments")
           ) # end patrol equipment box
         ), # end second column
       ), # end fourth fluid row
@@ -288,10 +308,10 @@ body <- dashboardBody(
             br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."),
             br("5 = Individual countries have clearly defined responsibilities and collaborate effectively on enforcement efforts."),
             selectInput(
-             inputId = "int_inst_score", "Score",
+              inputId = "int_inst_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
-            textInput(inputId ="int_inst_comments", " Comments")
+            textInput(inputId = "int_inst_comments", " Comments")
           ) # end Institutional Collaboration (International/Regional - if applicable) box
         ), # end second column
       ), # end sixth fluid row
@@ -341,7 +361,7 @@ body <- dashboardBody(
 
           # start Laws and Regulations box
           box(
-            width = 12, title = "Laws and Regulations",br("Question 12 of 27"), id = "law_reg",
+            width = 12, title = "Laws and Regulations", br("Question 12 of 27"), id = "law_reg",
             br("How to Score"),
             br("1 = Laws/ regulations are unclear (have many loopholes) or not enforceable re: prohibited species, activities, tools / gear that can be used in the area."),
             br("3 = Laws/ regulations are clear (few loopholes) or not enforceable Or vice versa re:  re: prohibited species, activities, tools / gear that can be used in the area."),
@@ -397,7 +417,7 @@ body <- dashboardBody(
           6,
           # start case database box
           box(
-            width = 12, title = "Case Database", br("Question 15 of 27"), id = "cas_dat", 
+            width = 12, title = "Case Database", br("Question 15 of 27"), id = "cas_dat",
             br("How to Score"),
             br("1 = There is no central database to keep track of cases."),
             br("3 = There is a database, but it is not used regularly or it does not track all information needed."),
@@ -433,8 +453,8 @@ body <- dashboardBody(
       ), # end fourth fluid row
 
       # start fifth fluid row
-      fluidRow( 
-        column(10, actionButton("prev_1", "Previous", class = "btn-primary") ),
+      fluidRow(
+        column(10, actionButton("prev_1", "Previous", class = "btn-primary")),
         column(2, actionButton("next_3", "Save and Continue", class = "btn-primary")),
       ) # end fifth fluid row
     ), # end policies and consequences tabItem
@@ -455,7 +475,7 @@ body <- dashboardBody(
 
           # start Enforcement Training box
           box(
-            width = 12, title =  "Enforcement Training", br("Question 17 of 27"), id = "enf_tra",
+            width = 12, title = "Enforcement Training", br("Question 17 of 27"), id = "enf_tra",
             br("How to Score"),
             br("1 = No standardized enforcement training exists for staff and other relevant agencies."),
             br("3 = Enforcement training for staff and other relevant agencies may exist, but training is irregular and not comprehensive."),
@@ -473,7 +493,7 @@ body <- dashboardBody(
           6,
           # start Standard Operating Procedures (SOPs) Box
           box(
-            width = 12, title =  "Standard Operating Procedures (SOPs)", br("Question 18 of 27"), id = "sta_ope",
+            width = 12, title = "Standard Operating Procedures (SOPs)", br("Question 18 of 27"), id = "sta_ope",
             br("How to Score"),
             br("1 = No operational SOPs exist for enforcement staff and other relevant agencies."),
             br("3 = Some operational SOPs for enforcement staff and other relevant agencies may exist, but SOPs are outdated or incomplete."),
@@ -494,7 +514,7 @@ body <- dashboardBody(
           6,
           # start Staff Qualifications box
           box(
-            width = 12, title = "Staff Qualifications",br("Question 19 of 27"), id = "sta_qua",
+            width = 12, title = "Staff Qualifications", br("Question 19 of 27"), id = "sta_qua",
             br("How to Score"),
             br("1 = Agency staff are not qualified for enforcement work."),
             br("3 = Agency staff receive minimal enforcement training."),
@@ -511,7 +531,7 @@ body <- dashboardBody(
           6,
           # start Legal Training Box
           box(
-            width = 12, title =  "Legal Training", br("Question 20 of 27"), id = "leg_tra",
+            width = 12, title = "Legal Training", br("Question 20 of 27"), id = "leg_tra",
             br("How to Score"),
             br("1 = Legal team does not exist or has not been trained."),
             br("3 = Legal team has had some training, but it is not regular or comprehensive."),
@@ -526,7 +546,7 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, actionButton("prev_2", "Previous", class = "btn-primary") ),
+        column(10, actionButton("prev_2", "Previous", class = "btn-primary")),
         column(2, actionButton("next_4", "Save and Continue", class = "btn-primary")),
       ) # end fourth fluid row
     ), # end training and mentorship tab item
@@ -603,13 +623,13 @@ body <- dashboardBody(
           6,
           # start Tourism & Private Sector Collaboration Box
           box(
-            width = 12, title = "Tourism & Private Sector Collaboration", br("Question 24 of 27"), id = 'tou_pri',
+            width = 12, title = "Tourism & Private Sector Collaboration", br("Question 24 of 27"), id = "tou_pri",
             br("How to Score"),
             br("1 = The tourism industry and private sector have little to no involvement in marine area management."),
             br("3 = The tourism industry and private sector have some involvement in marine area management."),
             br("5 = The tourism industry and private sector are highly involved in all aspects of marine area management (e.g. participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
             selectInput(
-              inputId ="tou_pri_score", "Score",
+              inputId = "tou_pri_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
             ),
             textInput(inputId = "tou_pri_comments", " Comments")
@@ -618,7 +638,7 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, actionButton("prev_3", "Previous", class = "btn-primary") ),
+        column(10, actionButton("prev_3", "Previous", class = "btn-primary")),
         column(2, actionButton("next_5", "Save and Continue", class = "btn-primary")),
       ) # end fourth fluid row
     ), # end community engagement tabItem
@@ -678,7 +698,7 @@ body <- dashboardBody(
           6,
           # start Diversified Funding Sources box
           box(
-            width = 12, title = "Diversified Funding Sources", br("Question 27 of 27"), id = "div_fun", 
+            width = 12, title = "Diversified Funding Sources", br("Question 27 of 27"), id = "div_fun",
             br("How to Score"),
             br("1 = Funding comes from a single source."),
             br("3 = Funding comes from a one or two sources with most funds coming from one source."),
@@ -693,18 +713,18 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, actionButton("prev_4", "Previous", class = "btn-primary") ),
+        column(10, actionButton("prev_4", "Previous", class = "btn-primary")),
         column(2, actionButton("next_6", "Submit", class = "btn-primary")),
       ) # end fourth fluid row
     ), # end consistent funding tab item
-  #start summary table tab item
+    # start summary table tab item
     tabItem(
       tabName = "summary",
       fluidRow(
         h1("Summary", align = "center"),
         br()
       )
-    ) #end summary table tab item
+    ) # end summary table tab item
   ) # end tab items
 ) # end dashboard body
 
