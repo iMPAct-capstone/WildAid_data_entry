@@ -4,6 +4,7 @@ header <- dashboardHeader(
   title = span("WildAid Marine MPS Tracker Data Entry",
                style = "color: white; font-size: 28px; font-family: 'Impact'"),
   titleWidth = 400,
+  # add logout button UI
   tags$li(class = "dropdown",
           tags$a(href = "https://github.com/iMPAct-capstone/WildAid_data_entry",
                  target="_blank",
@@ -13,7 +14,8 @@ header <- dashboardHeader(
           tags$a(href = "https://marine.wildaid.org/",
                  target="_blank",
                  icon("fish"),
-                 "WildAid Marine"))
+                 "WildAid Marine")),
+  tags$li(class = "dropdown", style = "margin-top: 10px; margin-right: 10px;", shinyauthr::logoutUI(id = "logout"))
 ) # End Dashboard header
 
 # dashboard sidebar ----------------------
@@ -32,8 +34,7 @@ body <- dashboardBody(
           overflow-y: auto;
         }"
     )),
-  # add logout button UI
-  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
+
   # add login panel UI function
   shinyauthr::loginUI(id = "login"),
   # setup table output to show user info after login
@@ -69,13 +70,17 @@ body <- dashboardBody(
             actionButton("next_1", "Save and Continue", class = "btn-primary"), # end next button
           ), # end data entry box
         ), # end column
-        column(6, "This application is for entering site data for the Marine Protection System Tracker. There are six sections with 27 subcategories to rank. Choose a score from the drop down menu and pick the best answer to match your scenario. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected. To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate."),
+        column(width = 6, 
+               box(title = "Data Entry Instructions ",
+                   width =14,
+                  "This application is for entering site data for the Marine Protection System Tracker. There are six sections with 27 subcategories to rank. Choose a score from the drop down menu and pick the best answer to match your scenario. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected. To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate."),
+      ) #end column
       ), # end fluid row
 
       # start next fluid row
       fluidRow(
         # start column
-        column(10, ), # end column
+        column(12, ), # end column
       ), # end fluid row
     ), # end data main page tab item
 
