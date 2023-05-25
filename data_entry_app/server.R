@@ -506,30 +506,50 @@ server <- function(input, output, session) {
     }
   }) # end observe input country box
   
-  
-  previous_data_function <- function(subcategory){
+#function to generate the table   
+  previous_data_reactive <- function(subcategory){
     filtered_data <- main_sheet %>%
       filter(year < as.numeric(input$year_input) & sub_category == subcategory & site == input$site_input) |> 
       select(year, score, comments)
-    
     return(filtered_data)
+    } 
+  
+#render all of the reactives in a list
+#pull the subcategories as a list  
+sub_categories <- main_lookuptable$subcategory
+#pull the ids as a list 
+ids <- main_lookuptable$id
+
+  reactive_objects <- reactive({
+    
+    list_data <-lapply(sub_categories, previous_data_reactive)
+    names(list_data) <- ids
+    return(list_data)
+    })
+  
+#generate all of the tables   
+  
+  #function with code for generating tables 
+  generateTableRenderCode <- function(id) {
+    table_code <- paste0("output$table_", id, " <- renderDT({",
+                         "datatable(reactive_objects()[['", id, "']],",
+                         "options = list(dom = 't',",
+                         "paging = FALSE,",
+                         "autowidth = TRUE,",
+                         "scrollCollapse = TRUE,",
+                         "order = list(list(0, 'desc'))",
+                         "),",
+                         "rownames = FALSE)",
+                         "})")
+    return(table_code)
+  }  
+
+  # Render tables for each subcategory
+  #name will be table_id
+  for (id in seq_along(ids)) {
+    eval(parse(text = generateTableRenderCode(ids)))
   }
   
-#render the table i need
-  prev_sur_pri <- reactive({
-    previous_data_function("Surveillance Prioritization")
-  })
   
-output$table_sur_pri <- renderDT({
-  datatable(prev_sur_pri(),
-            options = list(dom = 't',
-                           paging = 'false', #no pages
-                           autowidth = TRUE,
-                           scrollCollapse = TRUE,
-                           order = list(list(0, 'desc'))
-                           ),
-            rownames = FALSE) #no rownames
-})
-
 }
 

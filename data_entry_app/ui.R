@@ -149,10 +149,23 @@ body <- dashboardBody(
           # Patrol Planning Box
           box(
             width = 12, title = "Patrol Planning", br("Question 2 of 27"), id = "pat_pla",
-            br("How to Score"),
-            br("1 = The enforcement agency does not engage in a formal patrol planning process."),
-            br("3 = The enforcement agency has a patrol plan but it is not implemented consistently."),
-            br("5 = The enforcement agency follows a strategic, data-driven patrol plan."),
+            bsCollapse(
+              id = "pat_pla_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "The enforcement agency does not engage in a formal patrol planning process."),
+                br(tags$strong("3 ="), "The enforcement agency has a patrol plan but it is not implemented consistently."), br(tags$strong("5 ="), "The enforcement agency follows a strategic, data-driven patrol plan.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")),
+                div(
+                  class = "table-container",
+                  DTOutput("table_pat_pla")
+                )
+              )
+            ),
+          
             selectInput(
               inputId = "pat_pla_score", label = "Score",
               c("", "1", "2", "3", "4", "5", "NA")
