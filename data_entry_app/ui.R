@@ -377,8 +377,8 @@ body <- dashboardBody(
               open = "Panel 1",
               bsCollapsePanel(
                 title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
-                style = "info", br(tags$strong("1="), " Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement."),
-                br(tags$strong("3 ="), "Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement."), br(tags$strong("5 ="), "Institutions have clearly defined responsibilities and collaborate effectively on enforcement efforts.")
+                style = "info", br(tags$strong("1="), " Overlapping jurisdictions, unclear lines of authority, and/or competing interests lead to limited or no focus on enforcement."),
+                br(tags$strong("3 ="), "Overlapping jurisdictions, unclear lines of authority, and/or competing interests lead to inefficient, ineffective, or minimal enforcement."), br(tags$strong("5 ="), "Institutions have clearly defined responsibilities and collaborate effectively on enforcement efforts.")
               ),
               bsCollapsePanel(
                 title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
@@ -406,8 +406,8 @@ body <- dashboardBody(
               open = "Panel 1",
               bsCollapsePanel(
                 title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
-                style = "info", br(tags$strong("1="), "Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement of foreign-flagged fishing infractions."),
-                br(tags$strong("3 ="), "Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."), br(tags$strong("5 ="), "Individual countries have clearly defined responsibilities and collaborate effectively on enforcement efforts.")
+                style = "info", br(tags$strong("1="), "Overlapping jurisdictions, unclear lines of authority, and/or competing interests lead to limited or no focus on enforcement of foreign-flagged fishing infractions."),
+                br(tags$strong("3 ="), "Overlapping jurisdictions, unclear lines of authority, and/or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."), br(tags$strong("5 ="), "Individual countries have clearly defined responsibilities and collaborate effectively on enforcement efforts.")
               ),
               bsCollapsePanel(
                 title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
@@ -484,10 +484,22 @@ body <- dashboardBody(
           # start Laws and Regulations box
           box(
             width = 12, title = "Laws and Regulations", "Question 12 of 27", id = "law_reg",
-            br("How to Score"),
-            br("1 = Laws/ regulations are unclear (have many loopholes) or not enforceable re: prohibited species, activities, tools / gear that can be used in the area."),
-            br("3 = Laws/ regulations are clear (few loopholes) or not enforceable Or vice versa re:  re: prohibited species, activities, tools / gear that can be used in the area."),
-            br("5 = Laws/ regulations are clear (no loopholes) and enforceable re: prohibited species, activities, tools / gear that can be used in the area."),
+            bsCollapse(
+              id = "law_reg_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Law/regulations are unclear (have many loopholes) or not enforceable re: prohibited species, activities, tools/gear that can be used in the area."),
+                br(tags$strong("3 ="), "Laws/regulations are clear (few loopholes) or not enforceable Or vice versa re:  re: prohibited species, activities, tools/gear that can be used in the area."), br(tags$strong("5 ="), "Laws/regulations are clear (no loopholes) and enforceable re: prohibited species, activities, tools / gear that can be used in the area.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_law_reg")
+                )
+              )
+            ),
             selectInput(
               inputId = "law_reg_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -502,10 +514,22 @@ body <- dashboardBody(
           # start Zoning (n/a for EEZ-wide projects) Box
           box(
             width = 12, title = "Zoning (n/a for EEZ-wide projects)", "Question 13 of 27", id = "zon",
-            br("How to Score"),
-            br("1 = Marine area size and zoning does not match conservation goals / address threats or is difficult to enforce."),
-            br("3 = Marine area size and zoning aligns with some conservation goals and addresses some threats but not all and/ or is easier to enforce."),
-            br("5 = Marine area size and zoning aligns with key conservation goals and addresses key threats, and is enforceable."),
+            bsCollapse(
+              id = "zon_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Marine area size and zoning does not match conservation goals/address threats or is difficult to enforce."),
+                br(tags$strong("3 ="), "Marine area size and zoning aligns with some conservation goals and addresses some threats but not all and/ or is easier to enforce."), br(tags$strong("5 ="), "Marine area size and zoning aligns with key conservation goals and addresses key threats, and is enforceable.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_zon")
+                )
+              )
+            ),
             selectInput(
               inputId = "zon_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -522,11 +546,23 @@ body <- dashboardBody(
           6,
           # start Sanctions / Prosecutions box
           box(
-            width = 12, title = "Sanctions / Prosecutions", "Question 14 of 27", id = "san_pro",
-            br("How to Score"),
-            br("1 = Few cases are sanctioned and / or sanctions levied are not strong enough to deter future illegal activity."),
-            br("3 = A majority of cases are sanctioned; however sanctions are not strong enough to act as a deterrent."),
-            br("5 = A majority of cases are strongly sanctioned to the extent of the law."),
+            width = 12, title = "Sanctions/Prosecutions", "Question 14 of 27", id = "san_pro",
+            bsCollapse(
+              id = "san_pro_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Few cases are sanctioned and/or sanctions levied are not strong enough to deter future illegal activity."),
+                br(tags$strong("3 ="), "A majority of cases are sanctioned; however sanctions are not strong enough to act as a deterrent."), br(tags$strong("5 ="), "A majority of cases are strongly sanctioned to the extent of the law.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_san_pro")
+                )
+              )
+            ),
             selectInput(
               inputId = "san_pro_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -540,10 +576,23 @@ body <- dashboardBody(
           # start case database box
           box(
             width = 12, title = "Case Database", "Question 15 of 27", id = "cas_dat",
-            br("How to Score"),
-            br("1 = There is no central database to keep track of cases."),
-            br("3 = There is a database, but it is not used regularly or it does not track all information needed."),
-            br("5 = There is a central database that is consistently used for case monitoring, follow up, and to track repeat offenders. "),
+            bsCollapse(
+              id = "cas_dat_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "There is no central database to keep track of cases."),
+                br(tags$strong("3 ="), "There is a database, but it is not used regularly or it does not track all information needed."), br(tags$strong("5 ="), "There is a central database that is consistently used for case monitoring, follow up, and to track repeat offenders.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_cas_dat")
+                )
+              )
+            ),
+        
             selectInput(
               inputId = "cas_dat_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -561,10 +610,22 @@ body <- dashboardBody(
           # start Scientific Monitoring box
           box(
             width = 12, title = "Scientific Monitoring", "Question 16 of 27", id = "sci_mon",
-            br("How to Score"),
-            br("1 = No scientific monitoring or baseline assessments of target species are carried out. "),
-            br("3 = Scientific monitoring is currently being carried out and/ or a baseline has been established."),
-            br("5 = Baseline sudies and assessments are regularly carried out for target marine species or priority habitat, and assessments are integrated into the management plan. "),
+            bsCollapse(
+              id = "sci_mon_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "No scientific monitoring or baseline assessments of target species are carried out."),
+                br(tags$strong("3 ="), "Scientific monitoring is currently being carried out and/ or a baseline has been established."), br(tags$strong("5 ="), "Baseline sudies and assessments are regularly carried out for target marine species or priority habitat, and assessments are integrated into the management plan.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_sci_mon")
+                )
+              )
+            ),
             selectInput(
               inputId = "sci_mon_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
