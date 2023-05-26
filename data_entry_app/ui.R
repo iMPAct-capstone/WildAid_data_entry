@@ -339,10 +339,22 @@ body <- dashboardBody(
           # start investigation procedures box
           box(
             width = 12, title = "Investigation Procedures", br("Question 8 of 27"), id = "inv_pro",
-            br("How to Score"),
-            br("1 = There are no boarding or chain of custody procedures in place."),
-            br("3 = There are some investigation procedures in place, but they have not have been reviewed or approved by legal teams."),
-            br("5 = There are boarding and chain of custody procedures in place. These have been reviewed and approved by legal teams. "),
+            bsCollapse(
+              id = "inv_pro_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "There are no boarding or chain of custody procedures in place."),
+                br(tags$strong("3 ="), "There are some investigation procedures in place, but they have not have been reviewed or approved by legal teams."), br(tags$strong("5 ="), "There are boarding and chain of custody procedures in place. These have been reviewed and approved by legal teams.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_inv_pro")
+                )
+              )
+            ),
             selectInput(
               inputId = "inv_pro_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -360,10 +372,22 @@ body <- dashboardBody(
           # start Institutional Collaboration (National) box
           box(
             width = 12, title = "Institutional Collaboration (National)", br("Question 9 of 27"), id = "nat_inst",
-            br("How to Score"),
-            br("1 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement."),
-            br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement."),
-            br("5 = Institutions have clearly defined responsibilities and collaborate effectively on enforcement efforts."),
+            bsCollapse(
+              id = "nat_inst_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), " Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement."),
+                br(tags$strong("3 ="), "Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement."), br(tags$strong("5 ="), "Institutions have clearly defined responsibilities and collaborate effectively on enforcement efforts.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_nat_inst")
+                )
+              )
+            ),
             selectInput(
               inputId = "nat_inst_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -377,10 +401,22 @@ body <- dashboardBody(
           # start Institutional Collaboration (International/Regional - if applicable) box
           box(
             width = 12, title = "Institutional Collaboration (International/Regional - if applicable)", br("Question 10 of 27"), id = "int_inst",
-            br("How to Score"),
-            br("1 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement of foreign-flagged fishing infractions."),
-            br("3 = Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."),
-            br("5 = Individual countries have clearly defined responsibilities and collaborate effectively on enforcement efforts."),
+            bsCollapse(
+              id = "int_inst_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to limited or no focus on enforcement of foreign-flagged fishing infractions."),
+                br(tags$strong("3 ="), "Overlapping jurisdictions, unclear lines of authority, and / or competing interests lead to inefficient, ineffective, or minimal enforcement of foreign-flagged fishing infractions."), br(tags$strong("5 ="), "Individual countries have clearly defined responsibilities and collaborate effectively on enforcement efforts.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_int_inst")
+                )
+              )
+            ),
             selectInput(
               inputId = "int_inst_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -398,10 +434,22 @@ body <- dashboardBody(
           # start Staff numbers box
           box(
             width = 12, title = "Staff Numbers", br("Question 11 of 27"), id = "sta_num",
-            br("How to Score"),
-            br("1 = There are no staff for enforcement operations (e.g. surveillance such as patrols and community engagement). "),
-            br("3 = Staff numbers are insufficient for enforcement operations and/ or staff retention is low."),
-            br("5 = Staff numbers are sufficient for enforcement operations. Staff retention and/ or morale are high."),
+            bsCollapse(
+              id = "sta_num_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "There are no staff for enforcement operations (e.g. surveillance such as patrols and community engagement)."),
+                br(tags$strong("3 ="), "Staff numbers are insufficient for enforcement operations and/ or staff retention is low."), br(tags$strong("5 ="), "Staff numbers are sufficient for enforcement operations. Staff retention and/ or morale are high.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_sta_num")
+                )
+              )
+            ),
             selectInput(
               inputId = "sta_num_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
