@@ -126,7 +126,7 @@ body <- dashboardBody(
                 br(tags$strong("3 ="), "Some of the priority areas are under constant surveillance via regular patrols and surveillance equipment or all priority areas are monitored, but not continuously."), br(tags$strong("5 ="), "100% of the priority areas are monitored continuously via regular patrols and surveillance equipment.")
               ),
               bsCollapsePanel(
-                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")),
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
                 div(
                   class = "table-container",
                   DTOutput("table_sur_pri")
@@ -158,7 +158,7 @@ body <- dashboardBody(
                 br(tags$strong("3 ="), "The enforcement agency has a patrol plan but it is not implemented consistently."), br(tags$strong("5 ="), "The enforcement agency follows a strategic, data-driven patrol plan.")
               ),
               bsCollapsePanel(
-                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")),
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info", 
                 div(
                   class = "table-container",
                   DTOutput("table_pat_pla")
@@ -184,10 +184,22 @@ body <- dashboardBody(
           box(
             width = 12, title = "Vessel Availability",
             br("Question 3 of 27"), id = "ves_ava",
-            br("How to Score"),
-            br("1 = Vessels are in poor shape. Vessel availability is low."),
-            br("3 = Vessels are in good condition. Vessel availability is average (approximately 50% or more)."),
-            br("5 = Vessels are in good condition. Vessel availability is higher than 75%."),
+            bsCollapse(
+              id = "ves_ava_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Vessels are in poor shape. Vessel availability is low."),
+                br(tags$strong("3 = "), "Vessels are in good condition. Vessel availability is average (approximately 50% or more)."), br(tags$strong("5 ="), "Vessels are in good condition. Vessel availability is higher than 75%.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_ves_ava")
+                )
+              )
+            ),
             selectInput(
               inputId = "ves_ava_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -202,10 +214,22 @@ body <- dashboardBody(
           box(
             width = 12, title = "Patrol Execution",
             br("Question 4 of 27"), id = "pat_exe",
-            br("How to Score"),
-            br("1 = The enforcement agency does not conduct patrols."),
-            br("3 = The enforcement agency conduct some patrols but they are infrequent, inconsistent, and not targeted for high-risk areas."),
-            br("5 = The enforcement agency conducts frequent, consistent, strategic, data-driven patrols."),
+            bsCollapse(
+              id = "pat_exe_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "The enforcement agency does not conduct patrols."),
+                br(tags$strong("3 ="), "The enforcement agency conduct some patrols but they are infrequent, inconsistent, and not targeted for high-risk areas."), br(tags$strong("5 ="), "The enforcement agency conducts frequent, consistent, strategic, data-driven patrols.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_pat_exe")
+                )
+              )
+            ),
             selectInput(
               inputId = "pat_exe_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -223,10 +247,22 @@ body <- dashboardBody(
           # start fleet adequacy box
           box(
             width = 12, title = "Fleet Adequacy", br("Question 5 of 27"), id = "fle_ade",
-            br("How to Score"),
-            br("1 = There are not enough vessels to patrol the marine area and/ or they are not the right kinds of vessels."),
-            br("3 = There are enough vessels to patrol the marine area, but they are not the right kind of vessels (e.g. coastal vessels only when the marine area needs oceanic)."),
-            br("5 = There are enough vessels to patrol the marine area. The marine area has the right types of vessels for their needs."),
+            bsCollapse(
+              id = "fle_ade_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "There are not enough vessels to patrol the marine area and/ or they are not the right kinds of vessels."),
+                br(tags$strong("3 ="), "There are enough vessels to patrol the marine area, but they are not the right kind of vessels (e.g. coastal vessels only when the marine area needs oceanic)."), br(tags$strong("5 ="), " There are enough vessels to patrol the marine area. The marine area has the right types of vessels for their needs.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_fle_ade")
+                )
+              )
+            ),
             selectInput(
               inputId = "fle_ade_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -240,10 +276,22 @@ body <- dashboardBody(
           # start patrol equipment box
           box(
             width = 12, title = "Patrol Equipment", br("Question 6 of 27"), id = "pat_equ",
-            br("How to Score"),
-            br("1 = Patrol vessels lack essential safety equipment and boarding kits."),
-            br("3 = Patrol vessels are equipped with essential safety equipment, but lack adequate boarding kits, or vice versa."),
-            br("5 = Patorl vessels are equipped with both essential safety equipment and boarding kits."),
+            bsCollapse(
+              id = "pat_equ_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Patrol vessels lack essential safety equipment and boarding kits."),
+                br(tags$strong("3 ="), "Patrol vessels are equipped with essential safety equipment, but lack adequate boarding kits, or vice versa."), br(tags$strong("5 ="), "Patrol vessels are equipped with both essential safety equipment and boarding kits.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_pat_equ")
+                )
+              )
+            ),
             selectInput(
               inputId = "pat_equ_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -261,10 +309,23 @@ body <- dashboardBody(
           # start Intelligence Sources box
           box(
             width = 12, title = "Intelligence Sources", br("Question 7 of 27"), id = "int_sou",
-            br("How to Score"),
-            br("1 = Intelligence information is limited to what is gathered from patrols."),
-            br("3 = The enforcement agency has some access to external intelligence (e.g. informants or surveillance technology)."),
-            br("5 = he enforcement agency uses multiple channels to gather intelligence information, including but not limited to: surveillance technology to track infractions as they occur, an informant hotline, and other outside sources."),
+            bsCollapse(
+              id = "int_sou_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Intelligence information is limited to what is gathered from patrols."),
+                br(tags$strong("3 ="), "The enforcement agency has some access to external intelligence (e.g. informants or surveillance technology)."), br(tags$strong("5 ="), "The enforcement agency uses multiple channels to gather intelligence information, including but not limited to: surveillance technology to track infractions as they occur, an informant hotline, and other outside sources.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_int_sou")
+                )
+              )
+            ),
+        
             selectInput(
               inputId = "int_sou_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
