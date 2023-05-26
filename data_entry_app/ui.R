@@ -490,7 +490,7 @@ body <- dashboardBody(
               bsCollapsePanel(
                 title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
                 style = "info", br(tags$strong("1="), "Law/regulations are unclear (have many loopholes) or not enforceable re: prohibited species, activities, tools/gear that can be used in the area."),
-                br(tags$strong("3 ="), "Laws/regulations are clear (few loopholes) or not enforceable Or vice versa re:  re: prohibited species, activities, tools/gear that can be used in the area."), br(tags$strong("5 ="), "Laws/regulations are clear (no loopholes) and enforceable re: prohibited species, activities, tools / gear that can be used in the area.")
+                br(tags$strong("3 ="), "Laws/regulations are clear (few loopholes) or not enforceable Or vice versa re: prohibited species, activities, tools/gear that can be used in the area."), br(tags$strong("5 ="), "Laws/regulations are clear (no loopholes) and enforceable re: prohibited species, activities, tools / gear that can be used in the area.")
               ),
               bsCollapsePanel(
                 title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
@@ -659,10 +659,22 @@ body <- dashboardBody(
           # start Enforcement Training box
           box(
             width = 12, title = "Enforcement Training", "Question 17 of 27", id = "enf_tra",
-            br("How to Score"),
-            br("1 = No standardized enforcement training exists for staff and other relevant agencies."),
-            br("3 = Enforcement training for staff and other relevant agencies may exist, but training is irregular and not comprehensive."),
-            br("5 = Staff and other relevant agencies receive regular enforement trainings (sometimes multi-agency)."),
+            bsCollapse(
+              id = "enf_tra_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), " No standardized enforcement training exists for staff and other relevant agencies."),
+                br(tags$strong("3 ="), "Enforcement training for staff and other relevant agencies may exist, but training is irregular and not comprehensive."), br(tags$strong("5 ="), "Staff and other relevant agencies receive regular enforement trainings (sometimes multi-agency).")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_enf_tra")
+                )
+              )
+            ),
             selectInput(
               inputId = "enf_tra_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -677,10 +689,22 @@ body <- dashboardBody(
           # start Standard Operating Procedures (SOPs) Box
           box(
             width = 12, title = "Standard Operating Procedures (SOPs)", "Question 18 of 27", id = "sta_ope",
-            br("How to Score"),
-            br("1 = No operational SOPs exist for enforcement staff and other relevant agencies."),
-            br("3 = Some operational SOPs for enforcement staff and other relevant agencies may exist, but SOPs are outdated or incomplete."),
-            br("5 = Enforcement staff and other relevant agencies have comprehensive operational SOPs covering boarding, crime scene investigation, and chain of custody procedures. All relevant staff receive regular trainings (sometimes multi-agency) on SOPs and SOPs are updated annually."),
+            bsCollapse(
+              id = "sta_ope_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "No operational SOPs exist for enforcement staff and other relevant agencies."),
+                br(tags$strong("3 ="), "Some operational SOPs for enforcement staff and other relevant agencies may exist, but SOPs are outdated or incomplete."), br(tags$strong("5 ="), "Enforcement staff and other relevant agencies have comprehensive operational SOPs covering boarding, crime scene investigation, and chain of custody procedures. All relevant staff receive regular trainings (sometimes multi-agency) on SOPs and SOPs are updated annually.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_sta_ope")
+                )
+              )
+            ),
             selectInput(
               inputId = "sta_ope_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -698,10 +722,22 @@ body <- dashboardBody(
           # start Staff Qualifications box
           box(
             width = 12, title = "Staff Qualifications", "Question 19 of 27", id = "sta_qua",
-            br("How to Score"),
-            br("1 = Agency staff are not qualified for enforcement work."),
-            br("3 = Agency staff receive minimal enforcement training."),
-            br("5 = Agency staff receive regular comprehensive enforcement training and are qualified for their jobs. Staff is selected based on experience. Training occurs regularly and includes all relevant topics. Site has received 'train-the-trainer' instruction."),
+            bsCollapse(
+              id = "sta_qua_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Agency staff are not qualified for enforcement work."),
+                br(tags$strong("3 ="), "Agency staff receive minimal enforcement training."), br(tags$strong("5 ="), "Agency staff receive regular comprehensive enforcement training and are qualified for their jobs. Staff is selected based on experience. Training occurs regularly and includes all relevant topics. Site has received 'train-the-trainer' instruction.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_sta_qua")
+                )
+              )
+            ),
             selectInput(
               inputId = "sta_qua_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -715,10 +751,22 @@ body <- dashboardBody(
           # start Legal Training Box
           box(
             width = 12, title = "Legal Training", "Question 20 of 27", id = "leg_tra",
-            br("How to Score"),
-            br("1 = Legal team does not exist or has not been trained."),
-            br("3 = Legal team has had some training, but it is not regular or comprehensive."),
-            br("5 = Legal team receives regular training, together with enforcement staff, on environmental laws and respective sanctions."),
+            bsCollapse(
+              id = "leg_tra_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Legal team does not exist or has not been trained."),
+                br(tags$strong("3 ="), "Legal team has had some training, but it is not regular or comprehensive."), br(tags$strong("5 ="), "Legal team receives regular training, together with enforcement staff, on environmental laws and respective sanctions.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_leg_tra")
+                )
+              )
+            ),
             selectInput(
               inputId = "leg_tra_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -751,10 +799,22 @@ body <- dashboardBody(
           # start Community Education & Outreach box
           box(
             width = 12, title = "Community Education & Outreach", "Question 21 of 27", id = "com_edu",
-            br("How to Score"),
-            br("1 = Community Education & Outreach is not included in the area's management plan and little or no outreach efforts take place."),
-            br("3 = Community Education/ Outreach is included in the area's management plan and some attempts at outreach take place."),
-            br("5 = Community Education/ Outreach is included in the area's management plan and outreach efforts occur on a frequent and ongoing basis; outreach strategies are adjusted based on community needs and as public knowledge and awareness increases."),
+            bsCollapse(
+              id = "com_edu_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Community Education & Outreach is not included in the area's management plan and little or no outreach efforts take place."),
+                br(tags$strong("3 ="), "Community Education/Outreach is included in the area's management plan and some attempts at outreach take place."), br(tags$strong("5 ="), "Community Education/Outreach is included in the area's management plan and outreach efforts occur on a frequent and ongoing basis; outreach strategies are adjusted based on community needs and as public knowledge and awareness increases.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_com_edu")
+                )
+              )
+            ),
             selectInput(
               inputId = "com_edu_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -769,10 +829,22 @@ body <- dashboardBody(
           # start Community Involvement Box
           box(
             width = 12, title = "Community Involvement", "Question 22 of 27", id = "com_inv",
-            br("How to Score"),
-            br("1 = The community has little to no involvement in marine area management."),
-            br("3 = The community has some involvement in marine area management."),
-            br("5 = The community is highly involved in all aspects of marine area management (e.g. community members participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
+            bsCollapse(
+              id = "com_inv_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "The community has little to no involvement in marine area management."),
+                br(tags$strong("3 ="), "The community has some involvement in marine area management."), br(tags$strong("5 ="), "The community is highly involved in all aspects of marine area management (e.g. community members participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_com_inv")
+                )
+              )
+            ),
             selectInput(
               inputId = "com_inv_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -790,10 +862,22 @@ body <- dashboardBody(
           # start Fishing Sector Collaboration box
           box(
             width = 12, title = "Fishing Sector Collaboration", "Question 23 of 27", id = "fis_sec",
-            br("How to Score"),
-            br("1 = The fishing sector has little to no involvement in marine area management."),
-            br("3 = The fishing sector has some involvement in marine area management."),
-            br("5 = The fishing sector is highly involved in all aspects of marine area management (e.g. fishers participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
+            bsCollapse(
+              id = "fis_sec_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "The fishing sector has little to no involvement in marine area management."),
+                br(tags$strong("3 ="), "The fishing sector has some involvement in marine area management."), br(tags$strong("5 ="), "The fishing sector is highly involved in all aspects of marine area management (e.g. fishers participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_fis_sec")
+                )
+              )
+            ),
             selectInput(
               inputId = "fis_sec_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -807,10 +891,22 @@ body <- dashboardBody(
           # start Tourism & Private Sector Collaboration Box
           box(
             width = 12, title = "Tourism & Private Sector Collaboration", "Question 24 of 27", id = "tou_pri",
-            br("How to Score"),
-            br("1 = The tourism industry and private sector have little to no involvement in marine area management."),
-            br("3 = The tourism industry and private sector have some involvement in marine area management."),
-            br("5 = The tourism industry and private sector are highly involved in all aspects of marine area management (e.g. participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures."),
+            bsCollapse(
+              id = "fis_sec_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+              title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+              style = "info", br(tags$strong("1="), "The tourism industry and private sector have little to no involvement in marine area management."),
+              br(tags$strong("3 ="), "The tourism industry and private sector have some involvement in marine area management."), br(tags$strong("5 ="), "The tourism industry and private sector are highly involved in all aspects of marine area management (e.g. participate in town hall meetings, management processes, call in tips, etc.) through both informal processes or more formal governance structures.")
+            ),
+            bsCollapsePanel(
+              title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+              div(
+                class = "table-container",
+                DTOutput("table_tou_pri")
+              )
+            )
+          ),
             selectInput(
               inputId = "tou_pri_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -842,10 +938,22 @@ body <- dashboardBody(
           # start Funding box
           box(
             width = 12, title = "Funding", "Question 25 of 27", id = "fun",
-            br("How to Score"),
-            br("1 = Little or no funding is available for enforcement efforts."),
-            br("3 = Enforcement needs are budgeted and some of the enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses."),
-            br("5 = Enforcement needs are budgeted. The full enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses."),
+            bsCollapse(
+              id = "fun_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Little or no funding is available for enforcement efforts."),
+                br(tags$strong("3 ="), "Enforcement needs are budgeted and some of the enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses."), br(tags$strong("5 ="), "Enforcement needs are budgeted. The full enforcement budget is met. Funding comes from several continuing sources, is budgeted and allocated efficiently, and is enough to cover day-to-day enforcement expenses.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_fun")
+                )
+              )
+            ),
             selectInput(
               inputId = "fun_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -861,10 +969,22 @@ body <- dashboardBody(
           box(
             width = 12, title = "Cost Efficiency", "Question 26 of 27",
             id = "cos_eff",
-            br("How to Score"),
-            br("1 = There are no cost-efficiency measures* in place."),
-            br("3 = Some cost-efficiency measures are in place. However, there is little or no funding for unforeseen expenses (i.e. prosecution costs, unexpected repairs, new surveillance assets, etc.)"),
-            br("5 = The agency has identified and implemented all potential cost-efficiency measures. Additional funding, managed through some sort of savings account, is available for unforeseen expenses (i.e. prosecution costs, unexpected repairs, new surveillance assets, etc.)."),
+            bsCollapse(
+              id = "cost_eff_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "There are no cost-efficiency measures* in place."),
+                br(tags$strong("3 ="), "Some cost-efficiency measures are in place. However, there is little or no funding for unforeseen expenses (i.e. prosecution costs, unexpected repairs, new surveillance assets, etc.)"), br(tags$strong("5 ="), "The agency has identified and implemented all potential cost-efficiency measures. Additional funding, managed through some sort of savings account, is available for unforeseen expenses (i.e. prosecution costs, unexpected repairs, new surveillance assets, etc.).")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_cos_eff")
+                )
+              )
+            ),
             selectInput(
               inputId = "cos_eff_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
@@ -882,10 +1002,22 @@ body <- dashboardBody(
           # start Diversified Funding Sources box
           box(
             width = 12, title = "Diversified Funding Sources", "Question 27 of 27", id = "div_fun",
-            br("How to Score"),
-            br("1 = Funding comes from a single source."),
-            br("3 = Funding comes from a one or two sources with most funds coming from one source."),
-            br("5 = Funding comes from 2 or more sources, with a more diverse and balanced composition."),
+            bsCollapse(
+              id = "div_fun_collapse",
+              open = "Panel 1",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+                style = "info", br(tags$strong("1="), "Funding comes from a single source."),
+                br(tags$strong("3 ="), "Funding comes from a one or two sources with most funds coming from one source."), br(tags$strong("5 ="), "Funding comes from a one or two sources with most funds coming from one source.")
+              ),
+              bsCollapsePanel(
+                title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+                div(
+                  class = "table-container",
+                  DTOutput("table_div_fun")
+                )
+              )
+            ),
             selectInput(
               inputId = "div_fun_score", "Score",
               c("", "1", "2", "3", "4", "5", "NA")
