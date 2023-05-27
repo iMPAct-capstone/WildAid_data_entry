@@ -105,7 +105,8 @@ server <- function(input, output, session) {
       # proceed if all required fields are present
     } else{
       url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+      master_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
       
   
       # read in the existing data
@@ -122,17 +123,30 @@ server <- function(input, output, session) {
         data_update_function(master_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
-      
-      # #check on backups 
-      # backup_list <- drive_ls("https://drive.google.com/drive/folders/14npufqTR_om8HrzhkKVx2S4trHbiuwuS") 
-      # backup_list <- backup_list |>  mutate(backup_date = mdy(str_remove(name, "MPS_backup_")))
-      # last_backup <- max(backup_list$backup_date)
-      # days_since_backup <- as.numeric(last_backup - Sys.Date())
-      # if (days_since_backup > 14){
-      #   #save the google sheet to the backup folder
-      #   gs4_create(main_sheet, name = "backup")
-      #   
-      # }
+ #check on and save backup     
+       #look in the backup folder
+       backup_list <- drive_ls("https://drive.google.com/drive/folders/14npufqTR_om8HrzhkKVx2S4trHbiuwuS")
+       
+       
+      #find the backup dates
+       backup_list <- backup_list |> 
+         mutate(backup_date = mdy(str_remove(name, "MPS_backup_")))
+       #find the date of the last backup if there is one
+       if (nrow(backup_list) > 0) {
+       last_backup <- max(backup_list$backup_date)
+      days_since_backup <- as.numeric(Sys.Date() - last_backup) } else {days_since_backup <- 100}
+       if (days_since_backup > 14){
+        #save the google sheet to the backup folder
+         file_name <- paste0("MPS_backup_", 
+                             month(Sys.Date()), "_",
+                             day(Sys.Date()), "_",
+                             year(Sys.Date()))
+         gs4_create(name = file_name, sheets = main_sheet)
+        
+         folder_id <- "14npufqTR_om8HrzhkKVx2S4trHbiuwuS"
+         drive_mv(file_name, path = as_id(folder_id))
+        
+       }
       
       progress(TRUE)
       } })
@@ -180,11 +194,12 @@ server <- function(input, output, session) {
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
       # identify the url
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+     
       # get for writing to
-      master_tracker <- gs4_get(url)
+      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
       
       sur_lookuptable <- main_lookuptable |> 
        filter(tab == "enforcement")
@@ -197,8 +212,8 @@ server <- function(input, output, session) {
         sur_comment_value <- input[[sur_comment_input]]
         
         data_entry_function(
-          google_instance = master_tracker,
-          google_data = master_sheet,
+          google_instance = main_tracker,
+          google_data = main_sheet,
           year_entered = input$year_input,
           category = "Surveillance and Enforcement",
           sub_category_entered = sur_sub_category_name,
@@ -262,14 +277,13 @@ server <- function(input, output, session) {
    observe(
     if (entry_pol() && input$tabs == "training") {
        
-       # read in the google sheet
-       # need to do this each time we write in case multiple people are on the app
+    
        # identify the url
-       url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+
 #       # get for writing to
-       master_tracker <- gs4_get(url)
+       main_tracker <- gs4_get(main_sheet_id)
 #       # also read in for checking for existing data
-       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+       main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
       
         pol_lookuptable <- main_lookuptable |> 
        filter(tab == "policies")
@@ -291,7 +305,7 @@ server <- function(input, output, session) {
          pol_comment_value <- input[[pol_comment_input]]
          
          
-         data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+         data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
        }
        
        entry_sur(FALSE)
@@ -330,12 +344,11 @@ server <- function(input, output, session) {
       
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
-      # identify the url
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
       # get for writing to
-      master_tracker <- gs4_get(url)
+      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
       
       tra_lookuptable <- main_lookuptable |> 
         filter(tab == "training")
@@ -358,7 +371,7 @@ server <- function(input, output, session) {
         tra_comment_value <- input[[tra_comment_input]]
         
         
-        data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
+        data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
       }
       entry_tra(FALSE)
     }) 
@@ -390,12 +403,12 @@ server <- function(input, output, session) {
       
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
-      # identify the url
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
+      
       # get for writing to
-      master_tracker <- gs4_get(url)
+      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
       
       comm_lookuptable <- main_lookuptable |> 
         filter(tab == "community")
@@ -417,7 +430,7 @@ server <- function(input, output, session) {
         comm_comment_value <- input[[comm_comment_input]]
         
         
-        data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) }
+        data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) }
         
         entry_comm(FALSE)
     })
@@ -437,10 +450,11 @@ server <- function(input, output, session) {
 # consistent funding next button
   observeEvent(input$next_6, {
     newtab <- switch(input$tabs,
-                     "funding" = "data",
-                     "data" = "funding")  
+                     "funding" = "summary",
+                     "data" = "summary")  
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
+      entry_con(TRUE)
       
       
     })
@@ -449,16 +463,16 @@ server <- function(input, output, session) {
   
   #start consistent funding data entry
   observe(
-    if (entry_con() && input$tabs == "data") {
+    if (entry_con() && input$tabs == "summary") {
       
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
       # identify the url
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
       # get for writing to
-      master_tracker <- gs4_get(url)
+      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
-      master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
       
       con_lookuptable <- main_lookuptable |> 
         filter(tab == "funding")
@@ -480,7 +494,7 @@ server <- function(input, output, session) {
         con_comment_value <- input[[con_comment_input]]
         
         
-        data_entry_function(google_instance = master_tracker, google_data = master_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
+        data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
       }
         
         #end consistent funding tab data entry

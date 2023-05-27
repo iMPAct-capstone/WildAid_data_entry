@@ -115,6 +115,9 @@ lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D
 main_lookuptable <- read_sheet(lookup_id_url)
 
 
-#read in all the data 
-url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
-main_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+#read in all the data
+folder_url <- "https://drive.google.com/drive/u/0/folders/11jjznh0MFuhy8oLxHp8uGePF4xR5T-GW"
+files <- drive_ls(folder_url) |> 
+  filter(name == "data_entry_test")
+main_sheet_id <- as_id(files)
+main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
