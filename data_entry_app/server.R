@@ -106,8 +106,9 @@ server <- function(input, output, session) {
     } else{
       url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
       master_sheet <- read_sheet(url) |> mutate(year = as.numeric(year))
+      
   
-      #test----
+      # read in the existing data
       for (i in seq_along(main_lookuptable$subcategory)) {
         # name of the subcategory
         sur_sub_category_name <- main_lookuptable$subcategory[i]
@@ -121,6 +122,18 @@ server <- function(input, output, session) {
         data_update_function(master_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
+      
+      # #check on backups 
+      # backup_list <- drive_ls("https://drive.google.com/drive/folders/14npufqTR_om8HrzhkKVx2S4trHbiuwuS") 
+      # backup_list <- backup_list |>  mutate(backup_date = mdy(str_remove(name, "MPS_backup_")))
+      # last_backup <- max(backup_list$backup_date)
+      # days_since_backup <- as.numeric(last_backup - Sys.Date())
+      # if (days_since_backup > 14){
+      #   #save the google sheet to the backup folder
+      #   gs4_create(main_sheet, name = "backup")
+      #   
+      # }
+      
       progress(TRUE)
       } })
   # end data tab next button
@@ -428,6 +441,8 @@ server <- function(input, output, session) {
                      "data" = "funding")  
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
+      
+      
     })
     
 #consistent funding tab data entry
@@ -489,7 +504,7 @@ server <- function(input, output, session) {
   observeEvent(input$tabs,{ shinyjs::runjs("window.scrollTo(0, 0)")
    })
   
-  # #end of data entry 
+  #end of data entry 
     
   # update site choices ----
   observeEvent(input$country_input, {

@@ -8,16 +8,18 @@ library(lubridate)
 library(shinyBS)
 library(shinybusy)
 library(DT)
+library(googledrive)
+library(lubridate)
 
 
 
 # auto-authenticate google sheets ... this will have you interactively authenticate using broswer
- options(gargle_oauth_cache = ".secrets/")
+# options(gargle_oauth_cache = ".secrets/")
  #auto authenticate without browser
-  gs4_auth(
-  cache = ".secrets",
-  email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
-  )
+  # gs4_auth(
+  # cache = ".secrets",
+  # email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
+  # )
 
 # dataframe that holds usernames, passwords and other user data
 user_base <- tibble::tibble(
