@@ -64,7 +64,7 @@ body <- dashboardBody(
             width = 8,
             textInput(inputId = "name_input", label = "Evaluator Name(s)"), # end text input
 
-            numericInput(inputId = "year_input", label = "Data Year", value = current_year_plus_one, min = 2019, max = 2080), # end text input
+            numericInput(inputId = "year_input", label = "Data Year", value = current_year_minus_one, min = 2019, max = 2080), # end text input
 
             selectInput(
               inputId = "country_input", label = "Country",

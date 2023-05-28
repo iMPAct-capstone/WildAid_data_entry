@@ -7,7 +7,6 @@ server <- function(input, output, session) {
   entry_tra <- reactiveVal(FALSE)
   entry_comm <- reactiveVal(FALSE)
   entry_con <- reactiveVal(FALSE)
-  
   progress <- reactiveVal(FALSE)
   
   # password authentication ----
@@ -229,7 +228,7 @@ server <- function(input, output, session) {
           score = sur_score_value,
           country = input$country_input,
           site_entered = input$site_input,
-          comments = sur_comment_value,
+          comments_entered = sur_comment_value,
           evaluator = input$name_input
         )
         
@@ -318,7 +317,7 @@ server <- function(input, output, session) {
          pol_comment_value <- input[[pol_comment_input]]
          
          
-      pol_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+      pol_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = pol_comment_value, evaluator = input$name_input)
       
       if (!is.null(nrow(pol_row))){
       append_data <- bind_rows(pol_row, append_data) 
@@ -392,7 +391,7 @@ server <- function(input, output, session) {
         tra_comment_value <- input[[tra_comment_input]]
         
         
-        tra_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
+        tra_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = tra_comment_value, evaluator = input$name_input)
         if (!is.null(nrow(tra_row))){
           append_data <- bind_rows(tra_row, append_data) 
           
@@ -460,7 +459,7 @@ server <- function(input, output, session) {
         comm_comment_value <- input[[comm_comment_input]]
         
         
-        comm_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) 
+        comm_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = comm_comment_value, evaluator = input$name_input) 
         if (!is.null(nrow(comm_row))){
       
     append_data <- bind_rows(comm_row, append_data) 
@@ -534,7 +533,7 @@ server <- function(input, output, session) {
         con_comment_value <- input[[con_comment_input]]
         
         
-        con_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
+        con_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = con_comment_value, evaluator = input$name_input)
         if (!is.null(nrow(con_row))){
           append_data <- bind_rows(con_row, append_data) 
           

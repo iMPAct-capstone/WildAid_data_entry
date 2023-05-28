@@ -44,7 +44,7 @@ site_list <- read_sheet(site_url)
 # find the current year plus 1----
 # used for updating the default year in the app
 
-current_year_plus_one <- year(Sys.Date()) + 1
+current_year_minus_one <- year(Sys.Date()) - 1
 
 #create validation and old data pulling function----
 data_update_function <- function(google_data,
@@ -72,7 +72,7 @@ data_update_function <- function(google_data,
 
 data_entry_function <- function(google_instance,
                                 google_data,
-                                year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments, evaluator) {
+                                year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments_entered, evaluator) {
   # check whether this data already exists
   old_data <- as.data.frame(google_data)
 
@@ -83,7 +83,11 @@ data_entry_function <- function(google_instance,
   # if no data then don't do anything here
   if (score != "") {
     # if data has been entered then make a data frame
-    textB <- reactive({
+    if (comments_entered == ""){
+      comments_entered <- NA
+    }
+    
+    textB <- 
       data.frame(
         year = year_entered,
         category = category,
@@ -92,28 +96,46 @@ data_entry_function <- function(google_instance,
         score = score,
         country = country,
         site = site_entered,
-        if (comments != "") {
-          comments <- comments
-        } else {
-          comments <- "NA"
-        },
+        comments = comments_entered,
         entered_by = evaluator,
         visualization_include = "yes"
       )
-    })
-
-    if (nrow(old_data_2) == 1) {
-      # overwrite where it already exists
-      # Get the row index
-      specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
-      range_write(google_instance, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
-      # if it doesn't already exist then just append it to the bottom
-      #make a placeholder to return
+    
+    
+    #if there is old data 
+    if (nrow(old_data_2) == 1) { 
+      #make a placeholder to return since no data being appended
+      
+      
+      #check if anything has changed
+      
+      old_data_check <- old_data_2 |>
+        select(score,comments,entered_by) |> 
+        mutate(comments =
+                 case_when(is.na(comments) ~"None",
+                           TRUE ~ comments))
+      
+      new_data_check <- textB |>
+        select(score,comments,entered_by) |> mutate(comments =
+                                                      case_when(is.na(comments) ~"None", TRUE ~ comments))
+      # overwrite where it already exists and has changed
+      row1 <- old_data_check[1, ]  # Row from the first data frame
+      #make sure nas are comparable 
+      row2 <- new_data_check[1, ]  # Row from the second data frame
+      print("the problem is here")
+      if(!row1$score == row2$score | !row1$comments == row2$comments | !row1$entered_by == row2$entered_by){
+        print("overwriting")
+        
+        # Get the row index
+        specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
+        range_write(google_instance, data = textB, range = cell_rows(specific_row), col_names = FALSE) 
+      }
       row <-0
       return(row)
-    } else {
+      
+    } else { # if it doesn't already exist then just append it to the bottom
       #add it to a data frame outside the list 
-      row <- textB()
+      row <- textB
       return(row)
       #sheet_append(google_instance, data = textB())
     } # end of surveillance prioritization data entry
