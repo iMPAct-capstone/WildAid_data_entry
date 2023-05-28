@@ -18,6 +18,7 @@ server <- function(input, output, session) {
     data = user_base,
     user_col = user,
     pwd_col = password,
+    sodium_hashed = TRUE,
     log_out = reactive(logout_init()),
     reload_on_logout = TRUE
   )

@@ -22,11 +22,16 @@ library(lubridate)
   # )
 
 # dataframe that holds usernames, passwords and other user data
+password_url <- "https://docs.google.com/spreadsheets/d/1pTWPJ10x66DgMFtFqy_8wZFPh8hgygkiBuGsW4BtejI/edit#gid=0"
+password_sheet <- read_sheet(password_url, sheet = "data_entry")
+
+
+
 user_base <- tibble::tibble(
-  user = c("user1", "user2"),
-  password = c("pass1", "pass2"),
-  permissions = c("admin", "standard"),
-  name = c("User One", "User Two")
+  user = password_sheet$username,
+  password = purrr::map_chr(password_sheet$password, sodium::password_store),
+  permissions = password_sheet$permission,
+  name = password_sheet$name
 )
 
 # Read in Data ----
