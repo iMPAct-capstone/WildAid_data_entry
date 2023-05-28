@@ -103,8 +103,14 @@ data_entry_function <- function(google_instance,
       specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
       range_write(google_instance, data = textB(), range = cell_rows(specific_row), col_names = FALSE)
       # if it doesn't already exist then just append it to the bottom
-    } else { # Append data to Google Sheet
-      sheet_append(google_instance, data = textB())
+      #make a placeholder to return
+      row <-0
+      return(row)
+    } else {
+      #add it to a data frame outside the list 
+      row <- textB()
+      return(row)
+      #sheet_append(google_instance, data = textB())
     } # end of surveillance prioritization data entry
   } # end of all data entry for this category
 }

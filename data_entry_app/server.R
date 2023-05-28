@@ -104,7 +104,6 @@ server <- function(input, output, session) {
       showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
       # proceed if all required fields are present
     } else{
-      url <- "https://docs.google.com/spreadsheets/d/1RuMBpryb6Y7l8x6zP4hERyEJsj2GCodcL-vs9OPnLXY/edit#gid=0"
       master_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
       
@@ -276,15 +275,15 @@ server <- function(input, output, session) {
    observe(
     if (entry_pol() && input$tabs == "training") {
        
-    
-       # identify the url
 
-  # also read in for checking for existing data
+  # read in for checking for existing data
        main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
       
         pol_lookuptable <- main_lookuptable |> 
        filter(tab == "policies")
        
+      #initiate empty data frame
+      append_data <- tibble()   
        for (i in seq_along(pol_lookuptable$subcategory)) {
         # name of the subcategory
          pol_sub_category_name <- pol_lookuptable$subcategory[i]
@@ -302,11 +301,20 @@ server <- function(input, output, session) {
          pol_comment_value <- input[[pol_comment_input]]
          
          
-         data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+      row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+      
+      if (!is.null(nrow(row))){
+        print(class(row))
+      append_data <- bind_rows(row, append_data) 
+    
+      }
+     
        }
-       
+      if (nrow(append_data) >0){
+      sheet_append(main_sheet_id, data = append_data) }
        entry_sur(FALSE)
-     }) 
+     }
+  ) 
   # end policies tab data entry
   
 # training and mentorship next button
