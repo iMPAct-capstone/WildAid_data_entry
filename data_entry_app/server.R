@@ -196,7 +196,6 @@ server <- function(input, output, session) {
       # identify the url
      
       # get for writing to
-      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
       main_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
@@ -212,7 +211,7 @@ server <- function(input, output, session) {
         sur_comment_value <- input[[sur_comment_input]]
         
         data_entry_function(
-          google_instance = main_tracker,
+          google_instance = main_sheet_id,
           google_data = main_sheet,
           year_entered = input$year_input,
           category = "Surveillance and Enforcement",
@@ -280,9 +279,7 @@ server <- function(input, output, session) {
     
        # identify the url
 
-#       # get for writing to
-       main_tracker <- gs4_get(main_sheet_id)
-#       # also read in for checking for existing data
+  # also read in for checking for existing data
        main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
       
         pol_lookuptable <- main_lookuptable |> 
@@ -305,7 +302,7 @@ server <- function(input, output, session) {
          pol_comment_value <- input[[pol_comment_input]]
          
          
-         data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+         data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
        }
        
        entry_sur(FALSE)
@@ -344,8 +341,7 @@ server <- function(input, output, session) {
       
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
-      # get for writing to
-      main_tracker <- gs4_get(main_sheet_id)
+    
       # also read in for checking for existing data
       main_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
@@ -371,7 +367,7 @@ server <- function(input, output, session) {
         tra_comment_value <- input[[tra_comment_input]]
         
         
-        data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
+        data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
       }
       entry_tra(FALSE)
     }) 
@@ -404,8 +400,6 @@ server <- function(input, output, session) {
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
       
-      # get for writing to
-      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
       main_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
@@ -430,7 +424,7 @@ server <- function(input, output, session) {
         comm_comment_value <- input[[comm_comment_input]]
         
         
-        data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) }
+        data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) }
         
         entry_comm(FALSE)
     })
@@ -468,8 +462,6 @@ server <- function(input, output, session) {
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
       # identify the url
-      # get for writing to
-      main_tracker <- gs4_get(main_sheet_id)
       # also read in for checking for existing data
       main_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
@@ -494,7 +486,7 @@ server <- function(input, output, session) {
         con_comment_value <- input[[con_comment_input]]
         
         
-        data_entry_function(google_instance = main_tracker, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
+        data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
       }
         
         #end consistent funding tab data entry
