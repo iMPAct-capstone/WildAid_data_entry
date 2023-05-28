@@ -151,7 +151,9 @@ server <- function(input, output, session) {
       } })
   # end data tab next button
   
+  #once we get to the next page remove the loading spinner
   observe(
+    
     if (progress() && input$tabs == "enforcement"){
       remove_modal_spinner()
       })
@@ -192,24 +194,31 @@ server <- function(input, output, session) {
       
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
-      # identify the url
-     
-      # get for writing to
-      # also read in for checking for existing data
+      
       main_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
       
+      #read in lookup table
       sur_lookuptable <- main_lookuptable |> 
        filter(tab == "enforcement")
       
-      process_iteration <- function(i) {
+
+      #initiate empty data frame
+      append_data <- tibble()   
+      for (i in seq_along(sur_lookuptable$subcategory)) {
+        # name of the subcategory
         sur_sub_category_name <- sur_lookuptable$subcategory[i]
+        
+        # get the name of the score id
         sur_score_input <- sur_lookuptable$score_id[i]
+        # get the value of the score
         sur_score_value <- input[[sur_score_input]]
+        # name of comment id
         sur_comment_input <- sur_lookuptable$comment_id[i]
+        # get the value of the comment
         sur_comment_value <- input[[sur_comment_input]]
         
-        data_entry_function(
+        sur_row <-  data_entry_function(
           google_instance = main_sheet_id,
           google_data = main_sheet,
           year_entered = input$year_input,
@@ -222,12 +231,19 @@ server <- function(input, output, session) {
           comments = sur_comment_value,
           evaluator = input$name_input
         )
+        
+        if (!is.null(nrow(sur_row))){
+          
+          append_data <- bind_rows(sur_row, append_data) 
+          
+        }
+        
       }
-      
-      lapply(seq_along(sur_lookuptable$subcategory), process_iteration)
+      if (nrow(append_data) >0){
+        sheet_append(main_sheet_id, data = append_data) }
       entry_sur(FALSE)
-      
-    }) # end enforcement tab data entry
+    }
+  )  # end enforcement tab data entry
   
   
  
@@ -301,18 +317,17 @@ server <- function(input, output, session) {
          pol_comment_value <- input[[pol_comment_input]]
          
          
-      row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
+      pol_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Policies and Consequences", sub_category_entered = pol_sub_category_name, indicator_type = "Process Indicator", score = pol_score_value, country = input$country_input, site_entered = input$site_input, comments = pol_comment_value, evaluator = input$name_input)
       
-      if (!is.null(nrow(row))){
-        print(class(row))
-      append_data <- bind_rows(row, append_data) 
+      if (!is.null(nrow(pol_row))){
+      append_data <- bind_rows(pol_row, append_data) 
     
       }
      
        }
       if (nrow(append_data) >0){
       sheet_append(main_sheet_id, data = append_data) }
-       entry_sur(FALSE)
+       entry_pol(FALSE)
      }
   ) 
   # end policies tab data entry
@@ -357,6 +372,7 @@ server <- function(input, output, session) {
       tra_lookuptable <- main_lookuptable |> 
         filter(tab == "training")
       
+      append_data <- tibble()
       
       for (i in seq_along(tra_lookuptable$subcategory)) {
         # name of the subcategory
@@ -375,8 +391,16 @@ server <- function(input, output, session) {
         tra_comment_value <- input[[tra_comment_input]]
         
         
-        data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
+        tra_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Training and Mentorship", sub_category_entered = tra_sub_category_name, indicator_type = "Process Indicator", score = tra_score_value, country = input$country_input, site_entered = input$site_input, comments = tra_comment_value, evaluator = input$name_input)
+        if (!is.null(nrow(tra_row))){
+          append_data <- bind_rows(tra_row, append_data) 
+          
+        }
+        
       }
+      if (nrow(append_data) >0){
+        sheet_append(main_sheet_id, data = append_data) }
+      
       entry_tra(FALSE)
     }) 
 # end training tab data entry
@@ -415,6 +439,9 @@ server <- function(input, output, session) {
       comm_lookuptable <- main_lookuptable |> 
         filter(tab == "community")
       
+      #initialize blank data frame
+      append_data <- tibble()
+      
       for (i in seq_along(comm_lookuptable$subcategory)) {
         # name of the subcategory
         comm_sub_category_name <- comm_lookuptable$subcategory[i]
@@ -432,10 +459,19 @@ server <- function(input, output, session) {
         comm_comment_value <- input[[comm_comment_input]]
         
         
-        data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) }
+        comm_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments = comm_comment_value, evaluator = input$name_input) 
+        if (!is.null(nrow(comm_row))){
+      
+    append_data <- bind_rows(comm_row, append_data) 
+          
+        }
         
-        entry_comm(FALSE)
-    })
+      }
+      if (nrow(append_data) >0){
+        sheet_append(main_sheet_id, data = append_data) }
+      entry_comm(FALSE)
+    }
+  ) 
 #end community engagement data entry  
 
   
@@ -477,6 +513,9 @@ server <- function(input, output, session) {
       con_lookuptable <- main_lookuptable |> 
         filter(tab == "funding")
       
+      #initialize blank data frame
+      append_data <- tibble()
+      
       for (i in seq_along(con_lookuptable$subcategory)) {
         # name of the subcategory
         con_sub_category_name <- con_lookuptable$subcategory[i]
@@ -494,13 +533,18 @@ server <- function(input, output, session) {
         con_comment_value <- input[[con_comment_input]]
         
         
-        data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
-      }
+        con_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments = con_comment_value, evaluator = input$name_input)
+        if (!is.null(nrow(con_row))){
+          append_data <- bind_rows(con_row, append_data) 
+          
+        }
         
-        #end consistent funding tab data entry
-      
-      entry_con(FALSE) 
-    })
+      }
+      if (nrow(append_data) >0){
+        sheet_append(main_sheet_id, data = append_data) }
+      entry_con(FALSE)
+    }
+  ) 
   
   
   # consistent funding tab previous button
