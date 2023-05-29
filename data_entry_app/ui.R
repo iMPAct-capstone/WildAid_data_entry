@@ -1,8 +1,11 @@
+
 # dashboard header ----------------------
-header <- dashboardHeader(
-  title = span("WildAid Marine MPS Tracker Data Entry",
-    style = "color: white; font-size: 28px; font-family: 'Impact'"
-  ),
+
+# Dashboard Header ----  
+header <-dashboardHeader(title = span(
+  tags$img(src = "logo.png", height = "30px"),
+  "WildAid Marine MPS Tracker Data Explorer", # main site title
+  style = "color: #094074; font-size: 28px; font-family: 'Impact'"),
   titleWidth = 400,
   # add logout button UI
   tags$li(
@@ -34,15 +37,6 @@ sidebar <- dashboardSidebar(
 # dashboardBody----
 
 body <- dashboardBody(
-  tags$style(
-    HTML(
-      ".table-container {
-          width: 100%;
-          max-height: 300px;
-          overflow-y: auto;
-        }"
-    )
-  ),
 
   # add login panel UI function
   shinyauthr::loginUI(id = "login"),
@@ -61,7 +55,7 @@ body <- dashboardBody(
           6,
           # start data entry box
           box(
-            width = 8,
+            width = 12,
             textInput(inputId = "name_input", label = "Evaluator Name(s)"), # end text input
 
             numericInput(inputId = "year_input", label = "Data Year", value = current_year_minus_one, min = 2019, max = 2080), # end text input
@@ -76,18 +70,30 @@ body <- dashboardBody(
               choices = "Select Option" # eventually replace this with an actual list pulling from a file
             ), # end site select input
 
-            actionButton("next_1", "Save and Continue", class = "btn-primary"), # end next button
+            actionButton("next_1", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074"), # end next button
           ), # end data entry box
         ), # end column
         column(
           width = 6,
-          box(
-            title = "Data Entry Instructions ",
-            width = 14,
-            "This application is for entering site data for the Marine Protection System Tracker. There are six sections with 27 subcategories to rank. Choose a score from the drop down menu and pick the best answer to match your scenario. If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page. Your responses will not be recorded unless this button is selected. To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate."
-          ),
+          box(width = NULL, title = "Data Entry Instructions",
+            bsCollapse(
+              id = "collapseExample",
+              open = "Panel_data",
+              bsCollapsePanel(
+                title = HTML(paste0("Scoring <span class='arrow'>&#x25BE;</span>")),
+                style = "info" ,  "There are six sections with 27 subcategories to score. Choose a score from the drop down menu based on the scoring criteria for each subcategory."),
+           bsCollapsePanel(title = HTML(paste0("Saving <span class='arrow'>&#x25BE;</span>")), style = "info",
+            "If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page.", tags$strong("If you exit or logout without clicking the save and continue button your data will not be saved")),
+           bsCollapsePanel(HTML(paste0(" Translating (Traductorio) <span class='arrow'>&#x25BE;</span>")), style = "info", "To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate.", br(),"Para traducir las instrucciones, use esta aplicación en Google Chrome y use estas instrucciones para habilitar Google Translate."
+           
+        ),
+        bsCollapsePanel(HTML(paste0("Updating Data <span class='arrow'>&#x25BE;</span>")), style = "info", "If you enter a year and site combination for which there is already data, the boxes will auto populate with the previous data. Any changes will update the previously entered scores and comments."
+                        
+        )# end panel
+          ) #end bs collapse
+      ) # end box
         ) # end column
-      ), # end fluid row
+      ), #end row
 
       # start next fluid row
       fluidRow(
@@ -462,7 +468,7 @@ body <- dashboardBody(
       # start eighth fluid row
       fluidRow(
         column(10, ),
-        column(2, actionButton("next_2", "Save and Continue", class = "btn-primary")),
+        column(2, actionButton("next_2", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end eighth fluid row
     ), # end surveillance and enforcement tab item
 
@@ -637,8 +643,8 @@ body <- dashboardBody(
 
       # start fifth fluid row
       fluidRow(
-        column(10, actionButton("prev_1", "Previous", class = "btn-primary")),
-        column(2, actionButton("next_3", "Save and Continue", class = "btn-primary")),
+        column(10, actionButton("prev_1", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, actionButton("next_3", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fifth fluid row
     ), # end policies and consequences tabItem
 
@@ -777,8 +783,8 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, actionButton("prev_2", "Previous", class = "btn-primary")),
-        column(2, actionButton("next_4", "Save and Continue", class = "btn-primary")),
+        column(10, actionButton("prev_2", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, actionButton("next_4", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
     ), # end training and mentorship tab item
 
@@ -917,8 +923,8 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, actionButton("prev_3", "Previous", class = "btn-primary")),
-        column(2, actionButton("next_5", "Save and Continue", class = "btn-primary")),
+        column(10, actionButton("prev_3", "Previous", class = "btn-primary",style="color: #FFFFFF; background-color: #094074")),
+        column(2, actionButton("next_5", "Save and Continue", class = "btn-primary",style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
     ), # end community engagement tabItem
 
@@ -1028,8 +1034,8 @@ body <- dashboardBody(
       ), # end third fluid row
       # start fourth fluid row
       fluidRow(
-        column(10, actionButton("prev_4", "Previous", class = "btn-primary")),
-        column(2, actionButton("next_6", "Submit", class = "btn-primary")),
+        column(10, actionButton("prev_4", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, actionButton("next_6", "Submit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
     ), # end consistent funding tab item
     # start summary table tab item
@@ -1043,6 +1049,6 @@ body <- dashboardBody(
   ) # end tab items
 ) # end dashboard body
 
+dashboardPage(header, sidebar, body, title = "WildAid Marine MPS Tracker Data Entry", skin= "black")
 
 
-dashboardPage(header, sidebar, body, title = "WildAid Marine MPS Tracker Data Entry")
