@@ -154,3 +154,7 @@ files <- drive_ls(folder_url) |>
   filter(name == "data_entry_test")
 main_sheet_id <- as_id(files)
 main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
+
+
+#summary table, should make this into a function that will take the rows from the google sheet that have been newly appended and output them into a dataframe 
+

@@ -623,6 +623,19 @@ ids <- main_lookuptable$id
     eval(parse(text = generateTableRenderCode(ids)))
   }
   
+  # DT summary data table ----
+  output$summary_table <- DT::renderDataTable(
+    DT::datatable(data = main_sheet  %>%
+        rownames = FALSE,
+      escape=TRUE, # don't understand what this does could be important
+      caption = "Review data entered before submission.",
+      filter = 'top',
+      options = list(
+        pageLength = 10, autoWidth = TRUE,
+        scrollX = TRUE
+      )))
+  
+  
   
 }
 

@@ -1077,7 +1077,12 @@ body <- dashboardBody(
       tabName = "summary",
       fluidRow(
         h1("Summary", align = "center"),
-        br()
+        br(),
+        column(
+          width = 4,
+          div(class = "table-container",
+            DTOutput("summary_table"))
+        )
       ),
     ) # end summary table tab item
   ) # end tab items
