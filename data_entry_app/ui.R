@@ -1079,7 +1079,7 @@ body <- dashboardBody(
         h1("Summary", align = "center"),
         br(),
         column(
-          width = 4,
+          width = 12,
           div(class = "table-container",
             DTOutput("summary_table"))
         )

@@ -623,9 +623,19 @@ ids <- main_lookuptable$id
     eval(parse(text = generateTableRenderCode(ids)))
   }
   
+  
+
+  main_sheet_new <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
+  
+  summary <- reactive(main_sheet_new |> 
+                        filter(
+                          year == input$year_input,
+                            site == input$site_input
+                        ) |> select(-c(indicator_type, visualization_include, entered_by, country)))
+  
   # DT summary data table ----
   output$summary_table <- DT::renderDataTable(
-    DT::datatable(data = main_sheet  %>%
+    DT::datatable(data = summary(),
         rownames = FALSE,
       escape=TRUE, # don't understand what this does could be important
       caption = "Review data entered before submission.",
