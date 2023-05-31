@@ -1082,8 +1082,13 @@ body <- dashboardBody(
           width = 12,
           div(class = "table-container",
             DTOutput("summary_table"))
-        )
+          )
       ),
+      #start 'save and exit' button
+      fluidRow(
+        column(10, ),
+        column(2, actionButton("next_7", "Save and Exit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+      ), #end 'save & exit' button
     ) # end summary table tab item
   ) # end tab items
 ) # end dashboard body

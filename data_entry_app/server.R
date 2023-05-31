@@ -554,9 +554,18 @@ server <- function(input, output, session) {
                        "funding" = "community")
         updateTabItems(session, "tabs", newtab)
         }) # end consistent funding tab previous button
+    #start 'save and exit' button summary tab
+    observeEvent(input$next_7, {
+      newtab <- switch(input$tabs,
+                       "summary" = "data",
+                       "data" = "summary")
+      updateTabItems(session, "tabs", newtab)
+    })
+    #end 'save and exit' button on summary tab
     
-  
+    
   # end next buttons
+
   
 #scroll when you switch tabs
   observeEvent(input$tabs,{ shinyjs::runjs("window.scrollTo(0, 0)")
@@ -644,7 +653,6 @@ ids <- main_lookuptable$id
         pageLength = 10, autoWidth = TRUE,
         scrollX = TRUE
       )))
-  
   
   
 }
