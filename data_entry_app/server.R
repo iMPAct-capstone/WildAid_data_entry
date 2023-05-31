@@ -633,26 +633,37 @@ ids <- main_lookuptable$id
   }
   
   
-
-  main_sheet_new <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
+  summary_data <- reactiveVal(NULL)
   
-  summary <- reactive(main_sheet_new |> 
-                        filter(
-                          year == input$year_input,
-                            site == input$site_input
-                        ) |> select(-c(indicator_type, visualization_include, entered_by, country)))
+  # Use observeEvent to trigger the reading of the sheet when input$tabs changes to "summary"
+  observeEvent(input$tabs, {
+    if (input$tabs == "summary") {
+      main_sheet_new <- read_sheet(main_sheet_id) %>%
+        mutate(year = as.numeric(year)) |> 
+        filter(year == input$year_input,
+               site == input$site_input) |> 
+        select(-c(indicator_type, visualization_include,
+                  entered_by, country))
+      
+      
+      summary_data(main_sheet_new)
+        
+      
+    }
+  })
   
-  # DT summary data table ----
+  
+  #DT summary data table ----
   output$summary_table <- DT::renderDataTable(
-    DT::datatable(data = summary(),
-        rownames = FALSE,
-      escape=TRUE, # don't understand what this does could be important
+    DT::datatable(data = summary_data(),
+       rownames = FALSE,
+     escape=TRUE, # don't understand what this does could be important
       caption = "Review data entered before submission.",
-      filter = 'top',
-      options = list(
+     filter = 'top',
+     options = list(
         pageLength = 10, autoWidth = TRUE,
         scrollX = TRUE
-      )))
+     )))
   
   
 }
