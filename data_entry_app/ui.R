@@ -55,7 +55,7 @@ body <- dashboardBody(
           width = 6,
           # start data entry box
           box(
-            width = 10,
+            width = NULL,
             textInput(inputId = "name_input", label = "Evaluator Name(s)"), # end text input
 
             numericInput(inputId = "year_input", label = "Data Year", value = current_year_minus_one, min = 2019, max = 2080), # end text input
@@ -75,7 +75,7 @@ body <- dashboardBody(
         ), # end column
         column(
           width = 6,
-          box(width = 10, title = "Data Entry Instructions",
+          box(width = NULL, title = "Data Entry Instructions",
             bsCollapse(
               id = "collapseExample",
               open = "Panel_data",
@@ -88,6 +88,10 @@ body <- dashboardBody(
            
         ),
         bsCollapsePanel(HTML(paste0("Updating Data <span class='arrow'>&#x25BE;</span>")), style = "info", "If you enter a year and site combination for which there is already data, the boxes will auto populate with the previous data. Any changes will update the previously entered scores and comments."
+                        
+        ),# end panel
+        
+        bsCollapsePanel(HTML(paste0("Submitting Data for Review <span class='arrow'>&#x25BE;</span>")), style = "info", "Placeholder"
                         
         )# end panel
           ) #end bs collapse
