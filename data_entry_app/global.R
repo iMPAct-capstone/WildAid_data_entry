@@ -10,6 +10,7 @@ library(shinybusy)
 library(DT)
 library(googledrive)
 library(lubridate)
+library(shinyalert)
 
 
 
@@ -21,13 +22,12 @@ cache = ".secrets",
 email = "adelaide_robinson@ucsb.edu" #eventually want to change this to silvia's email
 )
 
-drive_auth(cache = ".secrets",
-           email = "adelaide_robinson@ucsb.edu")
+# drive_auth(cache = ".secrets",
+#            email = "adelaide_robinson@ucsb.edu")
 
 # dataframe that holds usernames, passwords and other user data
 password_url <- "https://docs.google.com/spreadsheets/d/1pTWPJ10x66DgMFtFqy_8wZFPh8hgygkiBuGsW4BtejI/edit#gid=0"
 password_sheet <- read_sheet(password_url, sheet = "data_entry")
-
 
 
 user_base <- tibble::tibble(

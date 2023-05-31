@@ -85,7 +85,7 @@ server <- function(input, output, session) {
   # next buttons and data entry ----
   # data tab next button
   observeEvent(input$next_1, {
-    show_modal_spinner()
+    show_modal_spinner(spin = "spring")
     newtab <- switch(input$tabs,
                      "data" = "enforcement",
                      "enforcement" = "data"
@@ -493,8 +493,6 @@ server <- function(input, output, session) {
       # change to the last tab
       updateTabItems(session, "tabs", newtab)
       entry_con(TRUE)
-      
-      
     })
     
 #consistent funding tab data entry
@@ -556,12 +554,20 @@ server <- function(input, output, session) {
         }) # end consistent funding tab previous button
     #start 'save and exit' button summary tab
     observeEvent(input$next_7, {
+      shinyalert(
+        title = "Thank you!",
+        text = "Your data has been submitted.",
+        type = "success"
+      )
+    }) #end 'save and exit' button on summary tab
+    
+    #start summary tab 'previous button'
+    observeEvent(input$prev_5, {
       newtab <- switch(input$tabs,
-                       "summary" = "data",
-                       "data" = "summary")
+                       "funding" = "summary",
+                       "summary" = "funding")
       updateTabItems(session, "tabs", newtab)
-    })
-    #end 'save and exit' button on summary tab
+    }) #end summary tab 'previous button
     
     
   # end next buttons
@@ -644,11 +650,7 @@ ids <- main_lookuptable$id
                site == input$site_input) |> 
         select(-c(indicator_type, visualization_include,
                   entered_by, country))
-      
-      
       summary_data(main_sheet_new)
-        
-      
     }
   })
   
@@ -657,14 +659,12 @@ ids <- main_lookuptable$id
   output$summary_table <- DT::renderDataTable(
     DT::datatable(data = summary_data(),
        rownames = FALSE,
-     escape=TRUE, # don't understand what this does could be important
+     escape=TRUE, 
       caption = "Review data entered before submission.",
      filter = 'top',
      options = list(
         pageLength = 10, autoWidth = TRUE,
         scrollX = TRUE
      )))
-  
-  
 }
 

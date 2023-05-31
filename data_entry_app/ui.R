@@ -4,9 +4,9 @@
 # Dashboard Header ----  
 header <-dashboardHeader(title = span(
   tags$img(src = "logo.png", height = "30px"),
-  "WildAid Marine MPS Tracker Data Explorer", # main site title
+  "WildAid Marine MPS Tracker Data Entry", # main site title
   style = "color: #094074; font-size: 28px; font-family: 'Impact'"),
-  titleWidth = 400,
+  titleWidth = 525,
   # add logout button UI
   tags$li(
     class = "dropdown",
@@ -1090,7 +1090,7 @@ body <- dashboardBody(
       ),
       #start 'save and exit' button
       fluidRow(
-        column(10, ),
+        column(10, actionButton("prev_5", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
         column(2, actionButton("next_7", "Save and Exit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ), #end 'save & exit' button
     ) # end summary table tab item
