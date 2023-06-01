@@ -85,7 +85,8 @@ server <- function(input, output, session) {
   # next buttons and data entry ----
   # data tab next button
   observeEvent(input$next_1, {
-    show_modal_spinner(spin = "spring")
+    show_modal_spinner(spin = "spring",
+                       color ="#094074")
     newtab <- switch(input$tabs,
                      "data" = "enforcement",
                      "enforcement" = "data"
@@ -644,6 +645,8 @@ ids <- main_lookuptable$id
   # Use observeEvent to trigger the reading of the sheet when input$tabs changes to "summary"
   observeEvent(input$tabs, {
     if (input$tabs == "summary") {
+      show_modal_spinner(spin = "spring",
+                         color ="#094074")
       main_sheet_new <- read_sheet(main_sheet_id) %>%
         mutate(year = as.numeric(year)) |> 
         filter(year == input$year_input,
@@ -653,6 +656,13 @@ ids <- main_lookuptable$id
       summary_data(main_sheet_new)
     }
   })
+  
+  #once summary table loads remove the loading spinner
+  observe(
+    
+    if (progress() && input$tabs == "summary"){
+      remove_modal_spinner()
+    })
   
   
   #DT summary data table ----

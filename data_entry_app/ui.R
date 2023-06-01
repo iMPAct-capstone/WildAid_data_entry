@@ -6,7 +6,7 @@ header <-dashboardHeader(title = span(
   tags$img(src = "logo.png", height = "30px"),
   "WildAid Marine MPS Tracker Data Entry", # main site title
   style = "color: #094074; font-size: 28px; font-family: 'Impact'"),
-  titleWidth = 525,
+  titleWidth = 510,
   # add logout button UI
   tags$li(
     class = "dropdown",
