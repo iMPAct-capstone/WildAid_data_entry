@@ -10,10 +10,13 @@ library(shinybusy)
 library(DT)
 library(googledrive)
 library(lubridate)
+library(shinyalert)
 
 
 
-# #auto-authenticate google sheets ... this will have you interactively authenticate using broswer
+
+#auto-authenticate google sheets ... this will have you interactively authenticate using broswer
+
 # options(gargle_oauth_cache = ".secrets/")
 # #auto authenticate without browser
 # gs4_auth(
@@ -22,14 +25,12 @@ library(lubridate)
 # )
 
 
-
-drive_auth(cache = ".secrets",
-           email = "adelaide_robinson@ucsb.edu")
+# drive_auth(cache = ".secrets",
+#            email = "adelaide_robinson@ucsb.edu")
 
 # dataframe that holds usernames, passwords and other user data
 password_url <- "https://docs.google.com/spreadsheets/d/1pTWPJ10x66DgMFtFqy_8wZFPh8hgygkiBuGsW4BtejI/edit#gid=0"
 password_sheet <- read_sheet(password_url, sheet = "data_entry")
-
 
 
 user_base <- tibble::tibble(
