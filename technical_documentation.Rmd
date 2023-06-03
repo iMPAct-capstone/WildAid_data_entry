@@ -22,13 +22,38 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Troubleshooting 
 
+authenitcation
+
 ```{r, eval = FALSE}
 # auto-authenticate google sheets ... this will have you interactively authenticate using broswer
  options(gargle_oauth_cache = ".secrets/")
 ## auto authenticate without browser
   gs4_auth(
   cache = ".secrets",
-  email = "email@gmail.com" # eventually want to change this to silvia's email 
+  email = "email@gmail.com" # email for authenitcation
   )
 ```
+
+```{r, eval = FALSE}
+drive_auth(cache = ".secrets",
+           email = "email@gmail.com") #email for authentication
+```
+
+
+# file access 
+
+```{r, eval = FALSE}
+#read in all the data
+#url to the folder that contains the data set google sheet
+folder_url <- "https://drive.google.com/drive/u/0/folders/11jjznh0MFuhy8oLxHp8uGePF4xR5T-GW"
+
+files <- drive_ls(folder_url) |>
+  filter(name == "compiled_mps") #name of data set file 
+#save the file id
+main_sheet_id <- as_id(files)
+#read in the data set
+main_sheet <- read_sheet(main_sheet_id) |> 
+  mutate(year = as.numeric(year))
+```
+
 
