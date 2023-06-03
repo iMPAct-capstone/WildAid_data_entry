@@ -3,10 +3,10 @@
 
 # Dashboard Header ----  
 header <-dashboardHeader(title = span(
-  tags$img(src = "logo.png", height = "30px"),
-  "WildAid Marine MPS Tracker Data Entry", # main site title
-  style = "color: #094074; font-size: 28px; font-family: 'Impact'"),
-  titleWidth = 510,
+  tags$img(src = "logo.png", height = "40px"),
+  "MPS Tracker Data Entry", # main site title
+  style = "color: #094074; font-size: 28px; font-family: 'Impact';",), 
+  titleWidth = 400,
   # add logout button UI
   tags$li(
     class = "dropdown",
@@ -17,6 +17,7 @@ header <-dashboardHeader(title = span(
       "Help"
     )
   ),
+  
   tags$li(
     class = "dropdown",
     tags$a(
@@ -1097,6 +1098,6 @@ body <- dashboardBody(
   ) # end tab items
 ) # end dashboard body
 
-dashboardPage(header, sidebar, body, title = "WildAid Marine MPS Tracker Data Entry", skin= "black")
+dashboardPage(header, sidebar, body, skin= "black")
 
 

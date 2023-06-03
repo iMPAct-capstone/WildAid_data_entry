@@ -654,6 +654,8 @@ ids <- main_lookuptable$id
         select(-c(indicator_type, visualization_include,
                   entered_by, country))
       summary_data(main_sheet_new)
+      remove_modal_spinner()
+
     }
   })
   
