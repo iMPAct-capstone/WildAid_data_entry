@@ -190,7 +190,32 @@ body <- dashboardBody(
         h1("Consistent Funding", align = "center"),
         br()
       ),
+      
       uiOutput("ui_funding"),
+      
+
+      # start third fluid row
+      fluidRow(
+        column(10, actionButton("prev_4", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_6", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+      ) # end fourth fluid row
+    ), # end consistent funding tab item
+    # start summary table tab item
+    tabItem(
+      h1("Summary", align = "center"),
+      tabName = "summary",
+      fluidRow(
+        column(4, ),
+        column(4, infoBoxOutput("my_info_box", width = NULL)
+        
+        ), column(4)),
+      fluidRow(
+        column(
+          width = 12,
+          div(class = "table-container",
+            DTOutput("summary_table"))
+          )
+      ),
       #start 'save and exit' button
       fluidRow(
         column(10, actionButton("prev_5", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
