@@ -129,7 +129,7 @@ data_entry_function <- function(google_instance,
       row1 <- old_data_check[1, ]  # Row from the first data frame
       #make sure nas are comparable 
       row2 <- new_data_check[1, ]  # Row from the second data frame
-      print("the problem is here")
+    
       if(!row1$score == row2$score | !row1$comments == row2$comments | !row1$entered_by == row2$entered_by){
         print("overwriting")
         
@@ -151,8 +151,8 @@ data_entry_function <- function(google_instance,
 
 
 # #read in the combined lookup table 
-# lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
-main_lookuptable <- read_csv(here("lookup_tables", "main_lookuptable.csv"))
+lookup_id_url <- "https://docs.google.com/spreadsheets/d/1E_5OGhMWS1so8xu0vqcOQZy3vDKRGIugGsSBwtQbrIk/edit#gid=1796709482"
+main_lookuptable <- read_sheet(lookup_id_url)
 
 
 #read in all the data
@@ -163,5 +163,38 @@ main_sheet_id <- as_id(files)
 main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
 
 
-#summary table, should make this into a function that will take the rows from the google sheet that have been newly appended and output them into a dataframe 
 
+
+#ui function
+sub_category_box <- function(inputrow){
+  my_box <- box(
+    width = NULL, title = inputrow$subcategory,
+    paste("Question", inputrow$row, "of", nrow(main_lookuptable)),
+    id = inputrow$id,
+    bsCollapse(id = inputrow$collapse_id,
+      bsCollapsePanel(
+        title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+        style = "info", br(tags$strong("1="), inputrow$score_1),
+        br(tags$strong("3 ="), inputrow$score_3), br(tags$strong("5 ="), inputrow$score_5)
+      ),
+      bsCollapsePanel(
+        title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+        div(
+          class = "table-container",
+          DTOutput(inputrow$previous_table)
+        )
+      )
+    ),
+    # end of collapsed scoring guidelines
+    
+    selectInput(
+      inputId = inputrow$score_id, label = "Score",
+      choices = c("", "1", "2", "3", "4", "5", "NA")
+    ),
+    textInput(inputId = inputrow$comment_id, " Comments")
+  ) # end surveillance prioritization box
+  
+  return(my_box)
+  
+}
+ 
