@@ -129,7 +129,7 @@ data_entry_function <- function(google_instance,
       row1 <- old_data_check[1, ]  # Row from the first data frame
       #make sure nas are comparable 
       row2 <- new_data_check[1, ]  # Row from the second data frame
-      print("the problem is here")
+    
       if(!row1$score == row2$score | !row1$comments == row2$comments | !row1$entered_by == row2$entered_by){
         print("overwriting")
         
@@ -169,7 +169,7 @@ main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
 sub_category_box <- function(inputrow){
   my_box <- box(
     width = NULL, title = inputrow$subcategory,
-    "Question 1 of 27",
+    paste("Question", inputrow$row, "of", nrow(main_lookuptable)),
     id = inputrow$id,
     bsCollapse(id = inputrow$collapse_id,
       bsCollapsePanel(
@@ -197,5 +197,4 @@ sub_category_box <- function(inputrow){
   return(my_box)
   
 }
-
-
+ 

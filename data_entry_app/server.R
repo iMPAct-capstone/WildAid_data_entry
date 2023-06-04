@@ -184,7 +184,7 @@ server <- function(input, output, session) {
     } else { 
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
-      entry_sur(TRUE)
+     # entry_sur(TRUE)
     } 
   })
   
@@ -723,8 +723,9 @@ server <- function(input, output, session) {
     }
   }
 
-  
   output$test_ui_enforcement <- renderUI(v)
+  outputOptions(output, "test_ui_enforcement", suspendWhenHidden = FALSE)
+
   
   #repeat for policies
   policies_row <- main_lookuptable |> filter(tab == "policies")
@@ -750,6 +751,7 @@ server <- function(input, output, session) {
   }
   
   output$ui_policies <- renderUI(p)
+  outputOptions(output, "ui_policies", suspendWhenHidden = FALSE)
   
   
   #repeat for training
@@ -778,6 +780,8 @@ server <- function(input, output, session) {
   
   output$ui_training <- renderUI(t)
   
+  outputOptions(output, "ui_training", suspendWhenHidden = FALSE)
+  
   #repeat for community
   
   community_row <- main_lookuptable |> filter(tab == "community")
@@ -804,6 +808,8 @@ server <- function(input, output, session) {
   
   output$ui_community <- renderUI(co)
   
+  outputOptions(output, "ui_community", suspendWhenHidden = FALSE)
+  
   #repeat for funding
   funding_row <- main_lookuptable |> filter(tab == "funding")
   
@@ -828,6 +834,8 @@ server <- function(input, output, session) {
     } 
   
   output$ui_funding <- renderUI(f)
+  
+  outputOptions(output, "ui_funding", suspendWhenHidden = FALSE)
   
   
   

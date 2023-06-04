@@ -1,5 +1,6 @@
 
 # dashboard header ----------------------
+entry_sur <- reactiveVal(FALSE)
 
 # Dashboard Header ----  
 header <-dashboardHeader(title = span(
@@ -118,7 +119,10 @@ body <- dashboardBody(
           br()
         ), # end title row
         
-        uiOutput("test_ui_enforcement"),
+      
+         uiOutput("test_ui_enforcement"),
+        
+       
         # start 6th fluid row
         fluidRow(
           column(10, ),
@@ -138,7 +142,6 @@ body <- dashboardBody(
         br()
       ), # end title 1st fluid row
       uiOutput("ui_policies"),
-      
       # start fifth fluid row
       fluidRow(
         column(10, actionButton("prev_1", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
@@ -192,7 +195,6 @@ body <- dashboardBody(
       ),
       
       uiOutput("ui_funding"),
-      
 
       # start third fluid row
       fluidRow(
