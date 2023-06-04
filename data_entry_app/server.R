@@ -2,14 +2,8 @@
 
 # input and output will be lists of all defined inputs and outputs
 server <- function(input, output, session) {
-  entry_sur <- reactiveVal(FALSE)
-  entry_pol <- reactiveVal(FALSE)
-  entry_tra <- reactiveVal(FALSE)
-  entry_comm <- reactiveVal(FALSE)
-  entry_con <- reactiveVal(FALSE)
-  progress <- reactiveVal(FALSE)
-  
-  # password authentication ----
+
+# password authentication ----
   # call login module supplying data frame,
   # user and password cols and reactive trigger
   credentials <- shinyauthr::loginServer(
@@ -82,7 +76,11 @@ server <- function(input, output, session) {
     ) # END sidebar Menu
   })
   
-  # next buttons and data entry ----
+# next buttons and data entry ----
+#data tab functions ----
+  
+  progress <- reactiveVal(FALSE)
+  
   # data tab next button
   observeEvent(input$next_1, {
     show_modal_spinner(spin = "spring",
@@ -159,7 +157,23 @@ server <- function(input, output, session) {
       remove_modal_spinner()
     })
   
+#update site choices on data tab
+  observeEvent(input$country_input, {
+    if (input$country_input %in% site_list$country) {
+      new_data <- site_list |> filter(country == input$country_input)
+      updateSelectInput(session, "site_input",
+                        choices = new_data$site
+      )
+    }
+    if (input$country_input == "Select Option") {
+      updateSelectInput(session, "site_input",
+                        choices = "Select Option"
+      )
+    }
+  }) # end observe input country box
   
+#start enforcement tab actions----
+  entry_sur <- reactiveVal(FALSE)
   # enforcement tab next button
   observeEvent(input$next_2, {
     
@@ -246,8 +260,10 @@ server <- function(input, output, session) {
     }
   )  # end enforcement tab data entry
   
+#end enforcement tab actions
   
-  
+#start policies tab actions----
+  entry_pol <- reactiveVal(FALSE)
   # policies and consequences previous button
   observeEvent(input$prev_1, {
     newtab <- switch(input$tabs,
@@ -332,7 +348,11 @@ server <- function(input, output, session) {
     }
   ) 
   # end policies tab data entry
+#end policies tab actions
   
+  
+#start training and mentorship tab actions----
+  entry_tra <- reactiveVal(FALSE)
   # training and mentorship next button
   observeEvent(input$next_4, {
     newtab <- switch(input$tabs,
@@ -405,8 +425,9 @@ server <- function(input, output, session) {
       entry_tra(FALSE)
     }) 
   # end training tab data entry
-  
-  # training & mentorship tab previous button
+#start community engagement tab actions ----  
+  entry_comm <- reactiveVal(FALSE)
+  # community tab previous button
   observeEvent(input$prev_2, {
     newtab <- switch(input$tabs,
                      "community" = "training",
@@ -474,7 +495,6 @@ server <- function(input, output, session) {
     }
   ) 
   #end community engagement data entry  
-  
   
   
   # community engagement tab previous button
@@ -545,7 +565,8 @@ server <- function(input, output, session) {
     }
   ) 
   
-  
+#consistent funding tab actions----
+  entry_con <- reactiveVal(FALSE)
   # consistent funding tab previous button
   observeEvent(input$prev_4, {
     newtab <- switch(input$tabs,
@@ -570,30 +591,23 @@ server <- function(input, output, session) {
     updateTabItems(session, "tabs", newtab)
   }) #end summary tab 'previous button
   
+# end consistent funding tab items
   
-  # end next buttons
+#add buttons and data entry functionality for a new category here----
   
+  
+#end buttons and data entry functionality for a new category here 
+  
+  
+  
+# general functionality ----  
   
   #scroll when you switch tabs
   observeEvent(input$tabs,{ shinyjs::runjs("window.scrollTo(0, 0)")
   })
+
   
-  #end of data entry 
-  
-  # update site choices ----
-  observeEvent(input$country_input, {
-    if (input$country_input %in% site_list$country) {
-      new_data <- site_list |> filter(country == input$country_input)
-      updateSelectInput(session, "site_input",
-                        choices = new_data$site
-      )
-    }
-    if (input$country_input == "Select Option") {
-      updateSelectInput(session, "site_input",
-                        choices = "Select Option"
-      )
-    }
-  }) # end observe input country box
+ 
   
   #function to generate the table   
   previous_data_reactive <- function(subcategory){

@@ -202,6 +202,14 @@ body <- dashboardBody(
         column(2, align = "right", actionButton("next_6", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
     ), # end consistent funding tab item
+    
+    
+    #a new tab item can be added here 
+    
+    
+    
+    # a new tab item can end here 
+    
     # start summary table tab item
     tabItem(
       h1("Summary", align = "center"),
