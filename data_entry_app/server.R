@@ -457,12 +457,31 @@ server <- function(input, output, session) {
   
   # community engagement next button
   observeEvent(input$next_5, {
+    
+    validate(
+      need(input$year_input != "", message = "Please enter a year.")
+    )
+    # check if country has been updated
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
+    } else { 
+    
+    
+    
     newtab <- switch(input$tabs,
                      "community" = "funding",
                      "funding" = "community"
     )
     entry_comm(TRUE) 
     updateTabItems(session, "tabs", newtab)
+    
+    }
   } ) # end community engagement next button
   
   
@@ -525,6 +544,7 @@ server <- function(input, output, session) {
   observe(
     if (entry_con()) {
       
+      
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
       # identify the url
@@ -580,12 +600,27 @@ server <- function(input, output, session) {
   
   # consistent funding next button
   observeEvent(input$next_6, {
+    validate(
+      need(input$year_input != "", message = "Please enter a year.")
+    )
+    # check if country has been updated
+    if (input$country_input == "Select Option") {
+      showModal(modalDialog("Please enter a country and site", easyClose = TRUE))
+      # check that site has been updated
+    } else if (input$site_input == "Select Option") {
+      showModal(modalDialog("Please enter a site", easyClose = TRUE)) # check that name has been input
+    } else if (input$name_input == "") {
+      showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
+      # if necessary boxes are filled out then proceed
+    } else { 
+    
     newtab <- switch(input$tabs,
                      "funding" = "summary",
                      "data" = "summary")  
     # change to the last tab
     updateTabItems(session, "tabs", newtab)
     entry_con(TRUE)
+    }
   })
   
 # end consistent funding tab actions
