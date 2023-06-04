@@ -1,0 +1,28 @@
+subcategory,id,score_id,comment_id,tab
+Vessel Availability,ves_ava,ves_ava_score,ves_ava_comments,enforcement
+Fleet Adequacy,fle_ade,fle_ade_score,fle_ade_comments,enforcement
+Patrol Planning,pat_pla,pat_pla_score,pat_pla_comments,enforcement
+Patrol Execution,pat_exe,pat_exe_score,pat_exe_comments,enforcement
+Patrol Equipment,pat_equ,pat_equ_score,pat_equ_comments,enforcement
+Intelligence Sources,int_sou,int_sou_score,int_sou_comments,enforcement
+Investigation Procedures,inv_pro,inv_pro_score,inv_pro_comments,enforcement
+National Institutional Collaboration ,nat_inst,nat_inst_score,nat_inst_comments,enforcement
+International Institutional Collaboration ,int_inst,int_inst_score,int_inst_comments,enforcement
+Staff Numbers,sta_num,sta_num_score,sta_num_comments,enforcement
+Surveillance Prioritization,sur_pri,sur_pri_score,sur_pri_comments,enforcement
+Laws and Regulations,law_reg,law_reg_score,law_reg_comments,policies
+Zoning,zon,zon_score,zon_comments,policies
+Sanctions &  Prosecutions,san_pro,san_pro_score,san_pro_comments,policies
+Case Database,cas_dat,cas_dat_score,cas_dat_comments,policies
+Scientific Monitoring,sci_mon,sci_mon_score,sci_mon_comments,policies
+Enforcement Training,enf_tra,enf_tra_score,enf_tra_comments,training
+Standard Operating Procedures,sta_ope,sta_ope_score,sta_ope_comments,training
+Staff Qualifications,sta_qua,sta_qua_score,sta_qua_comments,training
+Legal Training,leg_tra,leg_tra_score,leg_tra_comments,training
+Community Education & Outreach,com_edu,com_edu_score,com_edu_comments,community
+Community Involvement,com_inv,com_inv_score,com_inv_comments,community
+Fishing Sector Collaboration,fis_sec,fis_sec_score,fis_sec_comments,community
+Tourism & Private Sector Collaboration,tou_pri,tou_pri_score,tou_pri_comments,community
+Funding,fun,fun_score,fun_comments,funding
+Diversified Funding Sources,div_fun,div_fun_score,div_fun_comments,funding
+Cost-Efficiency,cos_eff,cos_eff_score,cos_eff_comments,funding

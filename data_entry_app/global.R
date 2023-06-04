@@ -11,6 +11,7 @@ library(DT)
 library(googledrive)
 library(lubridate)
 library(shinyalert)
+library(here)
 
 
 
@@ -149,9 +150,9 @@ data_entry_function <- function(google_instance,
 }
 
 
-#read in the combined lookup table 
-lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
-main_lookuptable <- read_sheet(lookup_id_url)
+# #read in the combined lookup table 
+# lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
+main_lookuptable <- read_csv(here("lookup_tables", "main_lookuptable.csv"))
 
 
 #read in all the data
