@@ -698,5 +698,33 @@ ids <- main_lookuptable$id
      options = list(
        searching = FALSE, paging = FALSE  # Disable the search function
      )))
+  
+  
+  v <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:length(my_row)) {
+    box <- sub_category_box(my_row[i,])
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    
+    if (box_counter == 3) {
+      # Add the current row to the list and reset the counter and row
+      v[[length(v) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  # Add the last row if there are any remaining boxes
+  if (box_counter > 0) {
+    v[[length(v) + 1]] <- current_row
+  }
+  
+  
+  output$test_ui <- renderUI(v)
+  
 }
 

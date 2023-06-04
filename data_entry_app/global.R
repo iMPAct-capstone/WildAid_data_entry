@@ -162,6 +162,43 @@ files <- drive_ls(folder_url) |>
 main_sheet_id <- as_id(files)
 main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
 
+new_url <- "https://docs.google.com/spreadsheets/d/1E_5OGhMWS1so8xu0vqcOQZy3vDKRGIugGsSBwtQbrIk/edit#gid=1796709482
+all_lookup"
 
-#summary table, should make this into a function that will take the rows from the google sheet that have been newly appended and output them into a dataframe 
+new_data <- read_sheet(new_url)
+
+my_row <- new_data |> filter(tab == "enforcement")
+#ui function
+sub_category_box <- function(inputrow){
+  my_box <- box(
+    width = NULL, title = inputrow$subcategory,
+    "Question 1 of 27",
+    id = inputrow$id,
+    bsCollapse( id = inputrow$collapse_id,
+      bsCollapsePanel(
+        title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
+        style = "info", br(tags$strong("1="), inputrow$score_1),
+        br(tags$strong("3 ="), inputrow$score_3), br(tags$strong("5 ="), inputrow$score_5)
+      ),
+      bsCollapsePanel(
+        title = HTML(paste0("Previous Scores <span class='arrow'>&#x25BE;</span>")), style = "info",
+        div(
+          class = "table-container",
+          DTOutput(inputrow$previous_table)
+        )
+      )
+    ),
+    # end of collapsed scoring guidelines
+    
+    selectInput(
+      inputId = inputrow$score_id, label = "Score",
+      choices = c("", "1", "2", "3", "4", "5", "NA")
+    ),
+    textInput(inputId = inputrow$comment_id, " Comments")
+  ) # end surveillance prioritization box
+  
+  return(my_box)
+  
+}
+
 
