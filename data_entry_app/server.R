@@ -173,7 +173,10 @@ server <- function(input, output, session) {
   }) # end observe input country box
   
 #start enforcement tab actions----
+  
+  #reactive value used to trigger data entry
   entry_sur <- reactiveVal(FALSE)
+  
   # enforcement tab next button
   observeEvent(input$next_2, {
     
@@ -199,6 +202,9 @@ server <- function(input, output, session) {
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
       entry_sur(TRUE)
+      #if any of the boxes are empty show a warning message
+      
+      
     } 
   })
   
@@ -511,23 +517,13 @@ server <- function(input, output, session) {
   
   
   
-  
-  # consistent funding next button
-  observeEvent(input$next_6, {
-    newtab <- switch(input$tabs,
-                     "funding" = "summary",
-                     "data" = "summary")  
-    # change to the last tab
-    updateTabItems(session, "tabs", newtab)
-    entry_con(TRUE)
-  })
-
 #start consistent funding tab actions ----
+  entry_con <- reactiveVal(FALSE)
   #consistent funding tab data entry
   
   #start consistent funding data entry
   observe(
-    if (entry_con() && input$tabs == "summary") {
+    if (entry_con()) {
       
       # read in the google sheet
       # need to do this each time we write in case multiple people are on the app
@@ -573,7 +569,7 @@ server <- function(input, output, session) {
   ) 
   
 
-  entry_con <- reactiveVal(FALSE)
+
   # consistent funding tab previous button
   observeEvent(input$prev_4, {
     newtab <- switch(input$tabs,
@@ -582,8 +578,17 @@ server <- function(input, output, session) {
     updateTabItems(session, "tabs", newtab)
   }) # end consistent funding tab previous button
   
+  # consistent funding next button
+  observeEvent(input$next_6, {
+    newtab <- switch(input$tabs,
+                     "funding" = "summary",
+                     "data" = "summary")  
+    # change to the last tab
+    updateTabItems(session, "tabs", newtab)
+    entry_con(TRUE)
+  })
   
-# end consistent funding tab items
+# end consistent funding tab actions
   
 #add buttons and data entry functionality for a new category here----
   

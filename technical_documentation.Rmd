@@ -82,111 +82,16 @@ main_sheet <- read_sheet(main_sheet_id) |>
     ), # end consistent funding tab item
 ```
 
-```{r}
+# updating the server code 
 
-  #change to a three letter code representing the category
-  entry_comm <- reactiveVal(FALSE)
-  # community tab previous button
-  
-  #change to the name of the current tab and the name of the previous tab. 
-  observeEvent(input$prev_2, {
-    newtab <- switch(input$tabs,
-                     "community" = "training",
-                     "training" = "community")
-    # change to the last tab
-    updateTabItems(session, "tabs", newtab)
-  }) # end training and mentorship tab previous button
-  
-#change to the name of the current tab and the name of the following tab.
-  # community engagement next button
-  observeEvent(input$next_5, {
-    newtab <- switch(input$tabs,
-                     "community" = "funding",
-                     "funding" = "community"
-    )
-    
-    #change to the name of the reactive value at the start of the code chunk 
-    entry_comm(TRUE) 
-    updateTabItems(session, "tabs", newtab)
-  } ) # end community engagement next button
-  
-  
-  #start community engagement data entry
-  observe(
-    if (entry_comm() && input$tabs == "funding") {
-      
-      # read in the google sheet
-      # need to do this each time we write in case multiple people are on the app
-      
-      # also read in for checking for existing data
-      main_sheet <- read_sheet(main_sheet_id) |> 
-        mutate(year = as.numeric(year))
-      
-      #change to the name of the tab
-      #must match the tab name in the ui and in the lookup table
-        #replace all instances of comm with the three letter code for the category
-      comm_lookuptable <- main_lookuptable |> 
-        filter(tab == "community")
-      
-      #initialize blank data frame
-      append_data <- tibble()
-      
-      for (i in seq_along(comm_lookuptable$subcategory)) {
-        # name of the subcategory
-        comm_sub_category_name <- comm_lookuptable$subcategory[i]
-        
-        # get the name of the score id
-        comm_score_input <- comm_lookuptable$score_id[i]
-        
-        # get the value of the score
-        comm_score_value <- input[[comm_score_input]]
-        
-        # name of comment id
-        comm_comment_input <- comm_lookuptable$comment_id[i]
-        
-        # get the value of the comment
-        comm_comment_value <- input[[comm_comment_input]]
-        
-        #replace the category with the name of the new category
-        comm_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = comm_comment_value, evaluator = input$name_input) 
-        if (!is.null(nrow(comm_row))){
-          
-          append_data <- bind_rows(comm_row, append_data) 
-          
-        }
-        
-      }
-      if (nrow(append_data) >0){
-        sheet_append(main_sheet_id, data = append_data) }
-      entry_comm(FALSE)
-    }
-  ) 
-  #end community engagement data entry  
-  
-  
-  # community engagement tab previous button
-  observeEvent(input$prev_3, {
-    newtab <- switch(input$tabs,
-                     "training" = "community",
-                     "community" = "training")
-    # change to the last tab
-    updateTabItems(session, "tabs", newtab)
-  }) # end community engagement tab previous button
-  
-  # consistent funding next button
-  observeEvent(input$next_6, {
-    newtab <- switch(input$tabs,
-                     "funding" = "summary",
-                     "data" = "summary")  
-    # change to the last tab
-    updateTabItems(session, "tabs", newtab)
-    entry_con(TRUE)
-  })
+```{r, eval = FALSE}
 
 #start consistent funding tab actions ----
   #consistent funding tab data entry
   
   #start consistent funding data entry
+
+  #replace with the name of the following tab, this will likely remain as summary if you are placing the new tab last
   observe(
     if (entry_con() && input$tabs == "summary") {
       
@@ -197,8 +102,9 @@ main_sheet <- read_sheet(main_sheet_id) |>
       main_sheet <- read_sheet(main_sheet_id) |> 
         mutate(year = as.numeric(year))
       
+      #replace all instances of con with the three letter code for the subcategory
       con_lookuptable <- main_lookuptable |> 
-        filter(tab == "funding")
+        filter(tab == "funding") #change to the name of the tab, must match ui and lookup table
       
       #initialize blank data frame
       append_data <- tibble()
@@ -220,6 +126,7 @@ main_sheet <- read_sheet(main_sheet_id) |>
         con_comment_value <- input[[con_comment_input]]
         
         
+        #replace th category value with the full name of the category (what you want to appear in the data)
         con_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = con_comment_value, evaluator = input$name_input)
         if (!is.null(nrow(con_row))){
           append_data <- bind_rows(con_row, append_data) 
@@ -235,4 +142,26 @@ main_sheet <- read_sheet(main_sheet_id) |>
   
 
   entry_con <- reactiveVal(FALSE)
+  # consistent funding tab previous button
+  #change to one higher than the highest number previous button, needs to match ui previous button
+  observeEvent(input$prev_4, {
+    newtab <- switch(input$tabs,
+                     "community" = "funding",
+                     "funding" = "community")
+    updateTabItems(session, "tabs", newtab)
+  }) # end consistent funding tab previous button
+  
+   # consistent funding next button
+  observeEvent(input$next_6, {
+    newtab <- switch(input$tabs,
+                     "funding" = "summary",
+                     "data" = "summary")  
+    # change to the last tab
+    updateTabItems(session, "tabs", newtab)
+    entry_con(TRUE)
+  })
+  
+  
+# end consistent funding tab actions
+  
 ```
