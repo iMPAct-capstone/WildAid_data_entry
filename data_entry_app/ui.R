@@ -485,7 +485,7 @@ body <- dashboardBody(
         # start 6th fluid row
         fluidRow(
           column(10, ),
-          column(2, actionButton("next_2", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+          column(2, align = "right", actionButton("next_2", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
         ) # end 6th fluid row
         
         
@@ -667,7 +667,7 @@ body <- dashboardBody(
       # start fifth fluid row
       fluidRow(
         column(10, actionButton("prev_1", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
-        column(2, actionButton("next_3", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_3", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fifth fluid row
     ), # end policies and consequences tabItem
 
@@ -815,7 +815,7 @@ body <- dashboardBody(
       # start fourth fluid row
       fluidRow(
         column(10, actionButton("prev_2", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
-        column(2, actionButton("next_4", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_4", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
       
     ), # end training and mentorship tab item
@@ -965,7 +965,7 @@ body <- dashboardBody(
       # start fourth fluid row
       fluidRow(
         column(10, actionButton("prev_3", "Previous", class = "btn-primary",style="color: #FFFFFF; background-color: #094074")),
-        column(2, actionButton("next_5", "Save and Continue", class = "btn-primary",style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_5", "Save and Continue", class = "btn-primary",style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
     ), # end community engagement tabItem
 
@@ -1074,15 +1074,19 @@ body <- dashboardBody(
       # start third fluid row
       fluidRow(
         column(10, actionButton("prev_4", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
-        column(2, actionButton("next_6", "Submit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_6", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ) # end fourth fluid row
     ), # end consistent funding tab item
     # start summary table tab item
     tabItem(
+      h1("Summary", align = "center"),
       tabName = "summary",
       fluidRow(
-        h1("Summary", align = "center"),
-        br(),
+        column(4, ),
+        column(4, infoBoxOutput("my_info_box", width = NULL)
+        
+        ), column(4)),
+      fluidRow(
         column(
           width = 12,
           div(class = "table-container",
@@ -1092,7 +1096,7 @@ body <- dashboardBody(
       #start 'save and exit' button
       fluidRow(
         column(10, actionButton("prev_5", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
-        column(2, actionButton("next_7", "Save and Exit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_7", "Save and Exit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ), #end 'save & exit' button
     ) # end summary table tab item
   ) # end tab items

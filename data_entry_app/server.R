@@ -655,6 +655,28 @@ ids <- main_lookuptable$id
                   entered_by, country))
       summary_data(main_sheet_new)
       remove_modal_spinner()
+      
+      subcategories_completed <- nrow(main_sheet_new)
+      # Update the infoBox value based on the variable
+      output$my_info_box <- renderInfoBox({
+        if (subcategories_completed == 27) {
+          infoBox(
+            color = "green",
+            title = NULL,
+            value = paste0(subcategories_completed, " of 27 subcategories completed"),
+            width = NULL,
+            icon = icon('check-circle', lib = "font-awesome")
+          )
+        } else {
+          infoBox(
+            color = "red",
+            title = NULL,
+            value = paste0(subcategories_completed, " of 27 subcategories completed"),
+            width = NULL,
+            icon = icon('circle-exclamation', lib = "font-awesome")
+          )
+        }
+      })
 
     }
   })
@@ -673,10 +695,8 @@ ids <- main_lookuptable$id
        rownames = FALSE,
      escape=TRUE, 
       caption = "Review data entered before submission.",
-     filter = 'top',
      options = list(
-        pageLength = 10, autoWidth = TRUE,
-        scrollX = TRUE
+       searching = FALSE, paging = FALSE  # Disable the search function
      )))
 }
 
