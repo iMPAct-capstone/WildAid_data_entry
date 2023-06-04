@@ -360,6 +360,7 @@ server <- function(input, output, session) {
                      "community" = "training"
     )
     
+    
     validate(
       need(input$year_input != "", message = "Please enter a year.")
     )
@@ -378,6 +379,16 @@ server <- function(input, output, session) {
       entry_tra(TRUE)
     }
   }) # end training tab next button
+  
+  # training and mentorship previous button
+  observeEvent(input$prev_2, {
+    newtab <- switch(input$tabs,
+                     "training" = "policies",
+                     "policies" = "training")
+    # change to the last tab
+    updateTabItems(session, "tabs", newtab)
+  }) # end training and mentorship tab previous button
+  
   
   #start training tab data entry
   observe(
@@ -427,14 +438,16 @@ server <- function(input, output, session) {
   # end training tab data entry
 #start community engagement tab actions ----  
   entry_comm <- reactiveVal(FALSE)
-  # community tab previous button
-  observeEvent(input$prev_2, {
+
+  # community engagement tab previous button
+  observeEvent(input$prev_3, {
     newtab <- switch(input$tabs,
-                     "community" = "training",
-                     "training" = "community")
+                     "training" = "community",
+                     "community" = "training")
     # change to the last tab
     updateTabItems(session, "tabs", newtab)
-  }) # end training and mentorship tab previous button
+  }) # end community engagement tab previous button
+  
   
   # community engagement next button
   observeEvent(input$next_5, {
@@ -497,14 +510,7 @@ server <- function(input, output, session) {
   #end community engagement data entry  
   
   
-  # community engagement tab previous button
-  observeEvent(input$prev_3, {
-    newtab <- switch(input$tabs,
-                     "training" = "community",
-                     "community" = "training")
-    # change to the last tab
-    updateTabItems(session, "tabs", newtab)
-  }) # end community engagement tab previous button
+  
   
   # consistent funding next button
   observeEvent(input$next_6, {
@@ -515,7 +521,8 @@ server <- function(input, output, session) {
     updateTabItems(session, "tabs", newtab)
     entry_con(TRUE)
   })
-  
+
+#start consistent funding tab actions ----
   #consistent funding tab data entry
   
   #start consistent funding data entry
@@ -565,7 +572,7 @@ server <- function(input, output, session) {
     }
   ) 
   
-#consistent funding tab actions----
+
   entry_con <- reactiveVal(FALSE)
   # consistent funding tab previous button
   observeEvent(input$prev_4, {
@@ -574,6 +581,67 @@ server <- function(input, output, session) {
                      "funding" = "community")
     updateTabItems(session, "tabs", newtab)
   }) # end consistent funding tab previous button
+  
+  
+# end consistent funding tab items
+  
+#add buttons and data entry functionality for a new category here----
+  
+  
+#end buttons and data entry functionality for a new category here 
+  
+  
+  
+#summary tab functionality----
+  
+  summary_data <- reactiveVal(NULL)
+  
+  # Use observeEvent to trigger the reading of the sheet when input$tabs changes to "summary"
+  observeEvent(input$tabs, {
+    if (input$tabs == "summary") {
+      show_modal_spinner(spin = "spring",
+                         color ="#094074")
+      main_sheet_new <- read_sheet(main_sheet_id) %>%
+        mutate(year = as.numeric(year)) |> 
+        filter(year == input$year_input,
+               site == input$site_input) |> 
+        select(-c(indicator_type, visualization_include,
+                  entered_by, country))
+      summary_data(main_sheet_new)
+      remove_modal_spinner()
+      
+      subcategories_completed <- nrow(main_sheet_new)
+      # Update the infoBox value based on the variable
+      output$my_info_box <- renderInfoBox({
+        if (subcategories_completed == 27) {
+          infoBox(
+            color = "green",
+            title = NULL,
+            value = paste0(subcategories_completed, " of 27 subcategories completed"),
+            width = NULL,
+            icon = icon('check-circle', lib = "font-awesome")
+          )
+        } else {
+          infoBox(
+            color = "red",
+            title = NULL,
+            value = paste0(subcategories_completed, " of 27 subcategories completed"),
+            width = NULL,
+            icon = icon('circle-exclamation', lib = "font-awesome")
+          )
+        }
+      })
+      
+    }
+  })
+  
+  #once summary table loads remove the loading spinner
+  observe(
+    
+    if (progress() && input$tabs == "summary"){
+      remove_modal_spinner()
+    })
+  
   #start 'save and exit' button summary tab
   observeEvent(input$next_7, {
     shinyalert(
@@ -589,17 +657,9 @@ server <- function(input, output, session) {
                      "funding" = "summary",
                      "summary" = "funding")
     updateTabItems(session, "tabs", newtab)
-  }) #end summary tab 'previous button
+  }) #end summary tab 'previous button  
   
-# end consistent funding tab items
-  
-#add buttons and data entry functionality for a new category here----
-  
-  
-#end buttons and data entry functionality for a new category here 
-  
-  
-  
+#end summary tab functionality
 # general functionality ----  
   
   #scroll when you switch tabs
@@ -654,54 +714,7 @@ server <- function(input, output, session) {
   }
   
   
-  summary_data <- reactiveVal(NULL)
-  
-  # Use observeEvent to trigger the reading of the sheet when input$tabs changes to "summary"
-  observeEvent(input$tabs, {
-    if (input$tabs == "summary") {
-      show_modal_spinner(spin = "spring",
-                         color ="#094074")
-      main_sheet_new <- read_sheet(main_sheet_id) %>%
-        mutate(year = as.numeric(year)) |> 
-        filter(year == input$year_input,
-               site == input$site_input) |> 
-        select(-c(indicator_type, visualization_include,
-                  entered_by, country))
-      summary_data(main_sheet_new)
-      remove_modal_spinner()
-      
-      subcategories_completed <- nrow(main_sheet_new)
-      # Update the infoBox value based on the variable
-      output$my_info_box <- renderInfoBox({
-        if (subcategories_completed == 27) {
-          infoBox(
-            color = "green",
-            title = NULL,
-            value = paste0(subcategories_completed, " of 27 subcategories completed"),
-            width = NULL,
-            icon = icon('check-circle', lib = "font-awesome")
-          )
-        } else {
-          infoBox(
-            color = "red",
-            title = NULL,
-            value = paste0(subcategories_completed, " of 27 subcategories completed"),
-            width = NULL,
-            icon = icon('circle-exclamation', lib = "font-awesome")
-          )
-        }
-      })
-      
-    }
-  })
-  
-  #once summary table loads remove the loading spinner
-  observe(
-    
-    if (progress() && input$tabs == "summary"){
-      remove_modal_spinner()
-    })
-  
+ 
   
   #DT summary data table ----
   output$summary_table <- DT::renderDataTable(

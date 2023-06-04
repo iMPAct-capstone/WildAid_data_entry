@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Adding a category
 
-# Troubleshooting 
+# Troubleshooting
 
 authenitcation
 
@@ -39,8 +39,7 @@ drive_auth(cache = ".secrets",
            email = "email@gmail.com") #email for authentication
 ```
 
-
-# file access 
+# file access
 
 ```{r, eval = FALSE}
 #read in all the data
@@ -56,4 +55,184 @@ main_sheet <- read_sheet(main_sheet_id) |>
   mutate(year = as.numeric(year))
 ```
 
+# Updating categories
 
+```{r, eval = FALSE}
+ 
+    # Consistent Funding tabItem----
+    tabItem(
+      #update to the name of the tab, must match tabname in lookup table
+      tabName = "funding",
+      fluidRow(
+        #update this with the actual name of the category
+        h1("Consistent Funding", align = "center"),
+        br()
+      ),
+      
+      #update this to say ui_tabname
+      uiOutput("ui_funding"),
+
+      # start third fluid row
+      
+      #update the previous and next button number to one higher than the following numbers if this is the first time a new category is being added. Otherwise the number must be one higher than the highest previous and next button in the application
+      fluidRow(
+        column(10, actionButton("prev_4", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_6", "Save and Continue", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+      ) # end fourth fluid row
+    ), # end consistent funding tab item
+```
+
+```{r}
+
+  #change to a three letter code representing the category
+  entry_comm <- reactiveVal(FALSE)
+  # community tab previous button
+  
+  #change to the name of the current tab and the name of the previous tab. 
+  observeEvent(input$prev_2, {
+    newtab <- switch(input$tabs,
+                     "community" = "training",
+                     "training" = "community")
+    # change to the last tab
+    updateTabItems(session, "tabs", newtab)
+  }) # end training and mentorship tab previous button
+  
+#change to the name of the current tab and the name of the following tab.
+  # community engagement next button
+  observeEvent(input$next_5, {
+    newtab <- switch(input$tabs,
+                     "community" = "funding",
+                     "funding" = "community"
+    )
+    
+    #change to the name of the reactive value at the start of the code chunk 
+    entry_comm(TRUE) 
+    updateTabItems(session, "tabs", newtab)
+  } ) # end community engagement next button
+  
+  
+  #start community engagement data entry
+  observe(
+    if (entry_comm() && input$tabs == "funding") {
+      
+      # read in the google sheet
+      # need to do this each time we write in case multiple people are on the app
+      
+      # also read in for checking for existing data
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
+      
+      #change to the name of the tab
+      #must match the tab name in the ui and in the lookup table
+        #replace all instances of comm with the three letter code for the category
+      comm_lookuptable <- main_lookuptable |> 
+        filter(tab == "community")
+      
+      #initialize blank data frame
+      append_data <- tibble()
+      
+      for (i in seq_along(comm_lookuptable$subcategory)) {
+        # name of the subcategory
+        comm_sub_category_name <- comm_lookuptable$subcategory[i]
+        
+        # get the name of the score id
+        comm_score_input <- comm_lookuptable$score_id[i]
+        
+        # get the value of the score
+        comm_score_value <- input[[comm_score_input]]
+        
+        # name of comment id
+        comm_comment_input <- comm_lookuptable$comment_id[i]
+        
+        # get the value of the comment
+        comm_comment_value <- input[[comm_comment_input]]
+        
+        #replace the category with the name of the new category
+        comm_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Community Engagement", sub_category_entered = comm_sub_category_name, indicator_type = "Process Indicator", score = comm_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = comm_comment_value, evaluator = input$name_input) 
+        if (!is.null(nrow(comm_row))){
+          
+          append_data <- bind_rows(comm_row, append_data) 
+          
+        }
+        
+      }
+      if (nrow(append_data) >0){
+        sheet_append(main_sheet_id, data = append_data) }
+      entry_comm(FALSE)
+    }
+  ) 
+  #end community engagement data entry  
+  
+  
+  # community engagement tab previous button
+  observeEvent(input$prev_3, {
+    newtab <- switch(input$tabs,
+                     "training" = "community",
+                     "community" = "training")
+    # change to the last tab
+    updateTabItems(session, "tabs", newtab)
+  }) # end community engagement tab previous button
+  
+  # consistent funding next button
+  observeEvent(input$next_6, {
+    newtab <- switch(input$tabs,
+                     "funding" = "summary",
+                     "data" = "summary")  
+    # change to the last tab
+    updateTabItems(session, "tabs", newtab)
+    entry_con(TRUE)
+  })
+
+#start consistent funding tab actions ----
+  #consistent funding tab data entry
+  
+  #start consistent funding data entry
+  observe(
+    if (entry_con() && input$tabs == "summary") {
+      
+      # read in the google sheet
+      # need to do this each time we write in case multiple people are on the app
+      # identify the url
+      # also read in for checking for existing data
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year))
+      
+      con_lookuptable <- main_lookuptable |> 
+        filter(tab == "funding")
+      
+      #initialize blank data frame
+      append_data <- tibble()
+      
+      for (i in seq_along(con_lookuptable$subcategory)) {
+        # name of the subcategory
+        con_sub_category_name <- con_lookuptable$subcategory[i]
+        
+        # get the name of the score id
+        con_score_input <- con_lookuptable$score_id[i]
+        
+        # get the value of the score
+        con_score_value <- input[[con_score_input]]
+        
+        # name of comment id
+        con_comment_input <- con_lookuptable$comment_id[i]
+        
+        # get the value of the comment
+        con_comment_value <- input[[con_comment_input]]
+        
+        
+        con_row <- data_entry_function(google_instance = main_sheet_id, google_data = main_sheet, year_entered = input$year_input, category = "Consistent Funding", sub_category_entered = con_sub_category_name, indicator_type = "Process Indicator", score = con_score_value, country = input$country_input, site_entered = input$site_input, comments_entered = con_comment_value, evaluator = input$name_input)
+        if (!is.null(nrow(con_row))){
+          append_data <- bind_rows(con_row, append_data) 
+          
+        }
+        
+      }
+      if (nrow(append_data) >0){
+        sheet_append(main_sheet_id, data = append_data) }
+      entry_con(FALSE)
+    }
+  ) 
+  
+
+  entry_con <- reactiveVal(FALSE)
+```
