@@ -184,7 +184,7 @@ server <- function(input, output, session) {
     } else { 
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
-     # entry_sur(TRUE)
+      entry_sur(TRUE)
     } 
   })
   
