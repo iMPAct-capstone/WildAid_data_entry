@@ -151,8 +151,8 @@ data_entry_function <- function(google_instance,
 
 
 # #read in the combined lookup table 
-# lookup_id_url <- "https://docs.google.com/spreadsheets/d/1rrjUr8uxrLINKsoYWifX_D0_XoDmbM7m5Ji8QVHmUIs/edit#gid=0"
-main_lookuptable <- read_csv(here("lookup_tables", "main_lookuptable.csv"))
+lookup_id_url <- "https://docs.google.com/spreadsheets/d/1E_5OGhMWS1so8xu0vqcOQZy3vDKRGIugGsSBwtQbrIk/edit#gid=1796709482"
+main_lookuptable <- read_sheet(lookup_id_url)
 
 
 #read in all the data
@@ -162,19 +162,16 @@ files <- drive_ls(folder_url) |>
 main_sheet_id <- as_id(files)
 main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
 
-new_url <- "https://docs.google.com/spreadsheets/d/1E_5OGhMWS1so8xu0vqcOQZy3vDKRGIugGsSBwtQbrIk/edit#gid=1796709482
-all_lookup"
 
-new_data <- read_sheet(new_url)
 
-my_row <- new_data |> filter(tab == "enforcement")
+
 #ui function
 sub_category_box <- function(inputrow){
   my_box <- box(
     width = NULL, title = inputrow$subcategory,
     "Question 1 of 27",
     id = inputrow$id,
-    bsCollapse( id = inputrow$collapse_id,
+    bsCollapse(id = inputrow$collapse_id,
       bsCollapsePanel(
         title = HTML(paste0("Scoring Guidelines <span class='arrow'>&#x25BE;</span>")),
         style = "info", br(tags$strong("1="), inputrow$score_1),

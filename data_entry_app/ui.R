@@ -118,7 +118,7 @@ body <- dashboardBody(
           br()
         ), # end title row
         
-        uiOutput("test_ui"),
+        uiOutput("test_ui_enforcement"),
         # start 6th fluid row
         fluidRow(
           column(10, ),
