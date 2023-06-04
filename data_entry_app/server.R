@@ -715,7 +715,7 @@ server <- function(input, output, session) {
     box_counter <- box_counter + 1
     
     
-    if (box_counter == 3 || i == nrow(my_row)) {
+    if (box_counter == 3 || i == nrow(enforcement_row)) {
       # Add the current row to the list and reset the counter and row
       v[[length(v) + 1]] <- current_row
       current_row <- fluidRow()
@@ -725,6 +725,112 @@ server <- function(input, output, session) {
 
   
   output$test_ui_enforcement <- renderUI(v)
+  
+  #repeat for policies
+  policies_row <- main_lookuptable |> filter(tab == "policies")
+  
+  p <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(policies_row)) {
+    current_place <- policies_row[i,]
+    box <- sub_category_box(current_place)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    
+    
+    if (box_counter == 3 || i == nrow(policies_row)) {
+      # Add the current row to the list and reset the counter and row
+      p[[length(p) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_policies <- renderUI(p)
+  
+  
+  #repeat for training
+  
+  training_row <- main_lookuptable |> filter(tab == "training")
+  
+  t <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(training_row)) {
+    current_place <- training_row[i,]
+    box <- sub_category_box(current_place)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    
+    
+    if (box_counter == 3 || i == nrow(training_row)) {
+      # Add the current row to the list and reset the counter and row
+      t[[length(t) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_training <- renderUI(t)
+  
+  #repeat for community
+  
+  community_row <- main_lookuptable |> filter(tab == "community")
+  
+  co <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(community_row)) {
+    current_place <- community_row[i,]
+    box <- sub_category_box(current_place)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    
+    
+    if (box_counter == 3 || i == nrow(community_row)) {
+      # Add the current row to the list and reset the counter and row
+      co[[length(co) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_community <- renderUI(co)
+  
+  #repeat for funding
+  funding_row <- main_lookuptable |> filter(tab == "funding")
+  
+  f <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(funding_row)) {
+    current_place <- funding_row[i,]
+    box <- sub_category_box(current_place)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+   
+    
+    if (box_counter == 3 || i == nrow(funding_row)) {
+      # Add the current row to the list and reset the counter and row
+      f[[length(f) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+    } 
+  
+  output$ui_funding <- renderUI(f)
+  
+  
+  
   
 }
 
