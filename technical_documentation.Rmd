@@ -57,8 +57,23 @@ main_sheet <- read_sheet(main_sheet_id) |>
 
 # Updating categories
 
+## updating the ui
+
 ```{r, eval = FALSE}
- 
+ menuItem(
+        text = "Consistent Funding",
+        tabName = "funding",
+        icon = icon("table")
+      ), 
+
+
+```
+
+# new chunk
+
+```{r, eval = FALSE}
+  
+
     # Consistent Funding tabItem----
     tabItem(
       #update to the name of the tab, must match tabname in lookup table

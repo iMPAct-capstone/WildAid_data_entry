@@ -68,6 +68,10 @@ server <- function(input, output, session) {
         tabName = "funding",
         icon = icon("table")
       ),
+      #add a new category menu item here
+      
+      
+      #end new category menu item here
       menuItem(
         text = "Summary",
         tabName = "summary",
@@ -709,7 +713,7 @@ server <- function(input, output, session) {
   
  
   
-  #function to generate the table   
+  #function to generate the previous data tables  
   previous_data_reactive <- function(subcategory){
     filtered_data <- main_sheet %>%
       filter(year < as.numeric(input$year_input) & sub_category == subcategory & site == input$site_input) |> 
@@ -729,8 +733,9 @@ server <- function(input, output, session) {
     names(list_data) <- ids
     return(list_data)
   })
+  #end of function to generate the tables
   
-  #generate all of the tables   
+  #generate all of the tables using the function 
   
   #function with code for generating tables 
   generateTableRenderCode <- function(id) {
@@ -767,7 +772,7 @@ server <- function(input, output, session) {
                   )))
   
   
-  
+#Dynamically generate ui for each tab ---- 
   enforcement_row <- main_lookuptable |> filter(tab == "enforcement")
   
   v <- list()
@@ -790,11 +795,11 @@ server <- function(input, output, session) {
     }
   }
 
-  output$test_ui_enforcement <- renderUI(v)
-  outputOptions(output, "test_ui_enforcement", suspendWhenHidden = FALSE)
+  output$ui_enforcement <- renderUI(v)
+  outputOptions(output, "ui_enforcement", suspendWhenHidden = FALSE)
 
   
-  #repeat for policies
+#repeat for policies
   policies_row <- main_lookuptable |> filter(tab == "policies")
   
   p <- list()
@@ -821,7 +826,7 @@ server <- function(input, output, session) {
   outputOptions(output, "ui_policies", suspendWhenHidden = FALSE)
   
   
-  #repeat for training
+#repeat for training
   
   training_row <- main_lookuptable |> filter(tab == "training")
   
@@ -849,7 +854,7 @@ server <- function(input, output, session) {
   
   outputOptions(output, "ui_training", suspendWhenHidden = FALSE)
   
-  #repeat for community
+#repeat for community
   
   community_row <- main_lookuptable |> filter(tab == "community")
   
@@ -877,7 +882,7 @@ server <- function(input, output, session) {
   
   outputOptions(output, "ui_community", suspendWhenHidden = FALSE)
   
-  #repeat for funding
+#repeat for funding
   funding_row <- main_lookuptable |> filter(tab == "funding")
   
   f <- list()

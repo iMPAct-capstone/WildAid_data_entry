@@ -45,7 +45,9 @@ user_base <- tibble::tibble(
 # url for site list
 site_url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSSaWKxfoxZeozrn1_M/edit#gid=1669338265"
 
-site_list <- read_sheet(site_url)
+#read in the site list, only using current sites as an option 
+site_list <- read_sheet(site_url) |>
+  filter(active_site == "current")
 
 
 # find the current year plus 1----
