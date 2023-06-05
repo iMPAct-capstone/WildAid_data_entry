@@ -168,10 +168,10 @@ main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
 
 
 #ui function
-sub_category_box <- function(inputrow){
+sub_category_box <- function(inputrow, sub_category_number){
   my_box <- box(
     width = NULL, title = inputrow$subcategory,
-    paste("Question", inputrow$row, "of", nrow(main_lookuptable)),
+    paste("Question", sub_category_number, "of", nrow(main_lookuptable)),
     id = inputrow$id,
     bsCollapse(id = inputrow$collapse_id,
       bsCollapsePanel(

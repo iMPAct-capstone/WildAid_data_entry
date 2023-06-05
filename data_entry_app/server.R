@@ -778,14 +778,15 @@ server <- function(input, output, session) {
   v <- list()
   current_row <- fluidRow()
   box_counter <- 0
+  sub_category_number <- 1
   
   for (i in 1:nrow(enforcement_row)) {
     current_place <- enforcement_row[i,]
-    box <- sub_category_box(current_place)
+    box <- sub_category_box(current_place, sub_category_number)
     column <- column(width = 4, box)
     current_row <- tagAppendChild(current_row, column)
     box_counter <- box_counter + 1
-    
+    sub_category_number <- sub_category_number +1
     
     if (box_counter == 3 || i == nrow(enforcement_row)) {
       # Add the current row to the list and reset the counter and row
@@ -808,11 +809,11 @@ server <- function(input, output, session) {
   
   for (i in 1:nrow(policies_row)) {
     current_place <- policies_row[i,]
-    box <- sub_category_box(current_place)
+    box <- sub_category_box(current_place,sub_category_number)
     column <- column(width = 4, box)
     current_row <- tagAppendChild(current_row, column)
     box_counter <- box_counter + 1
-    
+    sub_category_number <- sub_category_number +1
     
     if (box_counter == 3 || i == nrow(policies_row)) {
       # Add the current row to the list and reset the counter and row
@@ -836,11 +837,11 @@ server <- function(input, output, session) {
   
   for (i in 1:nrow(training_row)) {
     current_place <- training_row[i,]
-    box <- sub_category_box(current_place)
+    box <- sub_category_box(current_place, sub_category_number)
     column <- column(width = 4, box)
     current_row <- tagAppendChild(current_row, column)
     box_counter <- box_counter + 1
-    
+    sub_category_number <- sub_category_number +1
     
     if (box_counter == 3 || i == nrow(training_row)) {
       # Add the current row to the list and reset the counter and row
@@ -864,11 +865,11 @@ server <- function(input, output, session) {
   
   for (i in 1:nrow(community_row)) {
     current_place <- community_row[i,]
-    box <- sub_category_box(current_place)
+    box <- sub_category_box(current_place,sub_category_number)
     column <- column(width = 4, box)
     current_row <- tagAppendChild(current_row, column)
     box_counter <- box_counter + 1
-    
+    sub_category_number <- sub_category_number +1
     
     if (box_counter == 3 || i == nrow(community_row)) {
       # Add the current row to the list and reset the counter and row
@@ -891,11 +892,11 @@ server <- function(input, output, session) {
   
   for (i in 1:nrow(funding_row)) {
     current_place <- funding_row[i,]
-    box <- sub_category_box(current_place)
+    box <- sub_category_box(current_place,sub_category_number)
     column <- column(width = 4, box)
     current_row <- tagAppendChild(current_row, column)
     box_counter <- box_counter + 1
-   
+    sub_category_number <- sub_category_number +1
     
     if (box_counter == 3 || i == nrow(funding_row)) {
       # Add the current row to the list and reset the counter and row
