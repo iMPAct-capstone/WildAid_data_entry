@@ -13,6 +13,12 @@ library(lubridate)
 library(shinyalert)
 library(here)
 
+warning_message <- reactiveVal(FALSE)
+
+warning_ready <- reactiveVal(FALSE) 
+
+#reactive list used for data that needs to be appended
+append_frames <- reactiveValues(frames = list(), location = list())
 
 
 
@@ -79,6 +85,7 @@ data_update_function <- function(google_data,
 
 #create a data entry function----
 
+
 data_entry_function <- function(google_instance,
                                 google_data,
                                 year_entered, category, sub_category_entered, indicator_type, score, country, site_entered, comments_entered, evaluator) {
@@ -133,20 +140,26 @@ data_entry_function <- function(google_instance,
       row2 <- new_data_check[1, ]  # Row from the second data frame
     
       if(!row1$score == row2$score | !row1$comments == row2$comments | !row1$entered_by == row2$entered_by){
-        print("overwriting")
         
+        warning_message(TRUE)
+        print("warning message is true")
         # Get the row index
         specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
-        range_write(google_instance, data = textB, range = cell_rows(specific_row), col_names = FALSE) 
+        # range_write(google_instance, data = textB, range = cell_rows(specific_row), col_names = FALSE) 
+        
+        # Append the data frame to the list
+        append_frames$frames <- c(append_frames$frames, list(textB))
+        append_frames$location <- c(append_frames$location, specific_row)
+        
+        
       }
       row <-0
       return(row)
       
-    } else { # if it doesn't already exist then just append it to the bottom
+    } else { 
       #add it to a data frame outside the list 
       row <- textB
       return(row)
-      #sheet_append(google_instance, data = textB())
     } # end of surveillance prioritization data entry
   } # end of all data entry for this category
 }

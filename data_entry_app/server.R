@@ -181,6 +181,8 @@ server <- function(input, output, session) {
   #reactive value used to trigger data entry
   entry_sur <- reactiveVal(FALSE)
   
+  
+  
   # enforcement tab next button
   observeEvent(input$next_2, {
     
@@ -214,6 +216,7 @@ server <- function(input, output, session) {
   
   
   # data entry for enforcement tab
+   
   observe(
     if (entry_sur() && input$tabs == "policies") {
       
@@ -266,9 +269,35 @@ server <- function(input, output, session) {
       }
       if (nrow(append_data) >0){
         sheet_append(main_sheet_id, data = append_data) }
+      
       entry_sur(FALSE)
+      warning_ready(TRUE)
     }
-  )  # end enforcement tab data entry
+  )  
+  
+  observe(
+    if (warning_ready() && warning_message()) {
+      shinyalert::shinyalert(title = "You updated data on the previous tab, are you sure you would like to overwrite previously entered data?", type = "warning",showCancelButton = TRUE, showConfirmButton = TRUE,inputId = "overwrite_warning")
+    } )
+  
+  observeEvent(input$overwrite_warning, {
+    if (input$overwrite_warning == TRUE){
+    for (i in seq_along(append_frames$frames)) {
+      current_data_frame <- append_frames$frames[[i]]
+      current_location <- append_frames$location[[i]]
+      
+      # Perform the desired operation with the current data frame and location
+      range_write(main_sheet_id, data = current_data_frame, range = cell_rows(current_location), col_names = FALSE)
+    } }
+    warning_ready(FALSE)
+    warning_message(FALSE)
+    # #reset the list 
+    # # Reset the append_frames reactiveValues to empty
+    append_frames$frames <- list()
+    append_frames$location <- list()
+    
+  })
+  # end enforcement tab data entry
   
 #end enforcement tab actions
   
@@ -309,6 +338,7 @@ server <- function(input, output, session) {
       # change to the next tab
       updateTabItems(session, "tabs", newtab)
       entry_pol(TRUE)
+      
       
     }
   })
@@ -355,6 +385,7 @@ server <- function(input, output, session) {
       if (nrow(append_data) >0){
         sheet_append(main_sheet_id, data = append_data) }
       entry_pol(FALSE)
+      warning_ready(TRUE)
     }
   ) 
   # end policies tab data entry
@@ -444,6 +475,7 @@ server <- function(input, output, session) {
         sheet_append(main_sheet_id, data = append_data) }
       
       entry_tra(FALSE)
+      warning_ready(TRUE)
     }) 
   # end training tab data entry
 #start community engagement tab actions ----  
@@ -534,6 +566,7 @@ server <- function(input, output, session) {
       if (nrow(append_data) >0){
         sheet_append(main_sheet_id, data = append_data) }
       entry_comm(FALSE)
+      warning_ready(TRUE)
     }
   ) 
   #end community engagement data entry  
@@ -589,6 +622,7 @@ server <- function(input, output, session) {
       if (nrow(append_data) >0){
         sheet_append(main_sheet_id, data = append_data) }
       entry_con(FALSE)
+      warning_ready(TRUE)
     }
   ) 
   
