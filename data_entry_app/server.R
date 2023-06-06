@@ -107,8 +107,8 @@ server <- function(input, output, session) {
       showModal(modalDialog("Please enter an evaluator", easyClose = TRUE))
       # proceed if all required fields are present
     } else{
-      master_sheet <- read_sheet(main_sheet_id) |> 
-        mutate(year = as.numeric(year))
+      main_sheet <- read_sheet(main_sheet_id) |> 
+        mutate(year = as.numeric(year), score = as.character(score))
       
       
       # read in the existing data
@@ -122,7 +122,7 @@ server <- function(input, output, session) {
         # name of comment id
         sur_comment_id <- main_lookuptable$comment_id[i]
         
-        data_update_function(master_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
+        data_update_function(main_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
       #check on and save backup     
@@ -224,7 +224,7 @@ server <- function(input, output, session) {
       # need to do this each time we write in case multiple people are on the app
       
       main_sheet <- read_sheet(main_sheet_id) |> 
-        mutate(year = as.numeric(year))
+        mutate(year = as.numeric(year), score = as.character(score))
       
       #read in lookup table
       sur_lookuptable <- main_lookuptable |> 
@@ -277,7 +277,7 @@ server <- function(input, output, session) {
   
   observe(
     if (warning_ready() && warning_message()) {
-      shinyalert::shinyalert(title = "You updated data on the previous tab, are you sure you would like to overwrite previously entered data?", type = "warning",showCancelButton = TRUE, showConfirmButton = TRUE,inputId = "overwrite_warning")
+      shinyalert::shinyalert(title = paste("You have updated data.", "Please confirm to overwrite", append_frames$frames[[1]]$category, "data for",  input$site_input, input$year_input), type = "warning",showCancelButton = TRUE, showConfirmButton = TRUE,inputId = "overwrite_warning")
     } )
   
   observeEvent(input$overwrite_warning, {
@@ -350,7 +350,7 @@ server <- function(input, output, session) {
       
       
       # read in for checking for existing data
-      main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
+      main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year), as.character(score))
       
       pol_lookuptable <- main_lookuptable |> 
         filter(tab == "policies")
@@ -440,7 +440,7 @@ server <- function(input, output, session) {
       
       # also read in for checking for existing data
       main_sheet <- read_sheet(main_sheet_id) |> 
-        mutate(year = as.numeric(year))
+        mutate(year = as.numeric(year), as.character(score))
       
       tra_lookuptable <- main_lookuptable |> 
         filter(tab == "training")
@@ -727,6 +727,8 @@ server <- function(input, output, session) {
       text = "Your data has been submitted.",
       type = "success"
     )
+    Sys.sleep(4)
+    session$reload()
   }) #end 'save and exit' button on summary tab
   
   #start summary tab 'previous button'
@@ -800,7 +802,7 @@ server <- function(input, output, session) {
     DT::datatable(data = summary_data(),
                   rownames = FALSE,
                   escape=TRUE, 
-                  caption = "Review data entered before submission.",
+                  caption = "Review data entered. If you need to change or add data navigate to the appropriate tab and update the scores or comments.",
                   options = list(
                     searching = FALSE, paging = FALSE  # Disable the search function
                   )))

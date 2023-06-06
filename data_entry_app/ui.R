@@ -89,11 +89,11 @@ body <- dashboardBody(
            bsCollapsePanel(HTML(paste0(" Translating (Traductorio) <span class='arrow'>&#x25BE;</span>")), style = "info", "To translate the instructions, use this application on Google Chrome and use these instructions to enable Google Translate.", br(),"Para traducir las instrucciones, use esta aplicación en Google Chrome y use estas instrucciones para habilitar Google Translate."
            
         ),
-        bsCollapsePanel(HTML(paste0("Updating Data <span class='arrow'>&#x25BE;</span>")), style = "info", "If you enter a year and site combination for which there is already data, the boxes will auto populate with the previous data. Any changes will update the previously entered scores and comments."
+        bsCollapsePanel(HTML(paste0("Updating Data <span class='arrow'>&#x25BE;</span>")), style = "info", "If you enter a year and site combination for which there is already data, the boxes will auto populate with the previous data. Any changes will update the previously entered scores and comments. You will recieve a warning if you update values, please click ok to confirm."
                         
         ),# end panel
         
-        bsCollapsePanel(HTML(paste0("Submitting Data for Review <span class='arrow'>&#x25BE;</span>")), style = "info", "Placeholder"
+        bsCollapsePanel(HTML(paste0("Reviewing Submission <span class='arrow'>&#x25BE;</span>")), style = "info", "Please review and confirm accuraccy and completion of data on the final summary tab"
                         
         )# end panel
           ) #end bs collapse

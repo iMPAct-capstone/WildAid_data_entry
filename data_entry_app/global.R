@@ -72,7 +72,10 @@ data_update_function <- function(google_data,
       year == year_input &
         site == site_input &
         sub_category == sub_category_needed
-    ) 
+    ) |> mutate(score =
+           case_when(is.na(score) ~"NA",
+                     TRUE ~ score))
+  
   
   if (nrow(existing_data_check) == 1) {
     updateSelectInput(session, score_box_id, selected = existing_data_check$score)
@@ -109,7 +112,7 @@ data_entry_function <- function(google_instance,
         category = category,
         sub_category = sub_category_entered,
         indicator_type = indicator_type,
-        score = score,
+        score = as.numeric(score),
         country = country,
         site = site_entered,
         comments = comments_entered,
@@ -129,20 +132,25 @@ data_entry_function <- function(google_instance,
         select(score,comments,entered_by) |> 
         mutate(comments =
                  case_when(is.na(comments) ~"None",
-                           TRUE ~ comments))
+                           TRUE ~ comments),
+               score = case_when(is.na(score) ~"None",
+                                 TRUE ~score)) 
       
       new_data_check <- textB |>
-        select(score,comments,entered_by) |> mutate(comments =
-                                                      case_when(is.na(comments) ~"None", TRUE ~ comments))
+        select(score,comments,entered_by) |> 
+        mutate(score = as.character(score)) |> 
+        mutate(comments = case_when(is.na(comments) ~"None",
+                                    TRUE ~ comments),
+               score = case_when(is.na(score) ~"None",
+                                 TRUE ~score))
       # overwrite where it already exists and has changed
       row1 <- old_data_check[1, ]  # Row from the first data frame
       #make sure nas are comparable 
       row2 <- new_data_check[1, ]  # Row from the second data frame
     
-      if(!row1$score == row2$score | !row1$comments == row2$comments | !row1$entered_by == row2$entered_by){
+      if(!row1$score == row2$score | !row1$comments == row2$comments){
         
         warning_message(TRUE)
-        print("warning message is true")
         # Get the row index
         specific_row <- which(google_data$year == year_entered & google_data$site == site_entered & google_data$sub_category == sub_category_entered) + 1
         # range_write(google_instance, data = textB, range = cell_rows(specific_row), col_names = FALSE) 
@@ -165,7 +173,7 @@ data_entry_function <- function(google_instance,
 }
 
 
-# #read in the combined lookup table 
+ #read in the combined lookup table 
 lookup_id_url <- "https://docs.google.com/spreadsheets/d/1E_5OGhMWS1so8xu0vqcOQZy3vDKRGIugGsSBwtQbrIk/edit#gid=1796709482"
 main_lookuptable <- read_sheet(lookup_id_url)
 
@@ -175,8 +183,8 @@ folder_url <- "https://drive.google.com/drive/u/0/folders/11jjznh0MFuhy8oLxHp8uG
 files <- drive_ls(folder_url) |>
   filter(name == "data_entry_test")
 main_sheet_id <- as_id(files)
-main_sheet <- read_sheet(main_sheet_id) |> mutate(year = as.numeric(year))
-
+main_sheet <- read_sheet(main_sheet_id) |>
+  mutate(year = as.numeric(year))
 
 
 
