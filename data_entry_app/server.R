@@ -82,6 +82,8 @@ server <- function(input, output, session) {
   
 # next buttons and data entry ----
 #data tab functions ----
+
+  
   
   progress <- reactiveVal(FALSE)
   
