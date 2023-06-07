@@ -236,6 +236,6 @@ body <- dashboardBody(
   ) # end tab items
 ) # end dashboard body
 
-dashboardPage(header, sidebar, body, skin= "black")
+dashboardPage(header, sidebar, body, skin= "black", title = "MPS Tracker Data Entry")
 
 
