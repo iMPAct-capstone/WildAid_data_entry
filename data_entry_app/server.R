@@ -129,19 +129,19 @@ server <- function(input, output, session) {
       updateTabItems(session, "tabs", newtab)
       #check on and save backup     
       #look in the backup folder
-      backup_list <- drive_ls("https://drive.google.com/drive/folders/14npufqTR_om8HrzhkKVx2S4trHbiuwuS")
+      backup_list <- drive_ls("https://drive.google.com/drive/u/1/folders/14npufqTR_om8HrzhkKVx2S4trHbiuwuS")
       
       
       #find the backup dates
       backup_list <- backup_list |> 
-        mutate(backup_date = mdy(str_remove(name, "MPS_backup_")))
+        mutate(backup_date = mdy(str_remove(name, "mps_tracker_data_backup_")))
       #find the date of the last backup if there is one
       if (nrow(backup_list) > 0) {
         last_backup <- max(backup_list$backup_date)
         days_since_backup <- as.numeric(Sys.Date() - last_backup) } else {days_since_backup <- 100}
       if (days_since_backup > 14){
         #save the google sheet to the backup folder
-        file_name <- paste0("MPS_backup_", 
+        file_name <- paste0("mps_tracker_data_backup_", 
                             month(Sys.Date()), "_",
                             day(Sys.Date()), "_",
                             year(Sys.Date()))

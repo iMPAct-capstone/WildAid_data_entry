@@ -72,7 +72,8 @@ data_update_function <- function(google_data,
       year == year_input &
         site == site_input &
         sub_category == sub_category_needed
-    ) |> mutate(score =
+    ) |> mutate(score = as.character(score)) |> 
+    mutate(score =
            case_when(is.na(score) ~"NA",
                      TRUE ~ score))
   
@@ -130,6 +131,7 @@ data_entry_function <- function(google_instance,
       
       old_data_check <- old_data_2 |>
         select(score,comments,entered_by) |> 
+        mutate(score = as.character(score)) |> 
         mutate(comments =
                  case_when(is.na(comments) ~"None",
                            TRUE ~ comments),
@@ -179,7 +181,7 @@ main_lookuptable <- read_sheet(lookup_id_url)
 
 
 #read in all the data
-folder_url <- "https://drive.google.com/drive/u/0/folders/11jjznh0MFuhy8oLxHp8uGePF4xR5T-GW"
+folder_url <- "https://drive.google.com/drive/u/1/folders/1AvavGBfoZx_ThcXVn5gL_buQkip76ZtQ"
 files <- drive_ls(folder_url) |>
   filter(name == "data_entry_test")
 main_sheet_id <- as_id(files)
