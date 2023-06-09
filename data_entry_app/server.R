@@ -854,7 +854,7 @@ server <- function(input, output, session) {
           infoBox(
             color = "red",
             title = NULL,
-            value = "A duplicate subcategory value may have been entered, please contact the marine program manager to update",
+            value = "More rows than subcategories. If this is the current year a duplicate subcategory value may have been entered, previous years may have monitored additional subcategories",
             width = NULL,
             icon = icon('circle-exclamation', lib = "font-awesome")
           )
