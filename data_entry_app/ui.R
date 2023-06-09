@@ -94,7 +94,7 @@ body <- dashboardBody(
                         
         ),# end panel
         
-        bsCollapsePanel(HTML(paste0("Reviewing Submission <span class='arrow'>&#x25BE;</span>")), style = "info", "Please review and confirm accuraccy and completion of data on the final summary tab"
+        bsCollapsePanel(HTML(paste0("Reviewing Data and Submitting <span class='arrow'>&#x25BE;</span>")), style = "info", "Please review and confirm accuraccy and completion of data on the final summary tab. When all subcategories have been completed or marked as NA for a site for the current, click save and submit to notify the Marine Program Manager that data is ready for final review"
                         
         )# end panel
           ) #end bs collapse
@@ -230,7 +230,7 @@ body <- dashboardBody(
       #start 'save and exit' button
       fluidRow(
         column(10, actionButton("prev_5", "Previous", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
-        column(2, align = "right", actionButton("next_7", "Save and Exit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
+        column(2, align = "right", actionButton("next_7", "Save and Submit", class = "btn-primary", style="color: #FFFFFF; background-color: #094074")),
       ), #end 'save & exit' button
     ) # end summary table tab item
   ) # end tab items

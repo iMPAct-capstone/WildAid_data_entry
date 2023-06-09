@@ -125,13 +125,15 @@ server <- function(input, output, session) {
         sur_comment_id <- main_lookuptable$comment_id[i]
         
         data_update_function(main_sheet, sur_sub_category_name, sur_score_id, sur_comment_id, input$year_input, input$site_input,session) }
+      
+      validate(need(!duplicate(), "duplicate detected")) 
       # finally update the tab
       updateTabItems(session, "tabs", newtab)
       #check on and save backup     
       #look in the backup folder
       backup_list <- drive_ls("https://drive.google.com/drive/u/1/folders/14npufqTR_om8HrzhkKVx2S4trHbiuwuS")
       
-      
+    
       #find the backup dates
       backup_list <- backup_list |> 
         mutate(backup_date = mdy(str_remove(name, "mps_tracker_data_backup_")))
@@ -836,22 +838,33 @@ server <- function(input, output, session) {
       summary_data(main_sheet_new)
       remove_modal_spinner()
       
-      subcategories_completed <- nrow(main_sheet_new)
+      subcategories_needed <<- length(unique(main_lookuptable$subcategory))
+      subcategories_completed <<- nrow(main_sheet_new)
       # Update the infoBox value based on the variable
       output$my_info_box <- renderInfoBox({
-        if (subcategories_completed == 27) {
+        if (subcategories_completed == subcategories_needed) {
           infoBox(
             color = "green",
             title = NULL,
-            value = paste0(subcategories_completed, " of 27 subcategories completed"),
+            value = paste(subcategories_completed, "of", subcategories_needed, "subcategories completed"),
             width = NULL,
             icon = icon('check-circle', lib = "font-awesome")
           )
-        } else {
+        } else if (subcategories_completed > subcategories_needed) {
           infoBox(
             color = "red",
             title = NULL,
-            value = paste0(subcategories_completed, " of 27 subcategories completed"),
+            value = "A duplicate subcategory value may have been entered, please contact the marine program manager to update",
+            width = NULL,
+            icon = icon('circle-exclamation', lib = "font-awesome")
+          )
+          
+        } 
+        else {
+          infoBox(
+            color = "red",
+            title = NULL,
+            value = paste(subcategories_completed, "of", subcategories_needed, " subcategories completed"),
             width = NULL,
             icon = icon('circle-exclamation', lib = "font-awesome")
           )
@@ -870,6 +883,18 @@ server <- function(input, output, session) {
   
   #start 'save and exit' button summary tab
   observeEvent(input$next_7, {
+    
+    if (subcategories_completed == subcategories_needed){
+    completed_data_url <- "https://docs.google.com/spreadsheets/d/1ZPSKVS-K6WPurj42MmgSmEetm7s7WwpKhTNipe1sPhI/edit#gid=0"
+    completed_data <- as_id(completed_data_url)
+    date <- Sys.Date()
+    site_data <- tibble(year = as.numeric(input$year_input), 
+                                     country = input$country_input,
+                                     site = input$site_input,
+                                    date = date, evaluator = input$name_input, finalized = "no")
+    
+  sheet_append(completed_data, site_data)
+    
     shinyalert(
       title = "Thank you!",
       text = "Your data has been submitted.",
@@ -877,6 +902,7 @@ server <- function(input, output, session) {
     )
     Sys.sleep(4)
     session$reload()
+    } else{ showModal(modalDialog("Please enter all subcategories before marking data as completed"))}
   }) #end 'save and exit' button on summary tab
   
   #start summary tab 'previous button'
@@ -893,7 +919,7 @@ server <- function(input, output, session) {
     DT::datatable(data = summary_data(),
                   rownames = FALSE,
                   escape=TRUE, 
-                  caption = "Review data entered. If you need to change or add data navigate to the appropriate tab and update the scores or comments.",
+                  caption = "Review data entered. If you need to change or add data navigate to the appropriate tab and update the scores or comments. When you have checked the data and all subcategories have been completed for the current year and site click save and submit. This will mark the data as ready for review.",
                   options = list(
                     searching = FALSE, paging = FALSE  # Disable the search function
                   )))

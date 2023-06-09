@@ -17,6 +17,11 @@ warning_message <- reactiveVal(FALSE)
 
 warning_ready <- reactiveVal(FALSE) 
 
+subcategories_needed <- NULL
+
+subcategories_completed <- NULL
+
+
 #reactive list used for data that needs to be appended
 append_frames <- reactiveValues(frames = list(), location = list())
 
@@ -35,7 +40,7 @@ email = "adelaide.robinson445@gmail.com" #eventually want to change this to silv
 drive_auth(cache = ".secrets",
            email = "adelaide.robinson445@gmail.com")
 
-# # dataframe that holds usernames, passwords and other user data
+# dataframe that holds usernames, passwords and other user data
  password_url <- "https://docs.google.com/spreadsheets/d/1pTWPJ10x66DgMFtFqy_8wZFPh8hgygkiBuGsW4BtejI/edit#gid=0"
  password_sheet <- read_sheet(password_url, sheet = "data_entry")
 
@@ -52,9 +57,10 @@ user_base <- tibble::tibble(
 site_url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSSaWKxfoxZeozrn1_M/edit#gid=1669338265"
 
 #read in the site list, only using current sites as an option 
+tic()
 site_list <- read_sheet(site_url) |>
   filter(active_site == "current")
-
+toc()
 
 # find the current year plus 1----
 # used for updating the default year in the app
@@ -62,6 +68,8 @@ site_list <- read_sheet(site_url) |>
 current_year_minus_one <- year(Sys.Date()) - 1
 
 #create validation and old data pulling function----
+duplicate <- reactiveVal(FALSE)
+
 data_update_function <- function(google_data,
                                  sub_category_needed,
                                  score_box_id, comment_box_id,
@@ -81,6 +89,9 @@ data_update_function <- function(google_data,
   if (nrow(existing_data_check) == 1) {
     updateSelectInput(session, score_box_id, selected = existing_data_check$score)
     updateTextInput(session, inputId = comment_box_id, value = existing_data_check$comments)
+  } else if (nrow(existing_data_check > 1)){
+    showModal(modalDialog("There appears to be a duplicate subcategory for the year and site you have entered, please contact the Marine Program manager to fix before completing data entry"))
+    duplicate(TRUE) 
   } else {
     updateSelectInput(inputId = score_box_id, selected = "")
     updateTextInput(inputId = comment_box_id, value = "")
