@@ -1,0 +1,13 @@
+name: data_entry_app
+title: data_entry_app
+username:
+account: wildaid
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9273534
+bundleId: 7322148
+url: https://wildaid.shinyapps.io/data_entry_app/
+when: 1686252415.2779
+lastSyncTime: 1686252415.27791
+asMultiple: FALSE
+asStatic: FALSE

@@ -301,6 +301,35 @@ server <- function(input, output, session) {
   })
   # end enforcement tab data entry
   
+#dynamically generate the ui for the enforcement tab
+  enforcement_row <- main_lookuptable |> filter(tab == "enforcement")
+  
+  v <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  sub_category_number <- 1
+  
+  for (i in 1:nrow(enforcement_row)) {
+    current_place <- enforcement_row[i,]
+    box <- sub_category_box(current_place, sub_category_number)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    sub_category_number <- sub_category_number +1
+    
+    if (box_counter == 3 || i == nrow(enforcement_row)) {
+      # Add the current row to the list and reset the counter and row
+      v[[length(v) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_enforcement <- renderUI(v)
+  outputOptions(output, "ui_enforcement", suspendWhenHidden = FALSE)  
+  
+ #end dynamically generating ui for enforcement tab 
+  
 #end enforcement tab actions
   
 #start policies tab actions----
@@ -391,6 +420,35 @@ server <- function(input, output, session) {
     }
   ) 
   # end policies tab data entry
+  
+  
+  #start generate ui for policies tab
+  policies_row <- main_lookuptable |> filter(tab == "policies")
+  
+  p <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(policies_row)) {
+    current_place <- policies_row[i,]
+    box <- sub_category_box(current_place,sub_category_number)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    sub_category_number <- sub_category_number +1
+    
+    if (box_counter == 3 || i == nrow(policies_row)) {
+      # Add the current row to the list and reset the counter and row
+      p[[length(p) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_policies <- renderUI(p)
+  outputOptions(output, "ui_policies", suspendWhenHidden = FALSE)
+  #end generate ui for policies tab  
+  
 #end policies tab actions
   
   
@@ -480,6 +538,37 @@ server <- function(input, output, session) {
       warning_ready(TRUE)
     }) 
   # end training tab data entry
+  #generate ui for training tab
+  
+  training_row <- main_lookuptable |> filter(tab == "training")
+  
+  t <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(training_row)) {
+    current_place <- training_row[i,]
+    box <- sub_category_box(current_place, sub_category_number)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    sub_category_number <- sub_category_number +1
+    
+    if (box_counter == 3 || i == nrow(training_row)) {
+      # Add the current row to the list and reset the counter and row
+      t[[length(t) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_training <- renderUI(t)
+  
+  outputOptions(output, "ui_training", suspendWhenHidden = FALSE)
+  
+  #end generate ui for training tab
+
+  #end training tab actions
 #start community engagement tab actions ----  
   entry_comm <- reactiveVal(FALSE)
 
@@ -572,7 +661,35 @@ server <- function(input, output, session) {
     }
   ) 
   #end community engagement data entry  
+  #generate ui for community engagement
   
+  community_row <- main_lookuptable |> filter(tab == "community")
+  
+  co <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(community_row)) {
+    current_place <- community_row[i,]
+    box <- sub_category_box(current_place,sub_category_number)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    sub_category_number <- sub_category_number +1
+    
+    if (box_counter == 3 || i == nrow(community_row)) {
+      # Add the current row to the list and reset the counter and row
+      co[[length(co) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  }
+  
+  output$ui_community <- renderUI(co)
+  
+  outputOptions(output, "ui_community", suspendWhenHidden = FALSE)
+  
+  #end community tab actions
   
   
 #start consistent funding tab actions ----
@@ -663,6 +780,35 @@ server <- function(input, output, session) {
     }
   })
   
+  #repeat for funding
+  funding_row <- main_lookuptable |> filter(tab == "funding")
+  
+  f <- list()
+  current_row <- fluidRow()
+  box_counter <- 0
+  
+  for (i in 1:nrow(funding_row)) {
+    current_place <- funding_row[i,]
+    box <- sub_category_box(current_place,sub_category_number)
+    column <- column(width = 4, box)
+    current_row <- tagAppendChild(current_row, column)
+    box_counter <- box_counter + 1
+    sub_category_number <- sub_category_number +1
+    
+    if (box_counter == 3 || i == nrow(funding_row)) {
+      # Add the current row to the list and reset the counter and row
+      f[[length(f) + 1]] <- current_row
+      current_row <- fluidRow()
+      box_counter <- 0
+    }
+  } 
+  
+  output$ui_funding <- renderUI(f)
+  
+  outputOptions(output, "ui_funding", suspendWhenHidden = FALSE)
+  
+  #end consistent funding ui generation
+  
 # end consistent funding tab actions
   
 #add buttons and data entry functionality for a new category here----
@@ -741,15 +887,23 @@ server <- function(input, output, session) {
     updateTabItems(session, "tabs", newtab)
   }) #end summary tab 'previous button  
   
+  
+  #DT summary data table ----
+  output$summary_table <- DT::renderDataTable(
+    DT::datatable(data = summary_data(),
+                  rownames = FALSE,
+                  escape=TRUE, 
+                  caption = "Review data entered. If you need to change or add data navigate to the appropriate tab and update the scores or comments.",
+                  options = list(
+                    searching = FALSE, paging = FALSE  # Disable the search function
+                  )))
+  
 #end summary tab functionality
 # general functionality ----  
   
   #scroll when you switch tabs
   observeEvent(input$tabs,{ shinyjs::runjs("window.scrollTo(0, 0)")
   })
-
-  
- 
   
   #function to generate the previous data tables  
   previous_data_reactive <- function(subcategory){
@@ -795,161 +949,6 @@ server <- function(input, output, session) {
   for (id in seq_along(ids)) {
     eval(parse(text = generateTableRenderCode(ids)))
   }
-  
-  
- 
-  
-  #DT summary data table ----
-  output$summary_table <- DT::renderDataTable(
-    DT::datatable(data = summary_data(),
-                  rownames = FALSE,
-                  escape=TRUE, 
-                  caption = "Review data entered. If you need to change or add data navigate to the appropriate tab and update the scores or comments.",
-                  options = list(
-                    searching = FALSE, paging = FALSE  # Disable the search function
-                  )))
-  
-  
-#Dynamically generate ui for each tab ---- 
-  enforcement_row <- main_lookuptable |> filter(tab == "enforcement")
-  
-  v <- list()
-  current_row <- fluidRow()
-  box_counter <- 0
-  sub_category_number <- 1
-  
-  for (i in 1:nrow(enforcement_row)) {
-    current_place <- enforcement_row[i,]
-    box <- sub_category_box(current_place, sub_category_number)
-    column <- column(width = 4, box)
-    current_row <- tagAppendChild(current_row, column)
-    box_counter <- box_counter + 1
-    sub_category_number <- sub_category_number +1
-    
-    if (box_counter == 3 || i == nrow(enforcement_row)) {
-      # Add the current row to the list and reset the counter and row
-      v[[length(v) + 1]] <- current_row
-      current_row <- fluidRow()
-      box_counter <- 0
-    }
-  }
-
-  output$ui_enforcement <- renderUI(v)
-  outputOptions(output, "ui_enforcement", suspendWhenHidden = FALSE)
-
-  
-#repeat for policies
-  policies_row <- main_lookuptable |> filter(tab == "policies")
-  
-  p <- list()
-  current_row <- fluidRow()
-  box_counter <- 0
-  
-  for (i in 1:nrow(policies_row)) {
-    current_place <- policies_row[i,]
-    box <- sub_category_box(current_place,sub_category_number)
-    column <- column(width = 4, box)
-    current_row <- tagAppendChild(current_row, column)
-    box_counter <- box_counter + 1
-    sub_category_number <- sub_category_number +1
-    
-    if (box_counter == 3 || i == nrow(policies_row)) {
-      # Add the current row to the list and reset the counter and row
-      p[[length(p) + 1]] <- current_row
-      current_row <- fluidRow()
-      box_counter <- 0
-    }
-  }
-  
-  output$ui_policies <- renderUI(p)
-  outputOptions(output, "ui_policies", suspendWhenHidden = FALSE)
-  
-  
-#repeat for training
-  
-  training_row <- main_lookuptable |> filter(tab == "training")
-  
-  t <- list()
-  current_row <- fluidRow()
-  box_counter <- 0
-  
-  for (i in 1:nrow(training_row)) {
-    current_place <- training_row[i,]
-    box <- sub_category_box(current_place, sub_category_number)
-    column <- column(width = 4, box)
-    current_row <- tagAppendChild(current_row, column)
-    box_counter <- box_counter + 1
-    sub_category_number <- sub_category_number +1
-    
-    if (box_counter == 3 || i == nrow(training_row)) {
-      # Add the current row to the list and reset the counter and row
-      t[[length(t) + 1]] <- current_row
-      current_row <- fluidRow()
-      box_counter <- 0
-    }
-  }
-  
-  output$ui_training <- renderUI(t)
-  
-  outputOptions(output, "ui_training", suspendWhenHidden = FALSE)
-  
-#repeat for community
-  
-  community_row <- main_lookuptable |> filter(tab == "community")
-  
-  co <- list()
-  current_row <- fluidRow()
-  box_counter <- 0
-  
-  for (i in 1:nrow(community_row)) {
-    current_place <- community_row[i,]
-    box <- sub_category_box(current_place,sub_category_number)
-    column <- column(width = 4, box)
-    current_row <- tagAppendChild(current_row, column)
-    box_counter <- box_counter + 1
-    sub_category_number <- sub_category_number +1
-    
-    if (box_counter == 3 || i == nrow(community_row)) {
-      # Add the current row to the list and reset the counter and row
-      co[[length(co) + 1]] <- current_row
-      current_row <- fluidRow()
-      box_counter <- 0
-    }
-  }
-  
-  output$ui_community <- renderUI(co)
-  
-  outputOptions(output, "ui_community", suspendWhenHidden = FALSE)
-  
-#repeat for funding
-  funding_row <- main_lookuptable |> filter(tab == "funding")
-  
-  f <- list()
-  current_row <- fluidRow()
-  box_counter <- 0
-  
-  for (i in 1:nrow(funding_row)) {
-    current_place <- funding_row[i,]
-    box <- sub_category_box(current_place,sub_category_number)
-    column <- column(width = 4, box)
-    current_row <- tagAppendChild(current_row, column)
-    box_counter <- box_counter + 1
-    sub_category_number <- sub_category_number +1
-    
-    if (box_counter == 3 || i == nrow(funding_row)) {
-      # Add the current row to the list and reset the counter and row
-      f[[length(f) + 1]] <- current_row
-      current_row <- fluidRow()
-      box_counter <- 0
-    }
-    } 
-  
-  output$ui_funding <- renderUI(f)
-  
-  outputOptions(output, "ui_funding", suspendWhenHidden = FALSE)
-  
-  
-  
   
 }
 
