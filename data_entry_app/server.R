@@ -782,7 +782,7 @@ server <- function(input, output, session) {
     }
   })
   
-  #repeat for funding
+  #generate funding ui
   funding_row <- main_lookuptable |> filter(tab == "funding")
   
   f <- list()

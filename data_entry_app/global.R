@@ -57,10 +57,10 @@ user_base <- tibble::tibble(
 site_url <- "https://docs.google.com/spreadsheets/d/1945sRz1BzspN4hCT5VOTuiNpwSSaWKxfoxZeozrn1_M/edit#gid=1669338265"
 
 #read in the site list, only using current sites as an option 
-tic()
+
 site_list <- read_sheet(site_url) |>
   filter(active_site == "current")
-toc()
+
 
 # find the current year plus 1----
 # used for updating the default year in the app
