@@ -1,3 +1,6 @@
+ui <- function(req) {
+
+  source("global.R")
 
 # dashboard header ----------------------
 entry_sur <- reactiveVal(FALSE)
@@ -87,7 +90,7 @@ body <- dashboardBody(
            bsCollapsePanel(title = HTML(paste0("Saving <span class='arrow'>&#x25BE;</span>")), style = "info",
             "If you need to leave and come back to the application to finish entering data, your progress is saved once you select the 'save and continue' button at the bottom of the page.", tags$strong("If you exit or logout without clicking the save and continue button your data will not be saved")),
            bsCollapsePanel(HTML(paste0(" Translating (Traductorio) <span class='arrow'>&#x25BE;</span>")), style = "info", "To translate the instructions, use this application on Google Chrome. Set your preferences in Google Chrome to turn on translation for your preferred language. Begin by locating the ‘Customize and Control Google Chrome’ dropdown menu indicated by three dots on the right of the task bar. Navigate to Settings > Languages > Google Translate, select ‘Use Google Translate’ and select the language preference. Then, when on the data entry application, the right-click and select ‘Translate’ from the drop-down menu. More information on translating using Google Chrome can be found on", a("Google's help page", href = "https://support.google.com/chrome/answer/173424?hl=en&co=GENIE.Platform%3DDesktop#zippy=%2Cturn-translation-on-or-off")
-           , br(),"Para traducir las instrucciones, utilice esta aplicación en Google Chrome. Configure sus preferencias en Google Chrome para activar la traducción en su idioma preferido. Comience localizando el menú desplegable Personalizar y controlar Google Chrome indicado por tres puntos a la derecha de la barra de tareas. Vaya a Configuración > Idiomas > Traductor de Google, seleccione Usar Traductor de Google y seleccione la preferencia de idioma. Luego, cuando esté en la aplicación de entrada de datos, haga clic con el botón derecho y seleccione Traducir en el menú desplegable. Puede encontrar más información sobre la traducción con Google Chrome en", a("la página de ayuda de Google", href = "https://support.google.com/chrome/answer/173424?hl=en&co=GENIE.Platform%3DDesktop#zippy=%2Cturn-translation-on-or-off.")
+           , br(),br("Para traducir las instrucciones, utilice esta aplicación en Google Chrome. Configure sus preferencias en Google Chrome para activar la traducción en su idioma preferido. Comience localizando el menú desplegable. Personalizar y controlar Google Chrome indicado por tres puntos a la derecha de la barra de tareas. Vaya a Configuración > Idiomas > Traductor de Google, seleccione Usar Traductor de Google y seleccione la preferencia de idioma. Luego, cuando esté en la aplicación de entrada de datos, haga clic con el botón derecho y seleccione Traducir en el menú desplegable. Puede encontrar más información sobre la traducción con Google Chrome en", a("la página de ayuda de Google.", href = "https://support.google.com/chrome/answer/173424?hl=en&co=GENIE.Platform%3DDesktop#zippy=%2Cturn-translation-on-or-off."))
            
         ),
         bsCollapsePanel(HTML(paste0("Updating Data <span class='arrow'>&#x25BE;</span>")), style = "info", "If you enter a year and site combination for which there is already data, the boxes will auto populate with the previous data. Any changes will update the previously entered scores and comments. You will recieve a warning if you update values, please click ok to confirm."
@@ -238,4 +241,5 @@ body <- dashboardBody(
 
 dashboardPage(header, sidebar, body, skin= "black", title = "MPS Tracker Data Entry")
 
+}
 
