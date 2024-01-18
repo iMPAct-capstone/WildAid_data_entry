@@ -230,7 +230,7 @@ sub_category_box <- function(inputrow, sub_category_number){
       inputId = inputrow$score_id, label = "Score",
       choices = c("", "1", "2", "3", "4", "5", "NA")
     ),
-    textInput(inputId = inputrow$comment_id, " Comments")
+    textAreaInput(inputId = inputrow$comment_id, " Comments", rows = 4)
   ) # end surveillance prioritization box
   
   return(my_box)
